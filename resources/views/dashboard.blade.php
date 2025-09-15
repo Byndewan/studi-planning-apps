@@ -1,161 +1,206 @@
 <x-app-layout>
     <x-slot name="header">
-        <h2 class="text-xl font-semibold text-gray-800">
-            Dashboard
-        </h2>
+        <div>
+            <h1 class="text-3xl font-bold text-gray-900">
+                Welcome back, {{ auth()->user()->name }}
+            </h1>
+            <p class="text-gray-600 mt-1 text-sm">
+                Here's your learning progress overview
+            </p>
+        </div>
+        {{-- <div class="flex items-center space-x-3 mt-6">
+                <a href="{{ route('weekly-plans.create') }}" class="btn-secondary">
+                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"></path>
+                    </svg>
+                    New Plan
+                </a>
+                <a href="{{ route('monitorings.create') }}" class="btn-primary">
+                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="M12 6v6m0 0v6m0-6h6m-6 0H6"></path>
+                    </svg>
+                    Log Session
+                </a>
+            </div> --}}
     </x-slot>
 
-    <div class="py-6">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <!-- Stats Grid -->
-            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 mb-8">
-                <!-- Current Semester Card -->
-                <div class="bg-white rounded-lg shadow p-4">
-                    <div class="flex items-center">
-                        <div class="p-3 rounded-full bg-blue-100 text-blue-600">
-                            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"></path>
-                            </svg>
+    <div class="space-y-8">
+        <!-- Stats Grid -->
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+            <div class="card">
+                <div class="p-6">
+                    <div class="flex items-center justify-between">
+                        <div>
+                            <p class="text-sm font-medium text-gray-600">Current Semester</p>
+                            <p class="text-2xl font-bold text-gray-900 mt-1">{{ $currentSemester->name ?? 'None' }}</p>
                         </div>
-                        <div class="ml-4">
-                            <h3 class="text-sm font-medium text-gray-600">Current Semester</h3>
-                            <p class="text-lg font-semibold text-gray-900">{{ $currentSemester->name ?? 'None' }}</p>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Courses Card -->
-                <div class="bg-white rounded-lg shadow p-4">
-                    <div class="flex items-center">
-                        <div class="p-3 rounded-full bg-green-100 text-green-600">
-                            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"></path>
-                            </svg>
-                        </div>
-                        <div class="ml-4">
-                            <h3 class="text-sm font-medium text-gray-600">Courses</h3>
-                            <p class="text-lg font-semibold text-gray-900">{{ $coursesCount }}</p>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Weekly Progress Card -->
-                <div class="bg-white rounded-lg shadow p-4">
-                    <div class="flex items-center">
-                        <div class="p-3 rounded-full bg-yellow-100 text-yellow-600">
-                            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"></path>
-                            </svg>
-                        </div>
-                        <div class="ml-4">
-                            <h3 class="text-sm font-medium text-gray-600">Weekly Progress</h3>
-                            <p class="text-lg font-semibold text-gray-900">{{ $completionRate }}%</p>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Upcoming Deadlines Card -->
-                <div class="bg-white rounded-lg shadow p-4">
-                    <div class="flex items-center">
-                        <div class="p-3 rounded-full bg-red-100 text-red-600">
-                            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path>
-                            </svg>
-                        </div>
-                        <div class="ml-4">
-                            <h3 class="text-sm font-medium text-gray-600">Upcoming</h3>
-                            <p class="text-lg font-semibold text-gray-900">{{ $upcomingTasks }}</p>
+                        <div class="w-12 h-12 bg-indigo-100 rounded-xl flex items-center justify-center">
+                            <x-icons.calendar class="w-6 h-6 text-indigo-600" />
                         </div>
                     </div>
                 </div>
             </div>
 
-            <!-- Main Content Grid -->
-            <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
-                <!-- Recent Activity -->
-                <div class="lg:col-span-2">
-                    <div class="bg-white rounded-lg shadow overflow-hidden">
-                        <div class="px-6 py-4 border-b border-gray-200">
-                            <h3 class="text-lg font-medium text-gray-900">Recent Activity</h3>
+            <div class="card">
+                <div class="p-6">
+                    <div class="flex items-center justify-between">
+                        <div>
+                            <p class="text-sm font-medium text-gray-600">Active Courses</p>
+                            <p class="text-2xl font-bold text-gray-900 mt-1">{{ $coursesCount }}</p>
                         </div>
-                        <div class="divide-y divide-gray-200">
-                            @forelse($recentActivities as $activity)
-                                <div class="px-6 py-4">
-                                    <div class="flex items-center">
-                                        <div class="flex-shrink-0">
-                                            <svg class="w-5 h-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"></path>
-                                            </svg>
-                                        </div>
-                                        <div class="ml-3">
-                                            <p class="text-sm font-medium text-gray-900">{{ $activity['title'] }}</p>
-                                            <p class="text-sm text-gray-500">{{ $activity['description'] }}</p>
-                                            <p class="text-xs text-gray-400">{{ $activity['time'] }}</p>
-                                        </div>
-                                    </div>
-                                </div>
-                            @empty
-                                <div class="px-6 py-4 text-center text-gray-500">
-                                    No recent activity
-                                </div>
-                            @endforelse
+                        <div class="w-12 h-12 bg-green-100 rounded-xl flex items-center justify-center">
+                            <x-icons.book class="w-6 h-6 text-green-600" />
                         </div>
                     </div>
                 </div>
+            </div>
 
-                <!-- Quick Actions & Upcoming -->
-                <div class="space-y-6">
-                    <!-- Quick Actions -->
-                    <div class="bg-white rounded-lg shadow overflow-hidden">
-                        <div class="px-6 py-4 border-b border-gray-200">
-                            <h3 class="text-lg font-medium text-gray-900">Quick Actions</h3>
+            <div class="card">
+                <div class="p-6">
+                    <div class="flex items-center justify-between">
+                        <div>
+                            <p class="text-sm font-medium text-gray-600">Weekly Progress</p>
+                            <p class="text-2xl font-bold text-gray-900 mt-1">{{ $completionRate }}%</p>
                         </div>
-                        <div class="p-6 space-y-3">
-                            <a href="{{ route('weekly-plans.create') }}" class="flex items-center p-3 rounded-lg border border-gray-200 hover:bg-gray-50 transition-colors">
-                                <svg class="w-5 h-5 text-gray-400 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"></path>
-                                </svg>
-                                <span class="text-sm font-medium">Add Weekly Plan</span>
-                            </a>
-                            <a href="{{ route('monitorings.create') }}" class="flex items-center p-3 rounded-lg border border-gray-200 hover:bg-gray-50 transition-colors">
-                                <svg class="w-5 h-5 text-gray-400 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"></path>
-                                </svg>
-                                <span class="text-sm font-medium">Log Study Session</span>
-                            </a>
-                            <a href="{{ route('sq3r.create') }}" class="flex items-center p-3 rounded-lg border border-gray-200 hover:bg-gray-50 transition-colors">
-                                <svg class="w-5 h-5 text-gray-400 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"></path>
-                                </svg>
-                                <span class="text-sm font-medium">Start SQ3R Session</span>
-                            </a>
+                        <div class="w-12 h-12 bg-yellow-100 rounded-xl flex items-center justify-center">
+                            <x-icons.chart class="w-6 h-6 text-yellow-600" />
                         </div>
                     </div>
-
-                    <!-- Upcoming Deadlines -->
-                    <div class="bg-white rounded-lg shadow overflow-hidden">
-                        <div class="px-6 py-4 border-b border-gray-200">
-                            <h3 class="text-lg font-medium text-gray-900">Upcoming Deadlines</h3>
+                    <div class="mt-4">
+                        <div class="progress-bar">
+                            <div class="progress-fill" style="width: {{ $completionRate }}%"></div>
                         </div>
-                        <div class="divide-y divide-gray-200">
-                            @forelse($upcomingDeadlines as $deadline)
-                                <div class="px-6 py-4">
-                                    <div class="flex justify-between items-start">
-                                        <div>
-                                            <p class="text-sm font-medium text-gray-900">{{ $deadline['title'] }}</p>
-                                            <p class="text-xs text-gray-500">{{ $deadline['course'] }}</p>
-                                        </div>
-                                        <span class="text-xs font-medium px-2 py-1 rounded-full {{ $deadline['urgent'] ? 'bg-red-100 text-red-800' : 'bg-blue-100 text-blue-800' }}">
-                                            {{ $deadline['date'] }}
-                                        </span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card">
+                <div class="p-6">
+                    <div class="flex items-center justify-between">
+                        <div>
+                            <p class="text-sm font-medium text-gray-600">Upcoming Tasks</p>
+                            <p class="text-2xl font-bold text-gray-900 mt-1">{{ $upcomingTasks }}</p>
+                        </div>
+                        <div class="w-12 h-12 bg-red-100 rounded-xl flex items-center justify-center">
+                            <x-icons.clock class="w-6 h-6 text-red-600" />
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Main Content -->
+        <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+            <!-- Recent Activity -->
+            <div class="lg:col-span-2">
+                <div class="card">
+                    <div class="p-6 border-b border-gray-200">
+                        <h2 class="text-lg font-semibold text-gray-900">Recent Activity</h2>
+                    </div>
+                    <div class="divide-y divide-gray-100">
+                        @forelse($recentActivities as $activity)
+                            <div class="p-6 hover:bg-gray-50 transition-colors">
+                                <div class="flex items-start space-x-4">
+                                    <div
+                                        class="w-10 h-10 bg-gray-100 rounded-lg flex items-center justify-center flex-shrink-0">
+                                        <svg class="w-5 h-5 text-gray-600" fill="none" stroke="currentColor"
+                                            viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                                d="M13 10V3L4 14h7v7l9-11h-7z"></path>
+                                        </svg>
+                                    </div>
+                                    <div class="flex-1">
+                                        <p class="text-sm font-medium text-gray-900">{{ $activity['title'] }}</p>
+                                        <p class="text-sm text-gray-600 mt-1">{{ $activity['description'] }}</p>
+                                        <p class="text-xs text-gray-500 mt-2">{{ $activity['time'] }}</p>
                                     </div>
                                 </div>
-                            @empty
-                                <div class="px-6 py-4 text-center text-gray-500">
-                                    No upcoming deadlines
+                            </div>
+                        @empty
+                            <div class="empty-state">
+                                <svg class="w-12 h-12" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                        d="M20 13V6a2 2 0 00-2-2H6a2 2 0 00-2 2v7m16 0v5a2 2 0 01-2 2H6a2 2 0 01-2-2v-5m16 0h-2.586a1 1 0 00-.707.293l-2.414 2.414a1 1 0 01-.707.293h-3.172a1 1 0 01-.707-.293l-2.414-2.414A1 1 0 006.586 13H4">
+                                    </path>
+                                </svg>
+                                <p class="text-gray-900 font-medium mt-4">No recent activity</p>
+                                <p class="text-gray-600 text-sm mt-2">Your learning activities will appear here</p>
+                            </div>
+                        @endforelse
+                    </div>
+                </div>
+
+                <!-- Upcoming Deadlines -->
+            <div class="card mt-6">
+                    <div class="p-6 border-b border-gray-200">
+                        <h2 class="text-lg font-semibold text-gray-900">Upcoming</h2>
+                    </div>
+                    <div class="divide-y divide-gray-100">
+                        @forelse($upcomingDeadlines as $deadline)
+                            <div class="p-4 hover:bg-gray-50 transition-colors">
+                                <div class="flex justify-between items-start">
+                                    <div>
+                                        <p class="text-sm font-medium text-gray-900">{{ $deadline['title'] }}</p>
+                                        <p class="text-xs text-gray-600 mt-1">{{ $deadline['course'] }}</p>
+                                    </div>
+                                    <span
+                                        class="text-xs font-medium px-2 py-1 rounded-full {{ $deadline['urgent'] ? 'bg-red-100 text-red-800' : 'bg-blue-100 text-blue-800' }}">
+                                        {{ $deadline['date'] }}
+                                    </span>
                                 </div>
-                            @endforelse
-                        </div>
+                            </div>
+                        @empty
+                            <div class="empty-state">
+                                <p class="text-gray-500">No upcoming deadlines</p>
+                            </div>
+                        @endforelse
+                    </div>
+                </div>
+            </div>
+
+            <!-- Quick Actions -->
+            <div class="space-y-6">
+                <div class="card">
+                    <div class="p-6 border-b border-gray-200">
+                        <h2 class="text-lg font-semibold text-gray-900">Quick Actions</h2>
+                    </div>
+                    <div class="p-6 space-y-3">
+                        <a href="{{ route('sq3r.create') }}"
+                            class="flex items-center p-4 rounded-xl border border-gray-200 hover:bg-gray-50 transition-all group">
+                            <div
+                                class="w-10 h-10 bg-blue-100 rounded-lg flex items-center justify-center group-hover:bg-blue-200 transition-colors">
+                                <x-icons.book class="w-5 h-5 text-blue-600" />
+                            </div>
+                            <div class="ml-4">
+                                <p class="text-sm font-medium text-gray-900">Start SQ3R Session</p>
+                                <p class="text-xs text-gray-600 mt-1">Active reading method</p>
+                            </div>
+                        </a>
+
+                        <a href="{{ route('concept-maps.create') }}"
+                            class="flex items-center p-4 rounded-xl border border-gray-200 hover:bg-gray-50 transition-all group">
+                            <div
+                                class="w-10 h-10 bg-green-100 rounded-lg flex items-center justify-center group-hover:bg-green-200 transition-colors">
+                                <x-icons.map class="w-5 h-5 text-green-600" />
+                            </div>
+                            <div class="ml-4">
+                                <p class="text-sm font-medium text-gray-900">Create Concept Map</p>
+                                <p class="text-xs text-gray-600 mt-1">Visualize your knowledge</p>
+                            </div>
+                        </a>
+
+                        <a href="{{ route('monitorings.create') }}"
+                            class="flex items-center p-4 rounded-xl border border-gray-200 hover:bg-gray-50 transition-all group">
+                            <div
+                                class="w-10 h-10 bg-yellow-100 rounded-lg flex items-center justify-center group-hover:bg-yellow-200 transition-colors">
+                                <x-icons.monitor class="w-5 h-5 text-yellow-600" />
+                            </div>
+                            <div class="ml-4">
+                                <p class="text-sm font-medium text-gray-900">Log Study Session</p>
+                                <p class="text-xs text-gray-600 mt-1">Track your progress</p>
+                            </div>
+                        </a>
                     </div>
                 </div>
             </div>

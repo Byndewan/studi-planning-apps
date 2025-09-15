@@ -12,12 +12,12 @@ class WeeklyPlanController extends Controller
     {
         $weeklyPlans = WeeklyPlan::whereHas('course.semester', function($query) {
             $query->where('user_id', auth()->id());
-        })->with('course')->get();
+        })->with('course')->paginate(10);
 
         return view('weekly-plans.index', compact('weeklyPlans'));
     }
 
-    
+
 
     public function show(WeeklyPlan $weeklyPlan)
     {

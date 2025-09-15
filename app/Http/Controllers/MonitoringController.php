@@ -13,7 +13,7 @@ class MonitoringController extends Controller
         $monitorings = Monitoring::where('user_id', auth()->id())
             ->with('course')
             ->orderBy('date', 'desc')
-            ->get();
+            ->paginate(10);
 
         return view('monitorings.index', compact('monitorings'));
     }

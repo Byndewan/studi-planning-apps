@@ -1,10 +1,14 @@
 <x-app-layout>
     <x-slot name="header">
-        <h2 class="text-xl font-semibold text-gray-800">
-            {{ $semester->name }}
-        </h2>
-        <div class="header-actions space-x-2">
+        <div>
+            <h1 class="text-2xl font-bold text-gray-900">{{ $semester->name }}</h1>
+            <p class="text-gray-600 mt-1">{{ $semester->start_date->format('M d, Y') }} - {{ $semester->end_date->format('M d, Y') }}</p>
+        </div>
+        <x-slot name="headerActions">
             <a href="{{ route('semesters.edit', $semester) }}" class="btn-secondary">
+                <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"></path>
+                </svg>
                 Edit
             </a>
             <form action="{{ route('semesters.generate-schedule', $semester) }}" method="POST" class="inline">
@@ -14,86 +18,115 @@
                     Generate Schedule
                 </button>
             </form>
-        </div>
+        </x-slot>
     </x-slot>
 
-    <div class="py-6">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <!-- Semester Info -->
-            <div class="card mb-6">
-                <div class="card-body">
-                    <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
-                        <div>
-                            <h4 class="text-sm font-medium text-gray-500">Duration</h4>
-                            <p class="text-lg text-gray-900">
-                                {{ $semester->start_date->format('M d, Y') }} - {{ $semester->end_date->format('M d, Y') }}
-                            </p>
-                        </div>
-                        <div>
-                            <h4 class="text-sm font-medium text-gray-500">Total Courses</h4>
-                            <p class="text-lg text-gray-900">{{ $semester->courses->count() }}</p>
-                        </div>
-                        <div>
-                            <h4 class="text-sm font-medium text-gray-500">Status</h4>
-                            <span class="px-3 py-1 text-sm font-medium rounded-full
-                                {{ $semester->is_current ? 'bg-green-100 text-green-800' : 'bg-gray-100 text-gray-800' }}">
-                                {{ $semester->is_current ? 'Current' : 'Past' }}
-                            </span>
-                        </div>
+    <div class="space-y-6">
+        <!-- Semester Info -->
+        <div class="card">
+            <div class="p-6">
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                    <div>
+                        <p class="text-sm font-medium text-gray-600">Duration</p>
+                        <p class="text-lg font-semibold text-gray-900 mt-1">
+                            {{ $semester->start_date->format('M d, Y') }} - {{ $semester->end_date->format('M d, Y') }}
+                        </p>
+                    </div>
+                    <div>
+                        <p class="text-sm font-medium text-gray-600">Total Courses</p>
+                        <p class="text-lg font-semibold text-gray-900 mt-1">{{ $semester->courses->count() }}</p>
+                    </div>
+                    <div>
+                        <p class="text-sm font-medium text-gray-600">Status</p>
+                        <span class="status-badge {{ $semester->is_current ? 'bg-green-100 text-green-800' : 'bg-gray-100 text-gray-800' }}">
+                            {{ $semester->is_current ? 'Current Semester' : 'Past Semester' }}
+                        </span>
                     </div>
                 </div>
-            </div>
 
-            <!-- Courses Section -->
-            <div class="card">
-                <div class="card-header flex justify-between items-center">
-                    <h3 class="text-lg font-medium text-gray-900">Courses</h3>
+                @if($semester->notes)
+                    <div class="mt-6">
+                        <p class="text-sm font-medium text-gray-600">Notes</p>
+                        <p class="text-gray-900 mt-2">{{ $semester->notes }}</p>
+                    </div>
+                @endif
+            </div>
+        </div>
+
+        <!-- Courses Section -->
+        <div class="card">
+            <div class="p-6 border-b border-gray-200">
+                <div class="flex justify-between items-center">
+                    <h2 class="text-lg font-semibold text-gray-900">Courses</h2>
                     <a href="{{ route('courses.create') }}?semester_id={{ $semester->id }}" class="btn-primary text-sm">
+                        <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"></path>
+                        </svg>
                         Add Course
                     </a>
                 </div>
-                <div class="card-body">
-                    @if($semester->courses->isEmpty())
-                        <div class="text-center py-8 text-gray-500">
-                            <svg class="mx-auto h-12 w-12 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"></path>
-                            </svg>
-                            <p class="mt-2">No courses yet</p>
-                            <a href="{{ route('courses.create') }}?semester_id={{ $semester->id }}" class="btn-primary mt-4 inline-block">
-                                Add Your First Course
-                            </a>
-                        </div>
-                    @else
-                        <div class="overflow-x-auto">
-                            <table class="min-w-full divide-y divide-gray-200">
-                                <thead class="bg-gray-50">
-                                    <tr>
-                                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Code</th>
-                                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Name</th>
-                                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">SKS</th>
-                                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Modules</th>
-                                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Actions</th>
-                                    </tr>
-                                </thead>
-                                <tbody class="bg-white divide-y divide-gray-200">
-                                    @foreach($semester->courses as $course)
-                                        <tr class="hover:bg-gray-50">
-                                            <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">{{ $course->code }}</td>
-                                            <td class="px-6 py-4 text-sm text-gray-900">{{ $course->name }}</td>
-                                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{{ $course->sks }}</td>
-                                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{{ $course->total_modules }}</td>
-                                            <td class="px-6 py-4 whitespace-nowrap text-sm font-medium">
-                                                <a href="{{ route('courses.show', $course) }}" class="text-blue-600 hover:text-blue-900 mr-3">View</a>
-                                                <a href="{{ route('courses.edit', $course) }}" class="text-indigo-600 hover:text-indigo-900">Edit</a>
-                                            </td>
-                                        </tr>
-                                    @endforeach
-                                </tbody>
-                            </table>
-                        </div>
-                    @endif
-                </div>
             </div>
+
+            @if($semester->courses->isEmpty())
+                <div class="empty-state">
+                    <div class="w-16 h-16 bg-gray-100 rounded-xl flex items-center justify-center mx-auto mb-4">
+                        <x-icons.book class="w-8 h-8 text-gray-400" />
+                    </div>
+                    <h3 class="text-lg font-medium text-gray-900">No courses yet</h3>
+                    <p class="text-gray-600 mt-2">Add courses to this semester to get started.</p>
+                    <a href="{{ route('courses.create') }}?semester_id={{ $semester->id }}" class="btn-primary mt-6">
+                        <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"></path>
+                        </svg>
+                        Add Course
+                    </a>
+                </div>
+            @else
+                <div class="overflow-x-auto">
+                    <table class="min-w-full">
+                        <thead>
+                            <tr>
+                                <th>Course Code</th>
+                                <th>Course Name</th>
+                                <th>SKS</th>
+                                <th>Modules</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach($semester->courses as $course)
+                                <tr class="hover:bg-gray-50 transition-colors">
+                                    <td class="px-6 py-4">
+                                        <span class="text-sm font-medium text-gray-900">{{ $course->code }}</span>
+                                    </td>
+                                    <td class="px-6 py-4">
+                                        <p class="text-sm font-medium text-gray-900">{{ $course->name }}</p>
+                                        @if($course->notes)
+                                            <p class="text-xs text-gray-500 mt-1">{{ Str::limit($course->notes, 50) }}</p>
+                                        @endif
+                                    </td>
+                                    <td class="px-6 py-4">
+                                        <span class="text-sm text-gray-900">{{ $course->sks }}</span>
+                                    </td>
+                                    <td class="px-6 py-4">
+                                        <span class="text-sm text-gray-900">{{ $course->total_modules }}</span>
+                                    </td>
+                                    <td class="px-6 py-4">
+                                        <div class="flex items-center space-x-2">
+                                            <a href="{{ route('courses.show', $course) }}" class="text-indigo-600 hover:text-indigo-900 text-sm font-medium">
+                                                View
+                                            </a>
+                                            <a href="{{ route('courses.edit', $course) }}" class="text-gray-600 hover:text-gray-900 text-sm font-medium">
+                                                Edit
+                                            </a>
+                                        </div>
+                                    </td>
+                                </tr>
+                            @endforeach
+                        </tbody>
+                    </table>
+                </div>
+            @endif
         </div>
     </div>
 </x-app-layout>

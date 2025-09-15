@@ -12,7 +12,7 @@ class CourseController extends Controller
     {
         $courses = Course::whereHas('semester', function($query) {
             $query->where('user_id', auth()->id());
-        })->with('semester')->get();
+        })->with('semester')->paginate(10);
 
         return view('courses.index', compact('courses'));
     }

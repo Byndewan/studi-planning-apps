@@ -13,7 +13,7 @@ class SQ3RController extends Controller
         $sessions = SQ3RSession::where('user_id', auth()->id())
             ->with('course')
             ->orderBy('created_at', 'desc')
-            ->get();
+            ->paginate(10);
 
         return view('sq3r.index', compact('sessions'));
     }
@@ -51,16 +51,25 @@ class SQ3RController extends Controller
             ->with('success', 'SQ3R session created successfully.');
     }
 
-    public function show(SQ3RSession $sq3rSession)
+    public function show()
     {
+        $sq3rSession = SQ3RSession::where('user_id', auth()->id())
+        ->with('course')
+        ->orderBy('created_at', 'desc')
+        ->first();
+
         return view('sq3r.show', compact('sq3rSession'));
     }
 
-    public function edit(SQ3RSession $sq3rSession)
+    public function edit()
     {
         $courses = Course::whereHas('semester', function($query) {
             $query->where('user_id', auth()->id());
         })->get();
+        $sq3rSession = SQ3RSession::where('user_id', auth()->id())
+        ->with('course')
+        ->orderBy('created_at', 'desc')
+        ->first();
 
         return view('sq3r.edit', compact('sq3rSession', 'courses'));
     }

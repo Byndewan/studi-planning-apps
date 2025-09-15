@@ -13,7 +13,7 @@ class SemesterController extends Controller
 {
     public function index()
     {
-        $semesters = auth()->user()->semesters()->withCount('courses')->get();
+        $semesters = auth()->user()->semesters()->withCount('courses')->paginate(10);
 
         return view('semesters.index', compact('semesters'));
     }

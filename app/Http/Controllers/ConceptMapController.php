@@ -22,7 +22,7 @@ class ConceptMapController extends Controller
         $conceptMaps = ConceptMap::where('user_id', auth()->id())
             ->with('course')
             ->orderBy('created_at', 'desc')
-            ->get();
+            ->paginate(10);
 
         return view('concept-maps.index', compact('conceptMaps'));
     }
