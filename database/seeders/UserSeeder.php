@@ -23,6 +23,14 @@ class UserSeeder extends Seeder
                 'created_at' => '2025-09-16 06:55:03',
                 'updated_at' => '2025-09-16 06:55:03',
             ],
+            [
+                'id' => 2,
+                'name' => 'Neng Azza',
+                'email' => 'azlia@cantik.com',
+                'password' => Hash::make('azlia123'),
+                'created_at' => '2025-09-16 06:55:03',
+                'updated_at' => '2025-09-16 06:55:03',
+            ]
         ]);
     }
 }

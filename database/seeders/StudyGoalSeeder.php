@@ -32,6 +32,24 @@ class StudyGoalSeeder extends Seeder
                 'created_at' => '2025-09-16 06:55:03',
                 'updated_at' => '2025-09-16 06:55:03',
             ],
+            [
+                'id' => 3,
+                'semester_id' => 1,
+                'title' => 'Finish all assignments on time',
+                'description' => 'Discipline with deadlines',
+                'completed' => 0,
+                'created_at' => '2025-09-16 06:55:03',
+                'updated_at' => '2025-09-16 06:55:03',
+            ],
+            [
+                'id' => 4,
+                'semester_id' => 2,
+                'title' => 'Improve GPA above 3.5',
+                'description' => 'Focus more on daily study',
+                'completed' => 0,
+                'created_at' => '2025-09-16 06:55:03',
+                'updated_at' => '2025-09-16 06:55:03',
+            ],
         ]);
     }
 }

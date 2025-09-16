@@ -32,6 +32,24 @@ class SemesterSeeder extends Seeder
                 'created_at' => '2025-09-16 06:55:03',
                 'updated_at' => '2025-09-16 06:55:03',
             ],
+            [
+                'id' => 3,
+                'user_id' => 2,
+                'name' => 'Fall 2024',
+                'start_date' => '2025-08-15',
+                'end_date' => '2026-01-15',
+                'created_at' => '2025-09-16 06:55:03',
+                'updated_at' => '2025-09-16 06:55:03',
+            ],
+            [
+                'id' => 4,
+                'user_id' => 2,
+                'name' => 'Spring 2024',
+                'start_date' => '2025-03-15',
+                'end_date' => '2025-07-15',
+                'created_at' => '2025-09-16 06:55:03',
+                'updated_at' => '2025-09-16 06:55:03',
+            ],
         ]);
     }
 }

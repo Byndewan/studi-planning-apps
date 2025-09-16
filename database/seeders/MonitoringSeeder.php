@@ -28,6 +28,20 @@ class MonitoringSeeder extends Seeder
                 'created_at' => '2025-09-16 06:55:03',
                 'updated_at' => '2025-09-16 06:55:03',
             ],
+            [
+                'id' => 2,
+                'user_id' => 2,
+                'course_id' => 2,
+                'date' => '2025-09-16',
+                'week_number' => 1,
+                'planned' => 'Read Algebra basics',
+                'actual' => 'Read 15/20 pages',
+                'cause' => 'Too much distraction',
+                'solution' => 'Study in library',
+                'achieved' => 0,
+                'created_at' => '2025-09-16 06:55:03',
+                'updated_at' => '2025-09-16 06:55:03',
+            ],
         ]);
     }
 }
