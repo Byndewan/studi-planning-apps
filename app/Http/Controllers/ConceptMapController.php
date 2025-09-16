@@ -49,11 +49,6 @@ class ConceptMapController extends Controller
             'sq3r_session_id' => 'nullable|exists:sq3r_sessions,id',
         ]);
 
-        $course = Course::findOrFail($validated['course_id']);
-        if ($course->semester->user_id !== auth()->id()) {
-            abort(403, 'Unauthorized access');
-        }
-
         $validated['user_id'] = auth()->id();
 
         if (!empty($validated['sq3r_session_id'])) {
