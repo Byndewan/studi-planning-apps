@@ -19,30 +19,40 @@
         </x-slot>
     </x-slot>
 
+
     @php
-        // Ensure we have proper arrays, not JSON strings
+        // Pastikan nodes dan edges adalah array yang valid
         $nodes = [];
         $edges = [];
 
         if ($conceptMap->nodes) {
-            $nodes = is_string($conceptMap->nodes)
-                ? json_decode($conceptMap->nodes, true)
-                : (is_array($conceptMap->nodes)
-                    ? $conceptMap->nodes
-                    : []);
+            try {
+                $decodedNodes = is_string($conceptMap->nodes)
+                    ? json_decode($conceptMap->nodes, true)
+                    : $conceptMap->nodes;
+
+                $nodes = is_array($decodedNodes) ? $decodedNodes : [];
+            } catch (Exception $e) {
+                $nodes = [];
+            }
         }
 
         if ($conceptMap->edges) {
-            $edges = is_string($conceptMap->edges)
-                ? json_decode($conceptMap->edges, true)
-                : (is_array($conceptMap->edges)
-                    ? $conceptMap->edges
-                    : []);
+            try {
+                $decodedEdges = is_string($conceptMap->edges)
+                    ? json_decode($conceptMap->edges, true)
+                    : $conceptMap->edges;
+
+                $edges = is_array($decodedEdges) ? $decodedEdges : [];
+            } catch (Exception $e) {
+                $edges = [];
+            }
         }
 
-        // Ensure we have valid arrays
-        $nodes = is_array($nodes) ? $nodes : [];
-        $edges = is_array($edges) ? $edges : [];
+        // Debug info - bisa di-comment out setelah fix
+        // echo "<!-- Nodes: " . json_encode($nodes) . " -->";
+        // echo "<!-- Edges: " . json_encode($edges) . " -->";
+
     @endphp
 
     <div id="vue-app" class="space-y-6">
@@ -76,7 +86,6 @@
             </div>
         </div>
 
-        {{-- 🔥 **DEBUG SECTION** - Remove in production --}}
         @if (count($nodes) === 0)
             <div class="card bg-yellow-50 border-yellow-200">
                 <div class="p-6">
@@ -99,8 +108,8 @@
         <div class="card">
             <div class="p-6">
                 <concept-map :nodes='@json($nodes)' :edges='@json($edges)'
-                    title="{{ $conceptMap->title }}"
-                    autosave-url="{{ route('concept-maps.autosave', $conceptMap) }}"></concept-map>
+                    :title='"{{ $conceptMap->title }}"'
+                    autosave-url="{{ route('concept-maps.update', $conceptMap) }}" />
             </div>
         </div>
 

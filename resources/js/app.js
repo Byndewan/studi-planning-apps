@@ -19,21 +19,22 @@ try {
     console.warn('Alpine initialization warning:', e.message);
 }
 
-// Vue.js initialization - Fixed version
+// Vue.js initialization
 const vueApp = createApp({
     components: {
         ConceptMap
     }
 });
 
-// Mount Vue app when DOM is ready
+// Mount Vue app ketika DOM ready
 document.addEventListener('DOMContentLoaded', function () {
     const vueContainer = document.getElementById('vue-app');
     if (vueContainer) {
         try {
             vueApp.mount('#vue-app');
+            console.log("✅ Vue app mounted successfully");
         } catch (e) {
-            console.warn('Vue mounting warning:', e.message);
+            console.error('❌ Vue mounting error:', e);
         }
     }
 });

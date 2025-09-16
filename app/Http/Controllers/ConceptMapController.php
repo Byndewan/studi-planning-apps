@@ -72,15 +72,11 @@ class ConceptMapController extends Controller
     {
         $conceptMap->load('sq3rSession');
 
-        $nodes = is_string($conceptMap->nodes)
-            ? json_decode($conceptMap->nodes, true)
-            : ($conceptMap->nodes ?? []);
-
-        $edges = is_string($conceptMap->edges)
-            ? json_decode($conceptMap->edges, true)
-            : ($conceptMap->edges ?? []);
-
-        return view('concept-maps.show', compact('conceptMap', 'nodes', 'edges'));
+        return view('concept-maps.show', [
+            'conceptMap' => $conceptMap,
+            'nodes' => $conceptMap->nodes ?? [],
+            'edges' => $conceptMap->edges ?? [],
+        ]);
     }
 
     public function edit(ConceptMap $conceptMap)
@@ -95,8 +91,8 @@ class ConceptMapController extends Controller
     public function update(Request $request, ConceptMap $conceptMap)
     {
         $validated = $request->validate([
-            'course_id' => 'required|exists:courses,id',
-            'title' => 'required|string|max:255',
+            'course_id' => 'sometimes|exists:courses,id',
+            'title' => 'sometimes|string|max:255',
             'nodes' => 'nullable|array',
             'edges' => 'nullable|array',
         ]);

@@ -188,7 +188,7 @@ class ConceptMapGenerator
 
             $nodes[] = [
                 'id' => Str::slug($concept),
-                'type' => 'concept',
+                'type' => 'default',
                 'position' => [
                     'x' => rand(100, 800),
                     'y' => rand(100, 600),
@@ -301,7 +301,7 @@ class ConceptMapGenerator
     {
         $centralNode = [
             'id' => 'central-' . Str::slug($session->module_title),
-            'type' => 'concept',
+            'type' => 'default',
             'position' => ['x' => 400, 'y' => 300],
             'data' => [
                 'label' => $session->module_title,

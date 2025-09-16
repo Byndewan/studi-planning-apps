@@ -274,7 +274,7 @@
                             <p class="text-gray-500">No concept maps yet.</p>
                         </div>
                     @else
-                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
                             @foreach ($course->conceptMaps as $map)
                                 <div class="card">
                                     <div class="p-4 border-b border-gray-100">
@@ -283,7 +283,8 @@
                                     <div class="p-4">
                                         <div
                                             class="aspect-video bg-gray-100 rounded-lg mb-3 flex items-center justify-center">
-                                            <x-icons.map class="w-12 h-12 text-gray-400" />
+                                            <canvas id="map-preview-{{ $map->id }}"
+                                                class="w-full h-full"></canvas>
                                         </div>
                                         <div class="flex justify-between items-center">
                                             @php
@@ -331,7 +332,8 @@
                     tabButtons.forEach(btn => {
                         btn.classList.remove('border-indigo-300', 'text-indigo-500',
                             'bg-indigo-50');
-                        btn.classList.add('border-transparent', 'text-gray-500','bg-gray-100');
+                        btn.classList.add('border-transparent', 'text-gray-500',
+                            'bg-gray-100');
                     });
 
                     this.classList.add('border-indigo-300', 'text-indigo-500', 'bg-indigo-50');
@@ -339,11 +341,42 @@
                 });
             });
 
-            // Show first tab by default
             const firstTab = document.querySelector('[data-tab-button]');
             if (firstTab) {
                 firstTab.click();
             }
+        });
+
+        document.addEventListener("DOMContentLoaded", () => {
+            const maps = @json($course->conceptMaps);
+
+            maps.forEach(map => {
+                const nodes = typeof map.nodes === "string" ? JSON.parse(map.nodes) : map.nodes;
+                const canvas = document.getElementById("map-preview-" + map.id);
+                if (!canvas || !nodes.length) return;
+
+                const ctx = canvas.getContext("2d");
+                const scale = window.devicePixelRatio || 1;
+                canvas.width = 300 * scale;
+                canvas.height = 150 * scale;
+                ctx.scale(scale, scale);
+
+                const nodeWidth = 30;
+                const nodeHeight = 20;
+                const spacing = 10;
+
+                nodes.slice(0, 15).forEach((node, i) => {
+                    const x = (i % 5) * (nodeWidth + spacing) + 10;
+                    const y = Math.floor(i / 5) * (nodeHeight + spacing) + 10;
+
+                    ctx.fillStyle = node.color || "#6366f1";
+                    ctx.fillRect(x, y, nodeWidth, nodeHeight);
+
+                    ctx.fillStyle = "#fff";
+                    ctx.font = "8px sans-serif";
+                    ctx.fillText(node.id || "N", x + 3, y + 12);
+                });
+            });
         });
     </script>
 </x-app-layout>
