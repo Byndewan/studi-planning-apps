@@ -14,7 +14,7 @@
         "@vitejs/plugin-vue": "^6.0.1",
         "alpinejs": "^3.15.0",
         "autoprefixer": "^10.4.2",
-        "axios": "^1.11.0",
+        "axios": "^1.12.2",
         "concurrently": "^9.0.1",
         "cssnano": "^7.1.1",
         "laravel-vite-plugin": "^2.0.1",
@@ -27,6 +27,7 @@
         "vite": "^7.1.5"
     },
     "dependencies": {
+        "@vue-flow/core": "^1.46.4",
         "flatpickr": "^4.6.13",
         "lodash": "^4.17.21",
         "vue": "^3.5.21"

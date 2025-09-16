@@ -10,6 +10,7 @@ return new class extends Migration
     {
         Schema::create('weekly_plans', function (Blueprint $table) {
             $table->id();
+            $table->integer('user_id')->nullable();
             $table->foreignId('course_id')->constrained()->onDelete('cascade');
             $table->integer('week_number');
             $table->text('target_text');

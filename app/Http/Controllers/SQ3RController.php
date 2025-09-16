@@ -39,6 +39,7 @@ class SQ3RController extends Controller
             'review_notes' => 'nullable|string',
         ]);
 
+
         $validated['user_id'] = auth()->id();
         $validated['timestamps'] = json_encode([
             'started_at' => now(),
@@ -53,10 +54,7 @@ class SQ3RController extends Controller
 
     public function show()
     {
-        $sq3rSession = SQ3RSession::where('user_id', auth()->id())
-        ->with('course')
-        ->orderBy('created_at', 'desc')
-        ->first();
+        $sq3rSession = SQ3RSession::where('user_id', auth()->id())->with('course')->orderBy('created_at', 'desc')->first();
 
         return view('sq3r.show', compact('sq3rSession'));
     }
@@ -66,16 +64,16 @@ class SQ3RController extends Controller
         $courses = Course::whereHas('semester', function($query) {
             $query->where('user_id', auth()->id());
         })->get();
-        $sq3rSession = SQ3RSession::where('user_id', auth()->id())
-        ->with('course')
-        ->orderBy('created_at', 'desc')
-        ->first();
+
+        $sq3rSession = SQ3RSession::where('user_id', auth()->id())->with('course')->orderBy('created_at', 'desc')->first();
 
         return view('sq3r.edit', compact('sq3rSession', 'courses'));
     }
 
-    public function update(Request $request, SQ3RSession $sq3rSession)
+    public function update(Request $request, SQ3RSession $sq3r)
     {
+
+        // dd($request->all());
         $validated = $request->validate([
             'course_id' => 'required|exists:courses,id',
             'module_title' => 'required|string|max:255',
@@ -87,7 +85,10 @@ class SQ3RController extends Controller
         ]);
 
         // Update timestamps
-        $timestamps = json_decode($sq3rSession->timestamps, true);
+        $timestamps = json_decode($sq3r->timestamps, true);
+        if (!is_array($timestamps)) {
+            $timestamps = [];
+        }
         $timestamps['last_saved_at'] = now();
 
         if (empty($timestamps['completed_at']) && !empty($validated['review_notes'])) {
@@ -96,15 +97,16 @@ class SQ3RController extends Controller
 
         $validated['timestamps'] = json_encode($timestamps);
 
-        $sq3rSession->update($validated);
+        $sq3r->update($validated);
 
-        return redirect()->route('sq3r.show', $sq3rSession)
+        return redirect()->route('sq3r.show', $sq3r)
             ->with('success', 'SQ3R session updated successfully.');
     }
 
-    public function destroy(SQ3RSession $sq3rSession)
+    public function destroy(SQ3RSession $sq3r)
     {
-        $sq3rSession->delete();
+
+        $sq3r->delete();
 
         return redirect()->route('sq3r.index')
             ->with('success', 'SQ3R session deleted successfully.');
@@ -112,6 +114,7 @@ class SQ3RController extends Controller
 
     public function autosave(Request $request, SQ3RSession $sq3rSession)
     {
+
         $validated = $request->validate([
             'survey_notes' => 'sometimes|string',
             'questions' => 'sometimes|array',

@@ -8,7 +8,7 @@ use App\Http\Controllers\ConceptMapController;
 
 Route::middleware(['auth:sanctum'])->group(function () {
     // SQ3R Sessions API
-    Route::apiResource('sq3r-sessions', SQ3RSessionController::class)->except(['index', 'show']);
+    Route::apiResource('sq3r-sessions', SQ3RSessionController::class);
 
     // Weekly Plans API
     Route::prefix('weekly-plans')->group(function () {

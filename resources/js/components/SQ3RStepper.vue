@@ -15,8 +15,10 @@
           ]"
         >
           <div class="flex items-center space-x-2">
-            <div class="w-6 h-6 rounded-full flex items-center justify-center text-xs font-bold"
-                 :class="currentStep === index ? 'bg-indigo-500 text-white' : 'bg-gray-200 text-gray-600'">
+            <div
+              class="w-6 h-6 rounded-full flex items-center justify-center text-xs font-bold"
+              :class="currentStep === index ? 'bg-indigo-500 text-white' : 'bg-gray-200 text-gray-600'"
+            >
               {{ index + 1 }}
             </div>
             <span>{{ step.label }}</span>
@@ -48,7 +50,7 @@
           <p class="text-sm text-gray-600 mt-1">Turn headings into questions to guide your reading</p>
         </div>
         <div class="space-y-3">
-          <div v-for="(question, index) in formData.questions" :key="index" class="flex items-center space-x-3">
+          <div v-for="(question, index) in formData.questions" :key="'q-' + index" class="flex items-center space-x-3">
             <div class="w-8 h-8 bg-gray-100 rounded-lg flex items-center justify-center flex-shrink-0">
               <span class="text-sm font-medium text-gray-600">{{ index + 1 }}</span>
             </div>
@@ -57,11 +59,20 @@
               @input="debouncedSave"
               :placeholder="`Question ${index + 1}`"
               class="form-input flex-1"
+              type="text"
             />
+            <button
+              v-if="formData.questions.length > 1"
+              @click.prevent="removeQuestion(index)"
+              type="button"
+              class="text-red-500 hover:text-red-700 text-sm"
+            >
+              ✕
+            </button>
           </div>
         </div>
         <button
-          @click="addQuestion"
+          @click.prevent="addQuestion"
           class="flex items-center text-sm text-indigo-600 hover:text-indigo-800 font-medium"
         >
           <svg class="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -168,6 +179,7 @@
 
 <script setup>
 import { ref, reactive, watch, onMounted } from 'vue'
+import axios from 'axios'
 import { debounce } from 'lodash'
 
 const props = defineProps({
@@ -201,7 +213,6 @@ const formData = reactive({
   review_notes: ''
 })
 
-// Load saved data if sessionId is provided
 onMounted(async () => {
   if (props.sessionId) {
     try {
@@ -215,6 +226,12 @@ onMounted(async () => {
 
 const addQuestion = () => {
   formData.questions.push('')
+}
+
+const removeQuestion = (index) => {
+  if (formData.questions.length > 1) {
+    formData.questions.splice(index, 1)
+  }
 }
 
 const previousStep = () => {

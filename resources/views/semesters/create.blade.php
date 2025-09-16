@@ -32,14 +32,14 @@
                         <!-- Start Date -->
                         <div>
                             <x-input-label for="start_date" :value="__('Start Date')" />
-                            <x-date-picker name="start_date" :value="old('start_date')" required />
+                            <x-date-picker id="start_date" name="start_date" :value="old('start_date')" required />
                             <x-input-error :messages="$errors->get('start_date')" class="mt-2" />
                         </div>
 
                         <!-- End Date -->
                         <div>
                             <x-input-label for="end_date" :value="__('End Date')" />
-                            <x-date-picker name="end_date" :value="old('end_date')" required />
+                            <x-date-picker id="end_date" name="end_date" :value="old('end_date')" required />
                             <x-input-error :messages="$errors->get('end_date')" class="mt-2" />
                         </div>
                     </div>
@@ -102,28 +102,4 @@
             </div>
         </div>
     </div>
-
-    <script>
-        // Client-side validation for date consistency
-        document.addEventListener('DOMContentLoaded', function() {
-            const startDateInput = document.getElementById('start_date');
-            const endDateInput = document.getElementById('end_date');
-
-            function validateDates() {
-                if (startDateInput.value && endDateInput.value) {
-                    const startDate = new Date(startDateInput.value);
-                    const endDate = new Date(endDateInput.value);
-
-                    if (endDate <= startDate) {
-                        endDateInput.setCustomValidity('End date must be after start date');
-                    } else {
-                        endDateInput.setCustomValidity('');
-                    }
-                }
-            }
-
-            startDateInput.addEventListener('change', validateDates);
-            endDateInput.addEventListener('change', validateDates);
-        });
-    </script>
 </x-app-layout>

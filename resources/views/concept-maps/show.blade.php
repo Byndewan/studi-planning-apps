@@ -20,152 +20,150 @@
     </x-slot>
 
     @php
-        $nodes = is_array($conceptMap->nodes) ? $conceptMap->nodes : json_decode($conceptMap->nodes, true) ?? [];
+        // Ensure we have proper arrays, not JSON strings
+        $nodes = [];
+        $edges = [];
 
-        $edges = is_array($conceptMap->edges) ? $conceptMap->edges : json_decode($conceptMap->edges, true) ?? [];
+        if ($conceptMap->nodes) {
+            $nodes = is_string($conceptMap->nodes)
+                ? json_decode($conceptMap->nodes, true)
+                : (is_array($conceptMap->nodes)
+                    ? $conceptMap->nodes
+                    : []);
+        }
+
+        if ($conceptMap->edges) {
+            $edges = is_string($conceptMap->edges)
+                ? json_decode($conceptMap->edges, true)
+                : (is_array($conceptMap->edges)
+                    ? $conceptMap->edges
+                    : []);
+        }
+
+        // Ensure we have valid arrays
+        $nodes = is_array($nodes) ? $nodes : [];
+        $edges = is_array($edges) ? $edges : [];
     @endphp
 
-    <div class="space-y-6">
+    <div id="vue-app" class="space-y-6">
         <!-- Concept Map Info -->
         <div class="card">
             <div class="p-6">
-                <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                <div class="grid grid-cols-1 md:grid-cols-4 gap-6">
                     <div>
                         <p class="text-sm font-medium text-gray-600">Course</p>
                         <p class="text-lg font-semibold text-gray-900 mt-1">{{ $conceptMap->course->name }}</p>
                     </div>
                     <div>
-                        <p class="text-sm font-medium text-gray-600">Nodes</p>
+                        <p class="text-sm font-medium text-gray-600">Concepts</p>
                         <p class="text-lg font-semibold text-gray-900 mt-1">{{ count($nodes) }}</p>
                     </div>
                     <div>
                         <p class="text-sm font-medium text-gray-600">Connections</p>
                         <p class="text-lg font-semibold text-gray-900 mt-1">{{ count($edges) }}</p>
                     </div>
+                    <div>
+                        <p class="text-sm font-medium text-gray-600">Source</p>
+                        <p class="text-lg font-semibold text-gray-900 mt-1">
+                            @if ($conceptMap->sq3r_session_id)
+                                SQ3R: {{ $conceptMap->sq3rSession->module_title ?? 'Unknown Module' }}
+                            @else
+                                Manual Creation
+                            @endif
+                        </p>
+                    </div>
                 </div>
             </div>
         </div>
 
+        {{-- 🔥 **DEBUG SECTION** - Remove in production --}}
+        @if (count($nodes) === 0)
+            <div class="card bg-yellow-50 border-yellow-200">
+                <div class="p-6">
+                    <div class="flex items-center">
+                        <svg class="w-5 h-5 text-yellow-400 mr-2" fill="currentColor" viewBox="0 0 20 20">
+                            <path fill-rule="evenodd"
+                                d="M8.257 3.099c.765-1.36 2.722-1.36 3.486 0l5.58 9.92c.75 1.334-.213 2.98-1.742 2.98H4.42c-1.53 0-2.493-1.646-1.743-2.98l5.58-9.92zM11 13a1 1 0 11-2 0 1 1 0 012 0zm-1-8a1 1 0 00-1 1v3a1 1 0 002 0V6a1 1 0 00-1-1z"
+                                clip-rule="evenodd" />
+                        </svg>
+                        <h3 class="text-lg font-medium text-yellow-800">No concepts found</h3>
+                    </div>
+                    <p class="mt-2 text-yellow-700">
+                        This concept map doesn't have any concepts yet. Click "Add Concept" to get started!
+                    </p>
+                </div>
+            </div>
+        @endif
 
-        <!-- Concept Map Canvas -->
+        <!-- Interactive Concept Map -->
         <div class="card">
-            <concept-map :nodes='@json($nodes)' :edges='@json($edges)'></concept-map>
-            {{-- <div class="p-6 border-b border-gray-200">
-                <div class="flex justify-between items-center">
-                    <h2 class="text-lg font-semibold text-gray-900">Concept Map</h2>
-                    <div class="flex space-x-2">
-                        <button class="btn-secondary text-sm">
-                            <svg class="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                    d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15">
-                                </path>
-                            </svg>
-                            Auto Layout
-                        </button>
-                        <button class="btn-secondary text-sm">
-                            <svg class="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                    d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
-                            </svg>
-                            Save
-                        </button>
+            <div class="p-6">
+                <concept-map :nodes='@json($nodes)' :edges='@json($edges)'
+                    title="{{ $conceptMap->title }}"
+                    autosave-url="{{ route('concept-maps.autosave', $conceptMap) }}"></concept-map>
+            </div>
+        </div>
+
+        <!-- Concept List -->
+        @if (count($nodes) > 0)
+            <div class="card">
+                <div class="p-6">
+                    <h3 class="text-lg font-semibold text-gray-900 mb-4">Concepts Overview</h3>
+                    <div class="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-6 gap-3">
+                        @foreach ($nodes as $node)
+                            @php
+                                $label = $node['data']['label'] ?? 'Unknown';
+                                $category = $node['data']['category'] ?? 'detail';
+                                $frequency = $node['data']['frequency'] ?? 0;
+                                $color = $node['style']['background'] ?? '#96CEB4';
+                            @endphp
+                            <div class="concept-item" style="border-left: 4px solid {{ $color }};">
+                                <div class="font-medium text-gray-900">{{ $label }}</div>
+                                <div class="text-xs text-gray-500 mt-1">
+                                    {{ ucfirst(str_replace('_', ' ', $category)) }}
+                                    @if ($frequency > 1)
+                                        • {{ $frequency }} mentions
+                                    @endif
+                                </div>
+                            </div>
+                        @endforeach
                     </div>
                 </div>
             </div>
+        @endif
 
-            <div class="p-6">
-                <!-- Concept Map Container -->
-                <div
-                    class="bg-gray-50 rounded-xl border-2 border-dashed border-gray-300 aspect-video relative overflow-hidden">
-
-
-                    <!-- This is where the Vue.js concept map component would be rendered -->
-                    <div class="absolute inset-0 flex items-center justify-center">
-                        <div class="text-center">
-                            <div
-                                class="w-16 h-16 bg-white rounded-xl flex items-center justify-center mx-auto mb-4 shadow-sm">
-                                <x-icons.map class="w-8 h-8 text-gray-400" />
-                            </div>
-                            <p class="text-sm text-gray-600">Concept map visualization would be displayed here</p>
-                            <p class="text-xs text-gray-400 mt-1">(Vue.js component integration required)</p>
-                        </div>
-                    </div>
-
-                    <!-- Sample Nodes (for demonstration) -->
-                    @if (count($nodes) > 0)
-                        @foreach ($nodes as $node)
-                            @php
-                                $posX = isset($node['position']['x']) ? $node['position']['x'] : 0;
-                                $posY = isset($node['position']['y']) ? $node['position']['y'] : 0;
-                                $label = $node['data']['label'] ?? 'No Label';
-                                $freq = $node['data']['frequency'] ?? null;
-                            @endphp
-
-                            <div class="absolute bg-white border border-gray-200 rounded-lg p-3 shadow-sm cursor-move min-w-32 hover:shadow-md transition-shadow"
-                                style="left: {{ $posX }}px; top: {{ $posY }}px;">
-                                <div class="font-medium text-sm text-center">{{ $label }}</div>
-                                @if ($freq)
-                                    <div class="text-xs text-gray-500 text-center mt-1">Freq: {{ $freq }}</div>
-                                @endif
-                            </div>
-                        @endforeach
-                    @endif
-
+        <!-- Actions -->
+        <div class="card">
+            <div class="p-6 flex justify-between items-center">
+                <div>
+                    <p class="text-sm text-gray-600">
+                        Last updated: {{ $conceptMap->updated_at->diffForHumans() }}
+                    </p>
                 </div>
-
-                <!-- Legend -->
-                <div class="mt-6 flex flex-wrap gap-4 text-sm">
-                    <div class="flex items-center">
-                        <div class="w-3 h-3 bg-blue-200 rounded-full mr-2"></div>
-                        <span class="text-gray-600">Main Concept</span>
-                    </div>
-                    <div class="flex items-center">
-                        <div class="w-3 h-3 bg-green-200 rounded-full mr-2"></div>
-                        <span class="text-gray-600">Sub Concept</span>
-                    </div>
-                    <div class="flex items-center">
-                        <div class="w-3 h-3 bg-yellow-200 rounded-full mr-2"></div>
-                        <span class="text-gray-600">Example</span>
-                    </div>
-                </div>
-
-                <!-- Node List -->
-                @if (count($nodes) > 0)
-                    <div class="mt-8">
-                        <h3 class="text-sm font-medium text-gray-900 mb-4">Concepts</h3>
-                        <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3">
-                            @foreach ($nodes as $node)
-                                @php
-                                    $label = isset($node['data']['label']) ? $node['data']['label'] : 'No Label';
-                                    $freq = isset($node['data']['frequency']) ? $node['data']['frequency'] : null;
-                                @endphp
-
-                                <div class="bg-gray-50 px-4 py-3 rounded-lg text-sm border border-gray-200">
-                                    <div class="font-medium text-gray-900">{{ $label }}</div>
-                                    @if ($freq)
-                                        <div class="text-xs text-gray-500 mt-1">Appears {{ $freq }} times</div>
-                                    @endif
-                                </div>
-                            @endforeach
-                        </div>
-                    </div>
-                @endif
-
-                <!-- Actions -->
-                <div class="mt-8 border-t border-gray-200 pt-6 flex justify-end space-x-3">
-                    <a href="{{ route('concept-maps.edit', $conceptMap) }}" class="btn-secondary">
-                        Edit Map
+                <div class="flex space-x-3">
+                    <a href="{{ route('concept-maps.edit', $conceptMap) }}" class="btn-primary">
+                        Edit Details
                     </a>
                     <form action="{{ route('concept-maps.destroy', $conceptMap) }}" method="POST"
-                        onsubmit="return confirm('Are you sure you want to delete this concept map?')">
+                        onsubmit="return confirm('Are you sure you want to delete this concept map? This action cannot be undone.')">
                         @csrf
                         @method('DELETE')
                         <button type="submit" class="btn-secondary bg-red-600 hover:bg-red-700">
-                            Delete
+                            Delete Map
                         </button>
                     </form>
                 </div>
             </div>
-        </div> --}}
+        </div>
     </div>
+
+    <style>
+        .concept-item {
+            @apply bg-gray-50 px-3 py-2 rounded-lg border border-gray-200;
+        }
+
+        .concept-item:hover {
+            @apply bg-gray-100 shadow-sm;
+        }
+    </style>
 </x-app-layout>

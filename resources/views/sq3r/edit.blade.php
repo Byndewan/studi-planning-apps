@@ -20,6 +20,7 @@
                 <form method="POST" action="{{ route('sq3r.update', $sq3rSession) }}" class="space-y-6">
                     @csrf
                     @method('PUT')
+                    <input type="hidden" name="course_id" value="{{ $sq3rSession->course_id }}">
 
                     <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                         <!-- Course Info (Read-only) -->
@@ -32,7 +33,8 @@
                         <!-- Module Title -->
                         <div>
                             <x-input-label for="module_title" :value="__('Module/Chapter Title')" />
-                            <x-text-input id="module_title" type="text" name="module_title" :value="old('module_title', $sq3rSession->module_title)" required />
+                            <x-text-input id="module_title" type="text" name="module_title" :value="old('module_title', $sq3rSession->module_title)"
+                                required />
                             <x-input-error :messages="$errors->get('module_title')" class="mt-2" />
                         </div>
                     </div>
@@ -44,20 +46,42 @@
                             <div class="flex items-center space-x-4">
                                 @php
                                     $steps = [
-                                        'survey' => ['icon' => 'S', 'label' => 'Survey', 'completed' => !empty($sq3rSession->survey_notes)],
-                                        'questions' => ['icon' => 'Q', 'label' => 'Questions', 'completed' => !empty($sq3rSession->questions)],
-                                        'read' => ['icon' => 'R', 'label' => 'Read', 'completed' => !empty($sq3rSession->read_notes)],
-                                        'recite' => ['icon' => 'R', 'label' => 'Recite', 'completed' => !empty($sq3rSession->recite_notes)],
-                                        'review' => ['icon' => 'R', 'label' => 'Review', 'completed' => !empty($sq3rSession->review_notes)],
+                                        'survey' => [
+                                            'icon' => 'S',
+                                            'label' => 'Survey',
+                                            'completed' => !empty($sq3rSession->survey_notes),
+                                        ],
+                                        'questions' => [
+                                            'icon' => 'Q',
+                                            'label' => 'Questions',
+                                            'completed' => !empty($sq3rSession->questions),
+                                        ],
+                                        'read' => [
+                                            'icon' => 'R',
+                                            'label' => 'Read',
+                                            'completed' => !empty($sq3rSession->read_notes),
+                                        ],
+                                        'recite' => [
+                                            'icon' => 'R',
+                                            'label' => 'Recite',
+                                            'completed' => !empty($sq3rSession->recite_notes),
+                                        ],
+                                        'review' => [
+                                            'icon' => 'R',
+                                            'label' => 'Review',
+                                            'completed' => !empty($sq3rSession->review_notes),
+                                        ],
                                     ];
                                 @endphp
 
-                                @foreach($steps as $step)
+                                @foreach ($steps as $step)
                                     <div class="text-center">
-                                        <div class="w-10 h-10 {{ $step['completed'] ? 'bg-green-600 text-white' : 'bg-gray-200 text-gray-600' }} rounded-xl flex items-center justify-center mx-auto mb-2">
+                                        <div
+                                            class="w-10 h-10 {{ $step['completed'] ? 'bg-green-600 text-white' : 'bg-gray-200 text-gray-600' }} rounded-xl flex items-center justify-center mx-auto mb-2">
                                             <span class="font-bold text-sm">{{ $step['icon'] }}</span>
                                         </div>
-                                        <span class="text-xs {{ $step['completed'] ? 'text-green-600' : 'text-gray-600' }}">
+                                        <span
+                                            class="text-xs {{ $step['completed'] ? 'text-green-600' : 'text-gray-600' }}">
                                             {{ $step['label'] }}
                                         </span>
                                     </div>
@@ -69,35 +93,37 @@
                     <!-- Survey Notes -->
                     <div>
                         <x-input-label for="survey_notes" :value="__('Survey Notes')" />
-                        <textarea id="survey_notes" name="survey_notes" rows="4"
-                                  class="form-input mt-1 block w-full"
-                                  placeholder="What did you notice when surveying the material?">{{ old('survey_notes', $sq3rSession->survey_notes) }}</textarea>
+                        <textarea id="survey_notes" name="survey_notes" rows="4" class="form-input mt-1 block w-full"
+                            placeholder="What did you notice when surveying the material?">{{ old('survey_notes', $sq3rSession->survey_notes) }}</textarea>
                         <x-input-error :messages="$errors->get('survey_notes')" class="mt-2" />
                     </div>
 
                     <!-- Questions -->
-                    <div x-data="{ questions: {{ json_encode(old('questions', $sq3rSession->questions ?? ['', '', ''])) }} }">
+                    <div x-data="questionManager()" x-init="questions = {{ json_encode(old('questions', $sq3rSession->questions ?? ['', '', ''])) }}" class="space-y-4">
                         <x-input-label value="Questions" />
-                        <template x-for="(question, index) in questions" :key="index">
-                            <div class="mb-3">
-                                <input type="text"
-                                       :name="'questions[' + index + ']'"
-                                       x-model="questions[index]"
-                                       class="form-input w-full"
-                                       :placeholder="'Question ' + (index + 1)">
+
+                        <template x-for="(question, index) in questions" :key="'question-' + index">
+                            <div class="mb-3 flex items-center space-x-2">
+                                <span
+                                    class="w-8 h-8 bg-gray-100 rounded-lg flex items-center justify-center flex-shrink-0 text-sm font-medium text-gray-600"
+                                    x-text="index + 1"></span>
+                                <input type="text" :name="'questions[' + index + ']'" x-model="questions[index]"
+                                    class="form-input flex-1" :placeholder="'Question ' + (index + 1)" />
+                                <button type="button" @click="removeQuestion(index)" x-show="questions.length > 1"
+                                    class="text-red-500 hover:text-red-700 text-sm px-2 py-1">
+                                    ✕
+                                </button>
                             </div>
                         </template>
 
                         <div class="flex space-x-2 mt-2">
-                            <button type="button" @click="questions.push('')" class="flex items-center text-sm text-indigo-600 hover:text-indigo-800">
-                                <x-icons.plus class="w-4 h-4 mr-1" />
-                                Add Question
-                            </button>
-                            <button type="button" @click="if (questions.length > 1) questions.pop()" class="flex items-center text-sm text-gray-600 hover:text-gray-800">
+                            <button type="button" @click="addQuestion"
+                                class="flex items-center text-sm text-indigo-600 hover:text-indigo-800 font-medium">
                                 <svg class="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                        d="M12 4v16m8-8H4"></path>
                                 </svg>
-                                Remove Last
+                                Add Question
                             </button>
                         </div>
                     </div>
@@ -105,27 +131,24 @@
                     <!-- Read Notes -->
                     <div>
                         <x-input-label for="read_notes" :value="__('Read Notes')" />
-                        <textarea id="read_notes" name="read_notes" rows="6"
-                                  class="form-input mt-1 block w-full"
-                                  placeholder="What did you learn while reading? What answers did you find to your questions?">{{ old('read_notes', $sq3rSession->read_notes) }}</textarea>
+                        <textarea id="read_notes" name="read_notes" rows="6" class="form-input mt-1 block w-full"
+                            placeholder="What did you learn while reading? What answers did you find to your questions?">{{ old('read_notes', $sq3rSession->read_notes) }}</textarea>
                         <x-input-error :messages="$errors->get('read_notes')" class="mt-2" />
                     </div>
 
                     <!-- Recite Notes -->
                     <div>
                         <x-input-label for="recite_notes" :value="__('Recite Notes')" />
-                        <textarea id="recite_notes" name="recite_notes" rows="4"
-                                  class="form-input mt-1 block w-full"
-                                  placeholder="Summarize what you've learned in your own words...">{{ old('recite_notes', $sq3rSession->recite_notes) }}</textarea>
+                        <textarea id="recite_notes" name="recite_notes" rows="4" class="form-input mt-1 block w-full"
+                            placeholder="Summarize what you've learned in your own words...">{{ old('recite_notes', $sq3rSession->recite_notes) }}</textarea>
                         <x-input-error :messages="$errors->get('recite_notes')" class="mt-2" />
                     </div>
 
                     <!-- Review Notes -->
                     <div>
                         <x-input-label for="review_notes" :value="__('Review Notes')" />
-                        <textarea id="review_notes" name="review_notes" rows="4"
-                                  class="form-input mt-1 block w-full"
-                                  placeholder="What key points should you remember? What needs more review?">{{ old('review_notes', $sq3rSession->review_notes) }}</textarea>
+                        <textarea id="review_notes" name="review_notes" rows="4" class="form-input mt-1 block w-full"
+                            placeholder="What key points should you remember? What needs more review?">{{ old('review_notes', $sq3rSession->review_notes) }}</textarea>
                         <x-input-error :messages="$errors->get('review_notes')" class="mt-2" />
                     </div>
 
@@ -156,7 +179,8 @@
                     </div>
                     <div>
                         <span class="text-gray-600">Status:</span>
-                        <span class="ml-2 px-2 py-1 text-xs font-medium rounded-full {{ $sq3rSession->review_notes ? 'bg-green-100 text-green-800' : 'bg-yellow-100 text-yellow-800' }}">
+                        <span
+                            class="ml-2 px-2 py-1 text-xs font-medium rounded-full {{ $sq3rSession->review_notes ? 'bg-green-100 text-green-800' : 'bg-yellow-100 text-yellow-800' }}">
                             {{ $sq3rSession->review_notes ? 'Completed' : 'In Progress' }}
                         </span>
                     </div>
@@ -174,7 +198,7 @@
                     Once you delete this SQ3R session, there is no going back. Please be certain.
                 </p>
                 <form action="{{ route('sq3r.destroy', $sq3rSession) }}" method="POST"
-                      onsubmit="return confirm('Are you sure you want to delete this SQ3R session? This action cannot be undone.')">
+                    onsubmit="return confirm('Are you sure you want to delete this SQ3R session? This action cannot be undone.')">
                     @csrf
                     @method('DELETE')
                     <button type="submit" class="btn-secondary bg-red-600 hover:bg-red-700">

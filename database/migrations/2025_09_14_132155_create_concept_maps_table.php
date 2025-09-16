@@ -10,6 +10,7 @@ return new class extends Migration
     {
         Schema::create('concept_maps', function (Blueprint $table) {
             $table->id();
+            $table->integer('sq3r_session_id')->nullable();
             $table->foreignId('user_id')->constrained()->onDelete('cascade');
             $table->foreignId('course_id')->constrained()->onDelete('cascade');
             $table->string('title');

@@ -46,21 +46,46 @@ class ConceptMapController extends Controller
         $validated = $request->validate([
             'course_id' => 'required|exists:courses,id',
             'title' => 'required|string|max:255',
-            'nodes' => 'nullable|array',
-            'edges' => 'nullable|array',
+            'sq3r_session_id' => 'nullable|exists:sq3r_sessions,id',
         ]);
+
+        $course = Course::findOrFail($validated['course_id']);
+        if ($course->semester->user_id !== auth()->id()) {
+            abort(403, 'Unauthorized access');
+        }
 
         $validated['user_id'] = auth()->id();
 
-        ConceptMap::create($validated);
+        if (!empty($validated['sq3r_session_id'])) {
+            $sq3rSession = SQ3RSession::findOrFail($validated['sq3r_session_id']);
 
-        return redirect()->route('concept-maps.index')
+            $conceptData = $this->conceptMapGenerator->generateFromSQ3R($sq3rSession);
+            $validated['nodes'] = $conceptData['nodes'];
+            $validated['edges'] = $conceptData['edges'];
+        } else {
+            $validated['nodes'] = [];
+            $validated['edges'] = [];
+        }
+
+        $conceptMap = ConceptMap::create($validated);
+
+        return redirect()->route('concept-maps.show', $conceptMap)
             ->with('success', 'Concept map created successfully.');
     }
 
     public function show(ConceptMap $conceptMap)
     {
-        return view('concept-maps.show', compact('conceptMap'));
+        $conceptMap->load('sq3rSession');
+
+        $nodes = is_string($conceptMap->nodes)
+            ? json_decode($conceptMap->nodes, true)
+            : ($conceptMap->nodes ?? []);
+
+        $edges = is_string($conceptMap->edges)
+            ? json_decode($conceptMap->edges, true)
+            : ($conceptMap->edges ?? []);
+
+        return view('concept-maps.show', compact('conceptMap', 'nodes', 'edges'));
     }
 
     public function edit(ConceptMap $conceptMap)
@@ -111,6 +136,11 @@ class ConceptMapController extends Controller
 
         $conceptMap->update($validated);
 
-        return response()->json(['message' => 'Autosave successful', 'saved_at' => now()]);
+        return response()->json([
+            'message' => 'Autosave successful',
+            'saved_at' => now(),
+            'nodes' => $validated['nodes'] ?? [],
+            'edges' => $validated['edges'] ?? []
+        ]);
     }
 }

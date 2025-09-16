@@ -99,29 +99,21 @@
         <!-- Tabs Navigation -->
         <div class="card">
             <div class="border-b border-gray-200">
-                <nav class="flex space-x-8 px-6">
-                    <button @click="activeTab = 'weekly'"
-                        :class="activeTab === 'weekly' ? 'border-indigo-500 text-indigo-600' :
-                            'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300'"
-                        class="py-4 px-1 border-b-2 font-medium text-sm">
+                <nav class="flex space-x-8 px-6 py-1">
+                    <button data-tab-button="weekly"
+                        class="py-4 px-1 border-b-2 font-medium text-sm hover:text-gray-700 hover:border-gray-300 rounded-lg">
                         Weekly Plans
                     </button>
-                    <button @click="activeTab = 'monitoring'"
-                        :class="activeTab === 'monitoring' ? 'border-indigo-500 text-indigo-600' :
-                            'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300'"
-                        class="py-4 px-1 border-b-2 font-medium text-sm">
+                    <button data-tab-button="monitoring"
+                        class="py-4 px-1 border-b-2 font-medium text-sm hover:text-gray-700 hover:border-gray-300 rounded-lg">
                         Monitoring
                     </button>
-                    <button @click="activeTab = 'sq3r'"
-                        :class="activeTab === 'sq3r' ? 'border-indigo-500 text-indigo-600' :
-                            'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300'"
-                        class="py-4 px-1 border-b-2 font-medium text-sm">
+                    <button data-tab-button="sq3r"
+                        class="py-4 px-1 border-b-2 font-medium text-sm hover:text-gray-700 hover:border-gray-300 rounded-lg">
                         SQ3R Sessions
                     </button>
-                    <button @click="activeTab = 'concepts'"
-                        :class="activeTab === 'concepts' ? 'border-indigo-500 text-indigo-600' :
-                            'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300'"
-                        class="py-4 px-1 border-b-2 font-medium text-sm">
+                    <button data-tab-button="concepts"
+                        class="py-4 px-1 border-b-2 font-medium text-sm hover:text-gray-700 hover:border-gray-300 rounded-lg">
                         Concept Maps
                     </button>
                 </nav>
@@ -129,7 +121,7 @@
 
             <div x-data="{ activeTab: 'weekly' }" class="p-6">
                 <!-- Weekly Plans Tab -->
-                <div x-show="activeTab === 'weekly'" class="space-y-4">
+                <div data-tab-content="weekly" class="space-y-4">
                     <div class="flex justify-between items-center">
                         <h3 class="text-lg font-medium text-gray-900">Weekly Study Plans</h3>
                         <a href="{{ route('weekly-plans.create') }}?course_id={{ $course->id }}"
@@ -168,7 +160,7 @@
                 </div>
 
                 <!-- Monitoring Tab -->
-                <div x-show="activeTab === 'monitoring'" class="space-y-4">
+                <div data-tab-content="monitoring" class="space-y-4">
                     <div class="flex justify-between items-center">
                         <h3 class="text-lg font-medium text-gray-900">Study Monitoring</h3>
                         <a href="{{ route('monitorings.create') }}?course_id={{ $course->id }}"
@@ -218,7 +210,7 @@
                 </div>
 
                 <!-- SQ3R Tab -->
-                <div x-show="activeTab === 'sq3r'" class="space-y-4">
+                <div data-tab-content="sq3r" class="space-y-4">
                     <div class="flex justify-between items-center">
                         <h3 class="text-lg font-medium text-gray-900">SQ3R Sessions</h3>
                         <a href="{{ route('sq3r.create') }}?course_id={{ $course->id }}"
@@ -268,7 +260,7 @@
                 </div>
 
                 <!-- Concept Maps Tab -->
-                <div x-show="activeTab === 'concepts'" class="space-y-4">
+                <div data-tab-content="concepts" class="space-y-4">
                     <div class="flex justify-between items-center">
                         <h3 class="text-lg font-medium text-gray-900">Concept Maps</h3>
                         <a href="{{ route('concept-maps.create') }}?course_id={{ $course->id }}"
@@ -316,4 +308,42 @@
             </div>
         </div>
     </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const tabButtons = document.querySelectorAll('[data-tab-button]');
+            const tabContents = document.querySelectorAll('[data-tab-content]');
+
+            tabButtons.forEach(button => {
+                button.addEventListener('click', function() {
+                    const tabName = this.getAttribute('data-tab-button');
+
+                    tabContents.forEach(content => {
+                        content.classList.add('hidden');
+                    });
+
+                    const selectedContent = document.querySelector(
+                        `[data-tab-content="${tabName}"]`);
+                    if (selectedContent) {
+                        selectedContent.classList.remove('hidden');
+                    }
+
+                    tabButtons.forEach(btn => {
+                        btn.classList.remove('border-indigo-300', 'text-indigo-500',
+                            'bg-indigo-50');
+                        btn.classList.add('border-transparent', 'text-gray-500','bg-gray-100');
+                    });
+
+                    this.classList.add('border-indigo-300', 'text-indigo-500', 'bg-indigo-50');
+                    this.classList.remove('border-transparent', 'text-gray-500', 'bg-gray-100');
+                });
+            });
+
+            // Show first tab by default
+            const firstTab = document.querySelector('[data-tab-button]');
+            if (firstTab) {
+                firstTab.click();
+            }
+        });
+    </script>
 </x-app-layout>

@@ -120,31 +120,4 @@
             </div>
         @endif
     </div>
-
-    <script>
-        // Client-side validation for date consistency
-        document.addEventListener('DOMContentLoaded', function() {
-            const startDateInput = document.getElementById('start_date');
-            const endDateInput = document.getElementById('end_date');
-
-            function validateDates() {
-                if (startDateInput.value && endDateInput.value) {
-                    const startDate = new Date(startDateInput.value);
-                    const endDate = new Date(endDateInput.value);
-
-                    if (endDate <= startDate) {
-                        endDateInput.setCustomValidity('End date must be after start date');
-                    } else {
-                        endDateInput.setCustomValidity('');
-                    }
-                }
-            }
-
-            startDateInput.addEventListener('change', validateDates);
-            endDateInput.addEventListener('change', validateDates);
-
-            // Initial validation
-            validateDates();
-        });
-    </script>
 </x-app-layout>

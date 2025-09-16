@@ -20,6 +20,7 @@
                 <form method="POST" action="{{ route('monitorings.update', $monitoring) }}" class="space-y-6">
                     @csrf
                     @method('PUT')
+                    <input type="hidden" name="course_id" value="{{ $monitoring->course_id }}">
 
                     <!-- Course Info (Read-only) -->
                     <div>

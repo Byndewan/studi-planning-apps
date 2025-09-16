@@ -17,7 +17,54 @@ class WeeklyPlanController extends Controller
         return view('weekly-plans.index', compact('weeklyPlans'));
     }
 
+    public function create()
+    {
+        return view('weekly-plans.create');
+    }
 
+    public function store(Request $request)
+    {
+        $validated = $request->validate([
+            'course_id' => 'required|exists:courses,id',
+            'week_number' => 'required|integer|min:1|max:14',
+            'target_text' => 'required|string',
+            'planned_hours' => 'required|numeric|min:0',
+            'num_pages' => 'nullable|integer|min:0',
+            'status' => 'required|in:planned,in_progress,completed,missed',
+            'media' => 'nullable|string',
+        ]);
+
+        // Verify the course belongs to the user
+        $course = Course::findOrFail($validated['course_id']);
+        if ($course->semester->user_id !== auth()->id()) {
+            abort(403, 'Unauthorized access');
+        }
+
+        // Process media field
+        if (!empty($validated['media'])) {
+            $validated['media'] = array_filter(explode("\n", $validated['media']));
+        }
+
+        $validated['user_id'] = auth()->id();
+
+        $weeklyPlan = WeeklyPlan::create($validated);
+
+        return redirect()->route('weekly-plans.show', $weeklyPlan)
+            ->with('success', 'Weekly plan created successfully.');
+    }
+
+    public function destroy(WeeklyPlan $weeklyPlan)
+    {
+        // Verify the plan belongs to the user
+        if ($weeklyPlan->course->semester->user_id !== auth()->id()) {
+            abort(403, 'Unauthorized access');
+        }
+
+        $weeklyPlan->delete();
+
+        return redirect()->route('weekly-plans.index')
+            ->with('success', 'Weekly plan deleted successfully.');
+    }
 
     public function show(WeeklyPlan $weeklyPlan)
     {

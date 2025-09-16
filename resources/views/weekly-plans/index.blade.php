@@ -23,7 +23,7 @@
                         <label class="form-label">Semester</label>
                         <select class="form-input">
                             <option value="">All Semesters</option>
-                            @foreach(auth()->user()->semesters as $semester)
+                            @foreach (auth()->user()->semesters as $semester)
                                 <option value="{{ $semester->id }}">{{ $semester->name }}</option>
                             @endforeach
                         </select>
@@ -32,7 +32,7 @@
                         <label class="form-label">Course</label>
                         <select class="form-input">
                             <option value="">All Courses</option>
-                            @foreach(auth()->user()->courses as $course)
+                            @foreach (auth()->user()->courses as $course)
                                 <option value="{{ $course->id }}">{{ $course->name }}</option>
                             @endforeach
                         </select>
@@ -52,20 +52,23 @@
         </div>
 
         <!-- Weekly Plans -->
-        @if($weeklyPlans->isEmpty())
+        @if ($weeklyPlans->isEmpty())
             <div class="card">
                 <div class="empty-state">
                     <div class="w-20 h-20 bg-gray-100 rounded-  xl flex items-center justify-center mx-auto mb-4">
                         <x-icons.plan class="w-20 h-20 text-gray-400" />
                     </div>
                     <h3 class="text-lg font-medium text-gray-900">No weekly plans yet</h3>
-                    <p class="text-gray-600 mt-2">Weekly plans will be generated when you create a schedule for your courses.</p>
+                    <p class="text-gray-600 mt-2">Weekly plans will be generated when you create a schedule for your
+                        courses.</p>
                 </div>
             </div>
         @else
             <div class="grid grid-cols-1 gap-6">
-                @foreach($weeklyPlans as $plan)
-                    <div class="card hover:shadow-lg transition-shadow">
+                @foreach ($weeklyPlans as $plan)
+                    <div class="card hover:shadow-lg transition-shadow weekly-plan-item"
+                        data-course="{{ $plan->course_id }}" data-semester="{{ $plan->course->semester_id }}"
+                        data-status="{{ $plan->status }}" data-week="{{ $plan->week_number }}">
                         <div class="p-6 border-b border-gray-100">
                             <div class="flex justify-between items-center">
                                 <div>
@@ -99,17 +102,21 @@
                                 </div>
                                 <div class="flex justify-between items-center">
                                     <span class="text-gray-600">Updated:</span>
-                                    <span class="font-medium text-gray-900">{{ $plan->updated_at->diffForHumans() }}</span>
+                                    <span
+                                        class="font-medium text-gray-900">{{ $plan->updated_at->diffForHumans() }}</span>
                                 </div>
                             </div>
 
                             <div class="mt-6 flex space-x-2">
-                                <a href="{{ route('weekly-plans.show', $plan) }}" class="btn-secondary flex-1 text-center">
+                                <a href="{{ route('weekly-plans.show', $plan) }}"
+                                    class="btn-secondary flex-1 text-center">
                                     View Details
                                 </a>
                                 <a href="{{ route('weekly-plans.edit', $plan) }}" class="btn-secondary">
                                     <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"></path>
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                            d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z">
+                                        </path>
                                     </svg>
                                 </a>
                             </div>

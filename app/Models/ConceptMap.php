@@ -26,4 +26,10 @@ class ConceptMap extends Model
     {
         return $this->belongsTo(Course::class);
     }
+
+    public function sq3rSession()
+    {
+        return $this->belongsTo(SQ3RSession::class, 'sq3r_session_id');
+    }
+
 }

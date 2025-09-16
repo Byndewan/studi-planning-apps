@@ -28,4 +28,10 @@ class SQ3RSession extends Model
     {
         return $this->belongsTo(Course::class);
     }
+
+    public function conceptMaps()
+    {
+        return $this->hasMany(ConceptMap::class, 'sq3r_session_id');
+    }
+
 }

@@ -40,6 +40,11 @@
                     <span>Semesters</span>
                 </x-nav-link>
 
+                <x-nav-link href="{{ route('courses.index') }}" :active="request()->routeIs('courses.*')">
+                    <x-icons.course class="w-5 h-5" />
+                    <span>Courses</span>
+                </x-nav-link>
+
                 <x-nav-link href="{{ route('weekly-plans.index') }}" :active="request()->routeIs('weekly-plans.*')">
                     <x-icons.plan class="w-5 h-5" />
                     <span>Weekly Plans</span>
@@ -85,7 +90,7 @@
                 </div>
             </header>
 
-            <div class="p-8" id="app">
+            <div class="p-8">
                 {{ $slot }}
             </div>
         </main>
@@ -98,5 +103,10 @@
     @if(session('error'))
         <x-toast type="error" message="{{ session('error') }}" />
     @endif
+
+    <script>
+    window._oldQuestions = @json(old('questions')) || ["", "", ""];
+</script>
+
 </body>
 </html>

@@ -56,6 +56,10 @@ class MonitoringController extends Controller
 
     public function edit(Monitoring $monitoring)
     {
+        if ($monitoring->user_id !== auth()->id()) {
+            abort(403, 'Unauthorized access');
+        }
+
         $courses = Course::whereHas('semester', function($query) {
             $query->where('user_id', auth()->id());
         })->get();

@@ -21,26 +21,17 @@ class Semester extends Model
 
     protected $appends = ['is_current'];
 
-    /**
-     * Check if semester is current
-     */
     public function getIsCurrentAttribute(): bool
     {
         $now = Carbon::now();
         return $now->between($this->start_date, $this->end_date);
     }
 
-    /**
-     * Get weeks count in semester
-     */
     public function getWeeksCountAttribute(): int
     {
         return $this->start_date->diffInWeeks($this->end_date);
     }
 
-    /**
-     * Get progress percentage
-     */
     public function getProgressAttribute(): float
     {
         $totalDays = $this->start_date->diffInDays($this->end_date);
@@ -50,6 +41,11 @@ class Semester extends Model
 
         $progress = min(100, max(0, ($passedDays / $totalDays) * 100));
         return round($progress, 1);
+    }
+
+    public function getPeriodAttribute()
+    {
+        return $this->start_date->format('d M Y') . ' - ' . $this->end_date->format('d M Y');
     }
 
     public function user(): BelongsTo

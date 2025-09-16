@@ -1,4 +1,4 @@
-<x-app-layout>
+F<x-app-layout>
     <x-slot name="header">
         <div>
             <h1 class="text-2xl font-bold text-gray-900">Concept Maps</h1>
@@ -96,12 +96,12 @@
                                             d="M13 10V3L4 14h7v7l9-11h-7z"></path>
                                     </svg>
                                     @php
-    $edges = is_array($map->edges)
-        ? $map->edges
-        : json_decode($map->edges, true) ?? [];
-@endphp
+                                        $edges = is_array($map->edges)
+                                            ? $map->edges
+                                            : json_decode($map->edges, true) ?? [];
+                                    @endphp
 
-<span>{{ count($edges) }} connections</span>
+                                    <span>{{ count($edges) }} connections</span>
                                 </div>
                             </div>
 

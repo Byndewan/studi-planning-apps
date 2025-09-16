@@ -38,16 +38,19 @@ Route::middleware(['auth'])->group(function () {
     Route::resource('courses', CourseController::class);
 
     // Weekly Plans
-    Route::resource('weekly-plans', WeeklyPlanController::class)->only(['index', 'create' ,'show', 'edit', 'update']);
+    Route::resource('weekly-plans', WeeklyPlanController::class);
 
     // Monitoring
     Route::resource('monitorings', MonitoringController::class);
 
     // SQ3R
     Route::resource('sq3r', SQ3RController::class);
+    Route::post('sq3r/{sq3rSession}/autosave', [SQ3RController::class, 'autosave'])->name('sq3r.autosave');
 
     // Concept Maps
     Route::resource('concept-maps', ConceptMapController::class);
+    Route::post('concept-maps/{conceptMap}/autosave', [ConceptMapController::class, 'autosave'])->name('concept-maps.autosave');
+    Route::get('sq3r-sessions/{sq3rSession}/generate-concept-map', [ConceptMapController::class, 'generateFromSQ3R'])->name('concept-maps.generate-from-sq3r');
 });
 
-require __DIR__.'/auth.php';
+require __DIR__ . '/auth.php';

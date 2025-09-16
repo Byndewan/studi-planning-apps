@@ -61,7 +61,7 @@ class SQ3RSessionController extends Controller
 
     public function destroy(SQ3RSession $sq3rSession)
     {
-        $sq3rSession->delete();
+        $sq3rSession->forceDelete();
 
         return response()->json(null, 204);
     }
