@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="{{ str_replace('_', '-', app()->getLocale()) }}" class="h-full">
+
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -8,106 +9,118 @@
 
     <link rel="icon" type="image/svg+xml" href="{{ asset('favicon.svg') }}">
 
-    <!-- Fonts -->
     <link rel="preconnect" href="https://fonts.bunny.net">
     <link href="https://fonts.bunny.net/css?family=inter:400,500,600,700&display=swap" rel="stylesheet" />
 
-    <!-- Scripts -->
+    <style>
+        .gordeng-transition {
+            transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        .nav-button {
+            transition: all 0.3s ease;
+            cursor: pointer;
+            z-index: 60;
+            width: 32px;
+            height: 32px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 50%;
+            background-color: white;
+            box-shadow: 0 4px 4px rgba(0, 0, 0, 0.1);
+            border: 1px solid rgba(0, 0, 0, 0.1);
+        }
+        .nav-button:hover {
+            transform: translateY(2px);
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+        .arrow {
+            transition: transform 0.3s ease;
+        }
+        .arrow.up {
+            transform: rotate(0deg);
+        }
+        .arrow.down {
+            transform: rotate(180deg);
+        }
+    </style>
+
     @vite(['resources/css/app.css', 'resources/js/app.js'])
 </head>
+
 <body class="h-full bg-gray-50">
-    <div class="flex h-full">
-        <!-- Sidebar -->
-        <aside class="w-64 bg-white border-r border-gray-200 flex flex-col">
-            <div class="p-6">
-                <a href="{{ route('dashboard') }}" class="flex items-center space-x-3">
-                    <div class="w-10 h-10 bg-indigo-600 rounded-xl flex items-center justify-center">
-                        <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"></path>
-                        </svg>
-                    </div>
-                    <span class="text-xl font-bold text-gray-900">StudyFlow</span>
-                </a>
-            </div>
+    <div x-data="{
+        open: false,
+        init() {
+            this.$refs.navContainer.style.transform = 'translateY(-100%)';
 
-            <nav class="flex-1 px-4 space-y-1">
-                <x-nav-link href="{{ route('dashboard') }}" :active="request()->routeIs('dashboard')">
-                    <x-icons.dashboard class="w-5 h-5" />
-                    <span>Dashboard</span>
-                </x-nav-link>
+            document.addEventListener('click', (e) => {
+                if (this.open && !this.$refs.navContainer.contains(e.target) &&
+                    !this.$refs.toggleButton.contains(e.target)) {
+                    this.toggleNav();
+                }
+            });
+        },
+        toggleNav() {
+            this.open = !this.open;
+            if (this.open) {
+                this.$refs.navContainer.style.transform = 'translateY(0)';
+                this.$refs.toggleButton.classList.remove('top-0');
+                this.$refs.toggleButton.classList.add('top-23');
+            } else {
+                this.$refs.navContainer.style.transform = 'translateY(-100%)';
+                this.$refs.toggleButton.classList.remove('top-23');
+                this.$refs.toggleButton.classList.add('top-0');
+            }
+        }
+    }"
+    class="flex flex-col h-screen">
 
-                <x-nav-link href="{{ route('semesters.index') }}" :active="request()->routeIs('semesters.*')">
-                    <x-icons.calendar class="w-5 h-5" />
-                    <span>Semesters</span>
-                </x-nav-link>
-
-                <x-nav-link href="{{ route('courses.index') }}" :active="request()->routeIs('courses.*')">
-                    <x-icons.course class="w-5 h-5" />
-                    <span>Courses</span>
-                </x-nav-link>
-
-                <x-nav-link href="{{ route('weekly-plans.index') }}" :active="request()->routeIs('weekly-plans.*')">
-                    <x-icons.plan class="w-5 h-5" />
-                    <span>Weekly Plans</span>
-                </x-nav-link>
-
-                <x-nav-link href="{{ route('monitorings.index') }}" :active="request()->routeIs('monitorings.*')">
-                    <x-icons.monitor class="w-5 h-5" />
-                    <span>Monitoring</span>
-                </x-nav-link>
-
-                <x-nav-link href="{{ route('sq3r.index') }}" :active="request()->routeIs('sq3r.*')">
-                    <x-icons.book class="w-5 h-5" />
-                    <span>SQ3R</span>
-                </x-nav-link>
-
-                <x-nav-link href="{{ route('concept-maps.index') }}" :active="request()->routeIs('concept-maps.*')">
-                    <x-icons.map class="w-5 h-5" />
-                    <span>Concept Maps</span>
-                </x-nav-link>
-            </nav>
-
-            <div class="p-4 border-t border-gray-200">
+        <header class="fixed top-0 left-0 right-0 bg-white border-b border-gray-200 px-8 py-6 z-30">
+            <div class="flex justify-between items-center">
+                <h1 class="text-2xl font-bold text-gray-900">{{ $header ?? '' }}</h1>
                 <div class="flex items-center space-x-3">
-                    <img class="w-10 h-10 rounded-full"
-                         src="{{ Auth::user()->profile_photo_url ?? 'https://ui-avatars.com/api/?name=' . urlencode(Auth::user()->name) . '&background=6366f1&color=fff' }}"
-                         alt="{{ Auth::user()->name }}">
-                    <div class="flex-1 min-w-0">
-                        <p class="text-sm font-medium text-gray-900 truncate">{{ Auth::user()->name }}</p>
-                        <p class="text-xs text-gray-500 truncate">{{ Auth::user()->email }}</p>
-                    </div>
+                    {{ $headerActions ?? '' }}
                 </div>
             </div>
-        </aside>
+        </header>
 
-        <!-- Main Content -->
-        <main class="flex-1 overflow-y-auto">
-            <header class="bg-white border-b border-gray-200 px-8 py-6">
-                <div class="flex justify-between items-center">
-                    <h1 class="text-2xl font-bold text-gray-900">{{ $header ?? '' }}</h1>
-                    <div class="flex items-center space-x-3">
-                        {{ $headerActions ?? '' }}
-                    </div>
+        <div class="fixed left-1/2 transform -translate-x-1/2 z-50 top-0 transition-top duration-400"
+             x-ref="toggleButton">
+            <div class="flex flex-col items-center">
+                <div class="nav-button" @click="toggleNav">
+                    <svg class="arrow" :class="open ? 'up' : 'down'" width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M12 10L8 6L4 10" stroke="#4B5563" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                    </svg>
                 </div>
-            </header>
+            </div>
+        </div>
 
+        <div class="fixed top-0 left-0 right-0 z-40 gordeng-transition" x-ref="navContainer" style="transform: translateY(-100%)">
+            <div class="bg-white">
+                <x-navigation />
+            </div>
+        </div>
+
+        <main class="flex-1 overflow-y-auto pt-24">
             <div class="p-8">
                 {{ $slot }}
             </div>
         </main>
     </div>
 
-    @if(session('success'))
+    @if (session('success'))
         <x-toast type="success" message="{{ session('success') }}" />
     @endif
 
-    @if(session('error'))
+    @if (session('error'))
         <x-toast type="error" message="{{ session('error') }}" />
     @endif
 
     <script>
-    window._oldQuestions = @json(old('questions')) || ["", "", ""];
-</script>
+        window._oldQuestions = @json(old('questions')) || ["", "", ""];
+    </script>
 
 </body>
+
 </html>

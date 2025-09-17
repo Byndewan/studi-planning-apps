@@ -8,21 +8,6 @@
                 Here's your learning progress overview
             </p>
         </div>
-        {{-- <div class="flex items-center space-x-3 mt-6">
-                <a href="{{ route('weekly-plans.create') }}" class="btn-secondary">
-                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"></path>
-                    </svg>
-                    New Plan
-                </a>
-                <a href="{{ route('monitorings.create') }}" class="btn-primary">
-                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                            d="M12 6v6m0 0v6m0-6h6m-6 0H6"></path>
-                    </svg>
-                    Log Session
-                </a>
-            </div> --}}
     </x-slot>
 
     <div class="space-y-8">

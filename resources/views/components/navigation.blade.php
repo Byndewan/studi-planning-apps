@@ -1,36 +1,33 @@
-<nav x-data="{ open: false }" class="bg-white border-b border-gray-100">
-    <!-- Primary Navigation Menu -->
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div class="flex justify-between h-16">
-            <div class="flex">
-                <!-- Logo -->
-                <div class="shrink-0 flex items-center">
-                    <a href="{{ route('dashboard') }}">
-                        <x-application-mark class="block h-9 w-auto" />
-                    </a>
-                </div>
+<nav x-data="{ open: false }" class="bg-white">
+    <div class="max-w-full mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="flex justify-between h-auto">
+            <!-- Logo -->
+            <div class="shrink-0 flex items-center">
+                <a href="{{ route('dashboard') }}">
+                    <x-application-logo class="block h-15 w-15" />
+                </a>
+            </div>
 
-                <!-- Navigation Links -->
-                <div class="hidden space-x-8 sm:-my-px sm:ml-10 sm:flex">
-                    <x-nav-link href="{{ route('dashboard') }}" :active="request()->routeIs('dashboard')">
-                        {{ __('Dashboard') }}
-                    </x-nav-link>
-                    <x-nav-link href="{{ route('semesters.index') }}" :active="request()->routeIs('semesters.*')">
-                        {{ __('Semesters') }}
-                    </x-nav-link>
-                    <x-nav-link href="{{ route('weekly-plans.index') }}" :active="request()->routeIs('weekly-plans.*')">
-                        {{ __('Weekly Plans') }}
-                    </x-nav-link>
-                    <x-nav-link href="{{ route('monitorings.index') }}" :active="request()->routeIs('monitorings.*')">
-                        {{ __('Monitoring') }}
-                    </x-nav-link>
-                    <x-nav-link href="{{ route('sq3r.index') }}" :active="request()->routeIs('sq3r.*')">
-                        {{ __('SQ3R') }}
-                    </x-nav-link>
-                    <x-nav-link href="{{ route('concept-maps.index') }}" :active="request()->routeIs('concept-maps.*')">
-                        {{ __('Concept Maps') }}
-                    </x-nav-link>
-                </div>
+            <!-- Navigation Links -->
+            <div class="hidden space-x-8 sm:-my-px sm:flex ml-5 py-6">
+                <x-nav-link href="{{ route('dashboard') }}" :active="request()->routeIs('dashboard')">
+                    {{ __('Dashboard') }}
+                </x-nav-link>
+                <x-nav-link href="{{ route('semesters.index') }}" :active="request()->routeIs('semesters.*')">
+                    {{ __('Semesters') }}
+                </x-nav-link>
+                <x-nav-link href="{{ route('weekly-plans.index') }}" :active="request()->routeIs('weekly-plans.*')">
+                    {{ __('Weekly Plans') }}
+                </x-nav-link>
+                <x-nav-link href="{{ route('monitorings.index') }}" :active="request()->routeIs('monitorings.*')">
+                    {{ __('Monitoring') }}
+                </x-nav-link>
+                <x-nav-link href="{{ route('sq3r.index') }}" :active="request()->routeIs('sq3r.*')">
+                    {{ __('SQ3R') }}
+                </x-nav-link>
+                <x-nav-link href="{{ route('concept-maps.index') }}" :active="request()->routeIs('concept-maps.*')">
+                    {{ __('Concept Maps') }}
+                </x-nav-link>
             </div>
 
             <!-- Settings Dropdown -->
@@ -38,10 +35,20 @@
                 <x-dropdown align="right" width="48">
                     <x-slot name="trigger">
                         <button
-                            class="flex items-center text-sm font-medium text-gray-500 hover:text-gray-700 hover:border-gray-300 focus:outline-none focus:text-gray-700 transition duration-150 ease-in-out">
-                            <div>{{ Auth::user()->name }}</div>
+                            class="flex items-center space-x-2 p-2 rounded-full hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-indigo-500 transition duration-150 ease-in-out">
+                            <!-- Foto profil -->
+                            <div
+                                class="w-8 h-8 bg-indigo-500 rounded-full flex items-center justify-center text-white font-semibold text-sm">
+                                {{ substr(Auth::user()->name, 0, 1) }}
+                            </div>
 
-                            <div class="ml-1">
+                            <!-- Nama user (hanya tampil di desktop) -->
+                            <div class="hidden md:block text-sm font-medium text-gray-700">
+                                {{ Auth::user()->name }}
+                            </div>
+
+                            <!-- Icon panah -->
+                            <div class="text-gray-400">
                                 <svg class="fill-current h-4 w-4" xmlns="http://www.w3.org/2000/svg"
                                     viewBox="0 0 20 20">
                                     <path fill-rule="evenodd"
@@ -53,13 +60,32 @@
                     </x-slot>
 
                     <x-slot name="content">
+                        <!-- Header dropdown dengan info user -->
+                        <div class="px-4 py-3 border-b border-gray-100">
+                            <div class="flex items-center space-x-3">
+                                <div
+                                    class="w-10 h-10 bg-indigo-500 rounded-full flex items-center justify-center text-white font-semibold">
+                                    {{ substr(Auth::user()->name, 0, 1) }}
+                                </div>
+                                <div>
+                                    <p class="text-sm font-medium text-gray-900">{{ Auth::user()->name }}</p>
+                                    <p class="text-xs text-gray-500">{{ Auth::user()->email }}</p>
+                                </div>
+                            </div>
+                        </div>
+
                         <!-- Account Management -->
                         <div class="block px-4 py-2 text-xs text-gray-400">
                             {{ __('Manage Account') }}
                         </div>
 
-                        <x-dropdown-link href="{{ route('profile.show') }}">
-                            {{ __('Profile') }}
+                        <x-dropdown-link href="{{ route('profile.show') }}" class="flex items-center space-x-2">
+                            <svg class="w-4 h-4 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"
+                                xmlns="http://www.w3.org/2000/svg">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"></path>
+                            </svg>
+                            <span>{{ __('Profile') }}</span>
                         </x-dropdown-link>
 
                         <div class="border-t border-gray-100"></div>
@@ -67,11 +93,16 @@
                         <!-- Authentication -->
                         <form method="POST" action="{{ route('logout') }}">
                             @csrf
-
                             <x-dropdown-link href="{{ route('logout') }}"
-                                onclick="event.preventDefault();
-                                                this.closest('form').submit();">
-                                {{ __('Log Out') }}
+                                onclick="event.preventDefault(); this.closest('form').submit();"
+                                class="flex items-center space-x-2 text-red-600 hover:bg-red-50">
+                                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"
+                                    xmlns="http://www.w3.org/2000/svg">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                        d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1">
+                                    </path>
+                                </svg>
+                                <span>{{ __('Log Out') }}</span>
                             </x-dropdown-link>
                         </form>
                     </x-slot>

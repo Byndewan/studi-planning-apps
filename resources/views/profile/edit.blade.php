@@ -19,25 +19,17 @@
                         @method('PUT')
 
                         <div class="grid grid-cols-1 gap-6">
-                            <!-- Profile Photo -->
                             <div>
-                                <label class="form-label">Profile Photo</label>
-                                <div class="flex items-center space-x-6">
+                                <!-- Profile Photo -->
+                                <label class="form-label text-center">Profile Photo</label>
+                                <div class="flex items-center space-x-6 justify-center">
                                     <div class="flex-shrink-0">
                                         <img class="h-20 w-20 rounded-full object-cover"
                                             src="{{ $user->profile_photo_url ?? 'https://ui-avatars.com/api/?name= ' . urlencode($user->name) . '&color=7F9CF5&background=EBF4FF' }}"
                                             alt="{{ $user->name }}">
                                     </div>
-                                    <div class="flex-1">
-                                        <input type="file" name="profile_photo" accept="image/*" class="form-input">
-                                        <p class="text-xs text-gray-500 mt-1">
-                                            JPG, PNG or GIF (max: 2MB)
-                                        </p>
-                                    </div>
                                 </div>
-                                @error('profile_photo')
-                                    <p class="text-red-500 text-xs mt-1">{{ $message }}</p>
-                                @enderror
+
                             </div>
 
                             <!-- Name -->
