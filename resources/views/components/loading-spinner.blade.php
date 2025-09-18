@@ -8,7 +8,7 @@ $sizes = [
 ];
 
 $colors = [
-    'primary' => 'text-indigo-600',
+    'primary' => 'text-blue-600',
     'white' => 'text-white',
     'gray' => 'text-gray-600',
 ];
