@@ -17,9 +17,9 @@ class WeeklyPlanController extends Controller
         return view('weekly-plans.index', compact('weeklyPlans'));
     }
 
-    public function create()
+    public function create(WeeklyPlan $weeklyPlan)
     {
-        return view('weekly-plans.create');
+        return view('weekly-plans.create',compact('weeklyPlan'));
     }
 
     public function store(Request $request)

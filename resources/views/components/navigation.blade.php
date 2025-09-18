@@ -1,5 +1,5 @@
 <nav x-data="{ open: false }" class="bg-white/95 backdrop-blur-xl">
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <div class="max-w-full mx-auto px-4 sm:px-6 lg:px-8">
         <div class="flex justify-between items-center h-16">
             <!-- Logo dengan animasi halus -->
             <div class="flex items-center space-x-3 group">
@@ -8,7 +8,7 @@
                         <i class="fas fa-graduation-cap text-white text-lg"></i>
                     </div>
                     <span class="text-xl font-semibold text-gray-800 group-hover:text-blue-600 transition-colors duration-300">
-                        StudyFlow
+                        Study Planning
                     </span>
                 </a>
             </div>
@@ -22,6 +22,10 @@
                 <x-nav-link href="{{ route('semesters.index') }}" :active="request()->routeIs('semesters.*')" class="group">
                     <i class="fas fa-calendar-alt mr-2 text-sm group-hover:animate-pulse"></i>
                     {{ __('Semester') }}
+                </x-nav-link>
+                <x-nav-link href="{{ route('courses.index') }}" :active="request()->routeIs('courses.*')" class="group">
+                    <i class="fas fa-tasks mr-2 text-sm group-hover:animate-pulse"></i>
+                    {{ __('Courses') }}
                 </x-nav-link>
                 <x-nav-link href="{{ route('weekly-plans.index') }}" :active="request()->routeIs('weekly-plans.*')" class="group">
                     <i class="fas fa-calendar-week mr-2 text-sm group-hover:animate-pulse"></i>

@@ -7,7 +7,7 @@
     <meta name="csrf-token" content="{{ csrf_token() }}">
     <title>{{ config('app.name', 'StudyFlow') }}</title>
 
-    <link rel="icon" type="image/svg+xml" href="{{ asset('favicon.svg') }}">
+    <link rel="icon" type="image/svg+xml" class="text-white" href="{{ asset('favicon.svg') }}">
 
     <!-- Font Awesome -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
@@ -164,7 +164,7 @@
 
         <!-- Glass Header -->
         <header class="fixed top-0 left-0 right-0 glass-header px-6 py-4 z-30">
-            <div class="flex justify-between items-center max-w-7xl mx-auto">
+            <div class="flex justify-between items-center max-w-full mx-auto">
                 <h1 class="text-2xl font-semibold text-gray-800 tracking-tight">
                     {{ $header ?? '' }}
                 </h1>
@@ -177,7 +177,7 @@
         <!-- Navigation Toggle -->
         <div class="fixed left-1/2 transform -translate-x-1/2 z-40 top-0 transition-all duration-500"
             x-ref="toggleButton" :class="open ? 'h-33' : 'h-10'">
-            <div class="nav-toggle bg-white/90 backdrop-blur-lg rounded-b-xl w-12 h-full shadow-sm border border-gray-200 cursor-pointer flex justify-center group transition-all duration-500"
+            <div class="nav-toggle bg-white backdrop-blur-lg rounded-b-xl w-12 h-full border border-gray-200 shadow-sm cursor-pointer flex justify-center group transition-all duration-500"
                 :class="open ? 'items-end pb-2' : 'items-center'" @click="toggleNav">
                 <svg class="w-5 h-5 text-gray-600 group-hover:text-gray-800 transition-transform duration-300"
                     :class="open ? 'rotate-180' : ''" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -189,14 +189,14 @@
         <!-- Navigation Container -->
         <div class="fixed top-0 left-0 right-0 z-50 nav-container" x-ref="navContainer"
             style="transform: translateY(-100%)">
-            <div class="bg-white/95 backdrop-blur-xl shadow-sm py-4">
+            <div class="bg-white/95 backdrop-blur-xl py-4">
                 <x-navigation />
             </div>
         </div>
 
         <!-- Main Content -->
         <main class="flex-1 overflow-y-auto pt-24">
-            <div class="max-w-7xl mx-auto px-6 py-8 content-enter">
+            <div class="max-w-full mx-auto px-6 py-8 content-enter">
                 {{ $slot }}
             </div>
         </main>

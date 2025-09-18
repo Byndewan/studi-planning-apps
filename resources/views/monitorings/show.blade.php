@@ -1,105 +1,227 @@
 <x-app-layout>
     <x-slot name="header">
-        <div>
-            <h1 class="text-2xl font-bold text-gray-900">Monitoring Entry</h1>
-            <p class="text-gray-600 mt-1">{{ $monitoring->date->format('M d, Y') }} - {{ $monitoring->course->name }}</p>
+        <div class="flex items-center justify-between">
+            <div>
+                <h1 class="text-2xl font-bold text-gray-900">Detail Monitoring Belajar</h1>
+                <p class="text-gray-600 mt-1">{{ $monitoring->date->format('d M Y') }} - {{ $monitoring->course->name }}
+                </p>
+            </div>
+            <x-slot name="headerActions">
+                <a href="{{ route('monitorings.edit', $monitoring) }}" class="btn-secondary">
+                    <i class="fas fa-edit mr-2"></i>
+                    Edit Entri
+                </a>
+                <a href="{{ route('courses.show', $monitoring->course) }}" class="btn-secondary">
+                    <i class="fas fa-arrow-left mr-2"></i>
+                    Kembali ke Mata Kuliah
+                </a>
+            </x-slot>
         </div>
-        <x-slot name="headerActions">
-            <a href="{{ route('monitorings.edit', $monitoring) }}" class="btn-secondary">
-                Edit Entry
-            </a>
-            <a href="{{ route('courses.show', $monitoring->course) }}" class="btn-secondary">
-                Back to Course
-            </a>
-        </x-slot>
     </x-slot>
 
-    <div class="max-w-4xl mx-auto space-y-6">
-        <div class="card">
+    <div class="max-w-4xl mx-auto space-y-8">
+        <!-- Info Utama -->
+        <div class="card card-hover">
             <div class="p-8">
                 <div class="flex justify-between items-start mb-6">
                     <div>
                         <h2 class="text-xl font-semibold text-gray-900">{{ $monitoring->course->name }}</h2>
                         <p class="text-gray-600 mt-1">
-                            Week {{ $monitoring->week_number }} • {{ $monitoring->date->format('M d, Y') }}
+                            Minggu {{ $monitoring->week_number }} • {{ $monitoring->date->format('d M Y') }}
                         </p>
                     </div>
-                    <span class="status-badge {{ $monitoring->achieved ? 'bg-green-100 text-green-800' : 'bg-red-100 text-red-800' }}">
-                        {{ $monitoring->achieved ? 'Achieved' : 'Not Achieved' }}
+                    <span class="status-badge {{ $monitoring->achieved ? 'status-completed' : 'status-missed' }}">
+                        {{ $monitoring->achieved ? 'Tercapai' : 'Tidak Tercapai' }}
                     </span>
                 </div>
 
-                <!-- Study Details -->
+                <!-- Detail Studi -->
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
-                    <div class="bg-gray-50 rounded-xl p-6">
-                        <h3 class="text-sm font-medium text-gray-600 mb-3">Planned Activities</h3>
-                        <p class="text-gray-900">{{ $monitoring->planned }}</p>
+                    <div class="bg-gradient-to-br from-blue-50 to-blue-100 rounded-xl p-6 border border-blue-200">
+                        <h3 class="text-sm font-semibold text-blue-900 mb-3 flex items-center">
+                            <i class="fas fa-bullseye mr-2"></i>
+                            Kegiatan yang Direncanakan
+                        </h3>
+                        <p class="text-blue-900">{{ $monitoring->planned }}</p>
                     </div>
-                    <div class="bg-gray-50 rounded-xl p-6">
-                        <h3 class="text-sm font-medium text-gray-600 mb-3">Actual Activities</h3>
-                        <p class="text-gray-900">{{ $monitoring->actual }}</p>
+                    <div class="bg-gradient-to-br from-green-50 to-green-100 rounded-xl p-6 border border-green-200">
+                        <h3 class="text-sm font-semibold text-green-900 mb-3 flex items-center">
+                            <i class="fas fa-check-double mr-2"></i>
+                            Kegiatan yang Dilakukan
+                        </h3>
+                        <p class="text-green-900">{{ $monitoring->actual }}</p>
                     </div>
                 </div>
 
-                <!-- Analysis -->
-                @if($monitoring->cause || $monitoring->solution)
+                <!-- Analisis -->
+                @if ($monitoring->cause || $monitoring->solution)
                     <div class="border-t border-gray-200 pt-6 mt-6">
-                        <h3 class="text-lg font-semibold text-gray-900 mb-4">Analysis</h3>
+                        <h3 class="text-lg font-semibold text-gray-900 mb-4 flex items-center">
+                            <i class="fas fa-analytics mr-2 text-purple-600"></i>
+                            Analisis
+                        </h3>
                         <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                            @if($monitoring->cause)
-                                <div class="bg-yellow-50 rounded-xl p-6 border border-yellow-200">
-                                    <h4 class="text-sm font-medium text-gray-900 mb-2">Cause of Variance</h4>
-                                    <p class="text-gray-900">{{ $monitoring->cause }}</p>
+                            @if ($monitoring->cause)
+                                <div
+                                    class="bg-gradient-to-br from-yellow-50 to-yellow-100 rounded-xl p-6 border border-yellow-200">
+                                    <h4 class="text-sm font-semibold text-yellow-900 mb-2 flex items-center">
+                                        <i class="fas fa-search mr-2"></i>
+                                        Penyebab Perbedaan
+                                    </h4>
+                                    <p class="text-yellow-900">{{ $monitoring->cause }}</p>
                                 </div>
                             @endif
-                            @if($monitoring->solution)
-                                <div class="bg-blue-50 rounded-xl p-6 border border-blue-200">
-                                    <h4 class="text-sm font-medium text-gray-900 mb-2">Proposed Solution</h4>
-                                    <p class="text-gray-900">{{ $monitoring->solution }}</p>
+                            @if ($monitoring->solution)
+                                <div
+                                    class="bg-gradient-to-br from-purple-50 to-purple-100 rounded-xl p-6 border border-purple-200">
+                                    <h4 class="text-sm font-semibold text-purple-900 mb-2 flex items-center">
+                                        <i class="fas fa-lightbulb mr-2"></i>
+                                        Solusi yang Diusulkan
+                                    </h4>
+                                    <p class="text-purple-900">{{ $monitoring->solution }}</p>
                                 </div>
                             @endif
                         </div>
                     </div>
                 @endif
 
-                <!-- Course Context -->
+                <!-- Konteks Mata Kuliah -->
                 <div class="border-t border-gray-200 pt-6 mt-6">
-                    <h3 class="text-sm font-medium text-gray-900 mb-4">Course Context</h3>
+                    <h3 class="text-sm font-semibold text-gray-900 mb-4 flex items-center">
+                        <i class="fas fa-info-circle mr-2 text-blue-600"></i>
+                        Konteks Mata Kuliah
+                    </h3>
                     <div class="grid grid-cols-2 md:grid-cols-4 gap-4 text-sm">
-                        <div>
-                            <span class="text-gray-600">Semester:</span>
-                            <span class="ml-2 text-gray-900">{{ $monitoring->course->semester->name }}</span>
+                        <div class="bg-gray-50 rounded-lg p-4">
+                            <span class="text-gray-600 text-xs">Semester</span>
+                            <p class="font-medium text-gray-900">{{ $monitoring->course->semester->name }}</p>
                         </div>
-                        <div>
-                            <span class="text-gray-600">Course Code:</span>
-                            <span class="ml-2 text-gray-900">{{ $monitoring->course->code }}</span>
+                        <div class="bg-gray-50 rounded-lg p-4">
+                            <span class="text-gray-600 text-xs">Kode</span>
+                            <p class="font-medium text-gray-900">{{ $monitoring->course->code }}</p>
                         </div>
-                        <div>
-                            <span class="text-gray-600">SKS:</span>
-                            <span class="ml-2 text-gray-900">{{ $monitoring->course->sks }}</span>
+                        <div class="bg-gray-50 rounded-lg p-4">
+                            <span class="text-gray-600 text-xs">SKS</span>
+                            <p class="font-medium text-gray-900">{{ $monitoring->course->sks }}</p>
                         </div>
-                        <div>
-                            <span class="text-gray-600">Total Modules:</span>
-                            <span class="ml-2 text-gray-900">{{ $monitoring->course->total_modules }}</span>
+                        <div class="bg-gray-50 rounded-lg p-4">
+                            <span class="text-gray-600 text-xs">Total Modul</span>
+                            <p class="font-medium text-gray-900">{{ $monitoring->course->total_modules }}</p>
                         </div>
                     </div>
                 </div>
 
-                <!-- Actions -->
+                <!-- Aksi -->
                 <div class="border-t border-gray-200 pt-6 mt-6 flex justify-end space-x-3">
-                    <a href="{{ route('monitorings.edit', $monitoring) }}" class="btn-secondary">
-                        Edit Entry
+                    <a href="{{ route('monitorings.edit', $monitoring) }}" class="btn-primary">
+                        <i class="fas fa-edit mr-2"></i>
+                        Edit Entri
                     </a>
                     <form action="{{ route('monitorings.destroy', $monitoring) }}" method="POST"
-                          onsubmit="return confirm('Are you sure you want to delete this monitoring entry?')">
+                        onsubmit="return confirm('Apakah Anda yakin ingin menghapus entri monitoring ini?')">
                         @csrf
                         @method('DELETE')
-                        <button type="submit" class="btn-secondary bg-red-600 hover:bg-red-700">
-                            Delete
+                        <button type="submit" class="btn-secondary bg-red-600 hover:bg-red-700 text-white">
+                            <i class="fas fa-trash mr-2"></i>
+                            Hapus
                         </button>
                     </form>
                 </div>
             </div>
         </div>
+
+        <!-- Informasi Tambahan -->
+        <div class="card card-hover">
+            <div class="p-6">
+                <h3 class="text-lg font-semibold text-gray-900 mb-4 flex items-center">
+                    <i class="fas fa-info-circle mr-2 text-blue-600"></i>
+                    Informasi Entri
+                </h3>
+                <div class="grid grid-cols-2 gap-4 text-sm">
+                    <div class="flex items-center justify-between p-3 bg-gray-50 rounded-lg">
+                        <span class="text-gray-600">Dibuat</span>
+                        <span
+                            class="font-medium text-gray-900">{{ $monitoring->created_at->format('d M Y H:i') }}</span>
+                    </div>
+                    <div class="flex items-center justify-between p-3 bg-gray-50 rounded-lg">
+                        <span class="text-gray-600">Diperbarui</span>
+                        <span
+                            class="font-medium text-gray-900">{{ $monitoring->updated_at->format('d M Y H:i') }}</span>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
+
+    <style>
+        /* Card hover animation */
+        .card-hover {
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .card-hover:hover {
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-lg);
+        }
+
+        /* Gradient background animation */
+        .bg-gradient-to-br {
+            transition: all 0.3s ease;
+        }
+
+        .bg-gradient-to-br:hover {
+            transform: scale(1.02);
+        }
+
+        /* Status badge animation */
+        .status-badge {
+            transition: all 0.3s ease;
+        }
+
+        .status-badge:hover {
+            transform: scale(1.05);
+        }
+
+        /* Icon animation */
+        .group:hover .fa-bullseye,
+        .group:hover .fa-check-double,
+        .group:hover .fa-search,
+        .group:hover .fa-lightbulb,
+        .group:hover .fa-info-circle {
+            animation: pulse 1s infinite;
+        }
+
+        @keyframes pulse {
+
+            0%,
+            100% {
+                transform: scale(1);
+            }
+
+            50% {
+                transform: scale(1.1);
+            }
+        }
+
+        /* Button animation */
+        .btn-animate {
+            position: relative;
+            overflow: hidden;
+        }
+
+        .btn-animate::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+            transition: left 0.6s;
+        }
+
+        .btn-animate:hover::before {
+            left: 100%;
+        }
+    </style>
 </x-app-layout>

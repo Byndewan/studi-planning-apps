@@ -1,380 +1,311 @@
 <x-app-layout>
     <x-slot name="header">
-        <div>
-            <h1 class="text-2xl font-bold text-gray-900">{{ $course->code }} - {{ $course->name }}</h1>
-            <p class="text-gray-600 mt-1">{{ $course->semester->name }}</p>
+        <div class="flex items-center justify-between">
+            <div>
+                <h1 class="text-3xl font-bold text-gray-900 tracking-tight">{{ $course->code }} - {{ $course->name }}</h1>
+                <p class="text-gray-600 mt-1">{{ $course->semester->name }}</p>
+            </div>
+            <x-slot name="headerActions">
+                <a href="{{ route('courses.edit', $course) }}" class="btn-primary">
+                    <i class="fas fa-edit mr-2"></i>
+                    Edit
+                </a>
+                <a href="{{ route('semesters.show', $course->semester) }}" class="btn-secondary">
+                    <i class="fas fa-arrow-left mr-2"></i>
+                    Kembali
+                </a>
+            </x-slot>
         </div>
-        <x-slot name="headerActions">
-            <a href="{{ route('courses.edit', $course) }}" class="btn-secondary">
-                <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                        d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z">
-                    </path>
-                </svg>
-                Edit
-            </a>
-            <a href="{{ route('semesters.show', $course->semester) }}" class="btn-secondary">
-                Back to Semester
-            </a>
-        </x-slot>
     </x-slot>
 
-    <div class="space-y-6">
-        <!-- Course Info -->
-        <div class="card">
-            <div class="p-6">
-                <div class="grid grid-cols-1 md:grid-cols-4 gap-6">
-                    <div>
-                        <p class="text-sm font-medium text-gray-600">Course Code</p>
-                        <p class="text-lg font-semibold text-gray-900 mt-1">{{ $course->code }}</p>
-                    </div>
-                    <div>
-                        <p class="text-sm font-medium text-gray-600">SKS</p>
-                        <p class="text-lg font-semibold text-gray-900 mt-1">{{ $course->sks }}</p>
-                    </div>
-                    <div>
-                        <p class="text-sm font-medium text-gray-600">Total Modules</p>
-                        <p class="text-lg font-semibold text-gray-900 mt-1">{{ $course->total_modules }}</p>
-                    </div>
-                    <div>
-                        <p class="text-sm font-medium text-gray-600">Semester</p>
-                        <p class="text-lg font-semibold text-gray-900 mt-1">{{ $course->semester->name }}</p>
+    <div class="space-y-8">
+        <!-- Course Info Cards -->
+        <div class="grid grid-cols-1 md:grid-cols-4 gap-6">
+            <div class="card card-hover group">
+                <div class="p-6">
+                    <div class="flex items-center justify-between">
+                        <div>
+                            <p class="text-sm font-medium text-gray-600">Kode</p>
+                            <p class="text-2xl font-bold text-gray-900 group-hover:text-blue-600 transition-colors">{{ $course->code }}</p>
+                        </div>
+                        <div class="w-12 h-12 bg-gradient-to-br from-blue-50 to-blue-100 rounded-xl flex items-center justify-center shadow-sm group-hover:shadow-md transition-all duration-300">
+                            <i class="fas fa-hashtag text-blue-600 text-xl"></i>
+                        </div>
                     </div>
                 </div>
+            </div>
 
-                @if ($course->notes)
-                    <div class="mt-6">
-                        <p class="text-sm font-medium text-gray-600">Notes</p>
-                        <p class="text-gray-900 mt-2">{{ $course->notes }}</p>
+            <div class="card card-hover group">
+                <div class="p-6">
+                    <div class="flex items-center justify-between">
+                        <div>
+                            <p class="text-sm font-medium text-gray-600">SKS</p>
+                            <p class="text-2xl font-bold text-gray-900 group-hover:text-green-600 transition-colors">{{ $course->sks }}</p>
+                        </div>
+                        <div class="w-12 h-12 bg-gradient-to-br from-green-50 to-green-100 rounded-xl flex items-center justify-center shadow-sm group-hover:shadow-md transition-all duration-300">
+                            <i class="fas fa-coins text-green-600 text-xl"></i>
+                        </div>
                     </div>
-                @endif
+                </div>
+            </div>
+
+            <div class="card card-hover group">
+                <div class="p-6">
+                    <div class="flex items-center justify-between">
+                        <div>
+                            <p class="text-sm font-medium text-gray-600">Total Modul</p>
+                            <p class="text-2xl font-bold text-gray-900 group-hover:text-purple-600 transition-colors">{{ $course->total_modules }}</p>
+                        </div>
+                        <div class="w-12 h-12 bg-gradient-to-br from-purple-50 to-purple-100 rounded-xl flex items-center justify-center shadow-sm group-hover:shadow-md transition-all duration-300">
+                            <i class="fas fa-layer-group text-purple-600 text-xl"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card card-hover group">
+                <div class="p-6">
+                    <div class="flex items-center justify-between">
+                        <div>
+                            <p class="text-sm font-medium text-gray-600">Status</p>
+                            <p class="text-2xl font-bold text-gray-900 group-hover:text-yellow-600 transition-colors">Aktif</p>
+                        </div>
+                        <div class="w-12 h-12 bg-gradient-to-br from-yellow-50 to-yellow-100 rounded-xl flex items-center justify-center shadow-sm group-hover:shadow-md transition-all duration-300">
+                            <i class="fas fa-play-circle text-yellow-600 text-xl"></i>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
 
-        <!-- Course Statistics -->
+        <!-- Statistics Cards -->
         <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
-            <div class="card">
-                <div class="p-6">
+            <div class="card card-hover">
+                <div class="card-header">
                     <div class="flex items-center justify-between">
-                        <div>
-                            <p class="text-sm font-medium text-gray-600">Weekly Plans</p>
-                            <p class="text-2xl font-bold text-gray-900 mt-1">{{ $course->weeklyPlans->count() }}</p>
+                        <h3 class="text-lg font-semibold text-gray-900 flex items-center">
+                            <i class="fas fa-calendar-week mr-3 text-blue-600"></i>
+                            Rencana Mingguan
+                        </h3>
+                        <a href="{{ route('weekly-plans.create') }}?course_id={{ $course->id }}" class="text-sm text-blue-600 hover:text-blue-700 font-medium">
+                            <i class="fas fa-plus mr-1"></i>
+                            Tambah
+                        </a>
+                    </div>
+                </div>
+                <div class="p-6">
+                    <div class="flex items-center justify-between mb-4">
+                        <span class="text-sm text-gray-600">Total Rencana</span>
+                        <span class="text-2xl font-bold text-gray-900">{{ $course->weeklyPlans->count() }}</span>
+                    </div>
+                    <div class="w-full bg-gray-100 rounded-full h-2 overflow-hidden">
+                        <div class="bg-gradient-to-r from-blue-400 to-blue-500 h-2 rounded-full transition-all duration-1000"
+                             style="width: {{ $course->weeklyPlans->where('status', 'completed')->count() / max($course->weeklyPlans->count(), 1) * 100 }}%"></div>
+                    </div>
+                    <p class="text-xs text-gray-500 mt-2">
+                        {{ $course->weeklyPlans->where('status', 'completed')->count() }} dari {{ $course->weeklyPlans->count() }} rencana selesai
+                    </p>
+                </div>
+            </div>
+
+            <div class="card card-hover">
+                <div class="card-header">
+                    <div class="flex items-center justify-between">
+                        <h3 class="text-lg font-semibold text-gray-900 flex items-center">
+                            <i class="fas fa-chart-line mr-3 text-green-600"></i>
+                            Monitoring
+                        </h3>
+                        <a href="{{ route('monitorings.create') }}?course_id={{ $course->id }}" class="text-sm text-green-600 hover:text-green-700 font-medium">
+                            <i class="fas fa-plus mr-1"></i>
+                            Tambah
+                        </a>
+                    </div>
+                </div>
+                <div class="p-6">
+                    <div class="flex items-center justify-between mb-4">
+                        <span class="text-sm text-gray-600">Total Sesi</span>
+                        <span class="text-2xl font-bold text-gray-900">{{ $course->monitorings->count() }}</span>
+                    </div>
+                    <div class="space-y-2">
+                        @php
+                            $achieved = $course->monitorings->where('achieved', true)->count();
+                            $total = $course->monitorings->count();
+                            $percentage = $total > 0 ? ($achieved / $total) * 100 : 0;
+                        @endphp
+                        <div class="flex justify-between text-xs">
+                            <span class="text-gray-600">Tercapai</span>
+                            <span class="font-medium text-green-600">{{ $achieved }} ({{ round($percentage) }}%)</span>
                         </div>
-                        <div class="w-12 h-12 bg-blue-100 rounded-xl flex items-center justify-center">
-                            <x-icons.plan class="w-6 h-6 text-blue-600" />
+                        <div class="w-full bg-gray-100 rounded-full h-2 overflow-hidden">
+                            <div class="bg-gradient-to-r from-green-400 to-green-500 h-2 rounded-full transition-all duration-1000"
+                                 style="width: {{ $percentage }}%"></div>
                         </div>
                     </div>
                 </div>
             </div>
 
-            <div class="card">
-                <div class="p-6">
+            <div class="card card-hover">
+                <div class="card-header">
                     <div class="flex items-center justify-between">
-                        <div>
-                            <p class="text-sm font-medium text-gray-600">Study Sessions</p>
-                            <p class="text-2xl font-bold text-gray-900 mt-1">{{ $course->monitorings->count() }}</p>
-                        </div>
-                        <div class="w-12 h-12 bg-green-100 rounded-xl flex items-center justify-center">
-                            <x-icons.monitor class="w-6 h-6 text-green-600" />
-                        </div>
+                        <h3 class="text-lg font-semibold text-gray-900 flex items-center">
+                            <i class="fas fa-book-open mr-3 text-purple-600"></i>
+                            SQ3R Sessions
+                        </h3>
+                        <a href="{{ route('sq3r.create') }}?course_id={{ $course->id }}" class="text-sm text-purple-600 hover:text-purple-700 font-medium">
+                            <i class="fas fa-plus mr-1"></i>
+                            Baru
+                        </a>
                     </div>
                 </div>
-            </div>
-
-            <div class="card">
                 <div class="p-6">
-                    <div class="flex items-center justify-between">
-                        <div>
-                            <p class="text-sm font-medium text-gray-600">SQ3R Sessions</p>
-                            <p class="text-2xl font-bold text-gray-900 mt-1">{{ $course->sq3rSessions->count() }}</p>
-                        </div>
-                        <div class="w-12 h-12 bg-yellow-100 rounded-xl flex items-center justify-center">
-                            <x-icons.book class="w-6 h-6 text-yellow-600" />
-                        </div>
+                    <div class="flex items-center justify-between mb-4">
+                        <span class="text-sm text-gray-600">Total Sesi</span>
+                        <span class="text-2xl font-bold text-gray-900">{{ $course->sq3rSessions->count() }}</span>
                     </div>
+                    @if($course->sq3rSessions->isNotEmpty())
+                        <div class="space-y-2">
+                            @php
+                                $completed = $course->sq3rSessions->where('review_notes', '!=', '')->count();
+                                $total = $course->sq3rSessions->count();
+                                $percentage = $total > 0 ? ($completed / $total) * 100 : 0;
+                            @endphp
+                            <div class="flex justify-between text-xs">
+                                <span class="text-gray-600">Selesai</span>
+                                <span class="font-medium text-purple-600">{{ $completed }} ({{ round($percentage) }}%)</span>
+                            </div>
+                            <div class="w-full bg-gray-100 rounded-full h-2 overflow-hidden">
+                                <div class="bg-gradient-to-r from-purple-400 to-purple-500 h-2 rounded-full transition-all duration-1000"
+                                     style="width: {{ $percentage }}%"></div>
+                            </div>
+                        </div>
+                    @else
+                        <p class="text-sm text-gray-500">Belum ada sesi SQ3R</p>
+                    @endif
                 </div>
             </div>
         </div>
 
-        <!-- Tabs Navigation -->
-        <div class="card">
-            <div class="border-b border-gray-200">
-                <nav class="flex space-x-8 px-6 py-1">
-                    <button data-tab-button="weekly"
-                        class="py-4 px-1 border-b-2 font-medium text-sm hover:text-gray-700 hover:border-gray-300 rounded-lg">
-                        Weekly Plans
-                    </button>
-                    <button data-tab-button="monitoring"
-                        class="py-4 px-1 border-b-2 font-medium text-sm hover:text-gray-700 hover:border-gray-300 rounded-lg">
-                        Monitoring
-                    </button>
-                    <button data-tab-button="sq3r"
-                        class="py-4 px-1 border-b-2 font-medium text-sm hover:text-gray-700 hover:border-gray-300 rounded-lg">
-                        SQ3R Sessions
-                    </button>
-                    <button data-tab-button="concepts"
-                        class="py-4 px-1 border-b-2 font-medium text-sm hover:text-gray-700 hover:border-gray-300 rounded-lg">
-                        Concept Maps
-                    </button>
-                </nav>
+        <!-- Recent Activity -->
+        {{-- @if($recentActivities->isNotEmpty())
+            <div class="card card-hover">
+                <div class="card-header">
+                    <h3 class="text-lg font-semibold text-gray-900 flex items-center">
+                        <i class="fas fa-history mr-3 text-blue-600"></i>
+                        Aktivitas Terbaru
+                    </h3>
+                </div>
+                <div class="divide-y divide-gray-200">
+                    @foreach($recentActivities as $activity)
+                        <div class="p-6 hover:bg-gray-50/50 transition-all duration-200">
+                            <div class="flex items-start space-x-4">
+                                <div class="w-10 h-10 bg-gradient-to-br from-blue-50 to-blue-100 rounded-xl flex items-center justify-center flex-shrink-0">
+                                    <i class="fas fa-bolt text-blue-600"></i>
+                                </div>
+                                <div class="flex-1">
+                                    <p class="text-sm font-semibold text-gray-900">{{ $activity['title'] }}</p>
+                                    <p class="text-sm text-gray-600 mt-1">{{ $activity['description'] }}</p>
+                                    <p class="text-xs text-gray-500 mt-2">{{ $activity['time'] }}</p>
+                                </div>
+                            </div>
+                        </div>
+                    @endforeach
+                </div>
             </div>
+        @endif --}}
 
-            <div x-data="{ activeTab: 'weekly' }" class="p-6">
-                <!-- Weekly Plans Tab -->
-                <div data-tab-content="weekly" class="space-y-4">
-                    <div class="flex justify-between items-center">
-                        <h3 class="text-lg font-medium text-gray-900">Weekly Study Plans</h3>
-                        <a href="{{ route('weekly-plans.create') }}?course_id={{ $course->id }}"
-                            class="btn-primary text-sm">
-                            Add Plan
-                        </a>
-                    </div>
-
-                    @if ($course->weeklyPlans->isEmpty())
-                        <div class="text-center py-8">
-                            <p class="text-gray-500">No weekly plans yet.</p>
-                        </div>
-                    @else
-                        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-                            @foreach ($course->weeklyPlans as $plan)
-                                <div class="card">
-                                    <div class="p-4 border-b border-gray-100">
-                                        <div class="flex justify-between items-center">
-                                            <h4 class="font-medium">Week {{ $plan->week_number }}</h4>
-                                            <span class="status-badge status-{{ $plan->status }}">
-                                                {{ ucfirst(str_replace('_', ' ', $plan->status)) }}
-                                            </span>
-                                        </div>
-                                    </div>
-                                    <div class="p-4">
-                                        <p class="text-sm text-gray-600 mb-3">{{ $plan->target_text }}</p>
-                                        <div class="flex justify-between items-center text-xs text-gray-500">
-                                            <span>{{ $plan->planned_hours }} hours planned</span>
-                                            <span>{{ $plan->num_pages }} pages</span>
-                                        </div>
-                                    </div>
-                                </div>
-                            @endforeach
-                        </div>
-                    @endif
-                </div>
-
-                <!-- Monitoring Tab -->
-                <div data-tab-content="monitoring" class="space-y-4">
-                    <div class="flex justify-between items-center">
-                        <h3 class="text-lg font-medium text-gray-900">Study Monitoring</h3>
-                        <a href="{{ route('monitorings.create') }}?course_id={{ $course->id }}"
-                            class="btn-primary text-sm">
-                            Add Entry
-                        </a>
-                    </div>
-
-                    @if ($course->monitorings->isEmpty())
-                        <div class="text-center py-8">
-                            <p class="text-gray-500">No monitoring entries yet.</p>
-                        </div>
-                    @else
-                        <div class="overflow-x-auto">
-                            <table class="min-w-full">
-                                <thead>
-                                    <tr>
-                                        <th>Date</th>
-                                        <th>Week</th>
-                                        <th>Planned</th>
-                                        <th>Achieved</th>
-                                        <th>Actions</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    @foreach ($course->monitorings as $monitoring)
-                                        <tr class="hover:bg-gray-50">
-                                            <td>{{ $monitoring->date->format('M d, Y') }}</td>
-                                            <td>Week {{ $monitoring->week_number }}</td>
-                                            <td>{{ Str::limit($monitoring->planned, 50) }}</td>
-                                            <td>
-                                                <span
-                                                    class="status-badge {{ $monitoring->achieved ? 'status-completed' : 'status-missed' }}">
-                                                    {{ $monitoring->achieved ? 'Yes' : 'No' }}
-                                                </span>
-                                            </td>
-                                            <td>
-                                                <a href="{{ route('monitorings.show', $monitoring) }}"
-                                                    class="text-indigo-600 hover:text-indigo-900">View</a>
-                                            </td>
-                                        </tr>
-                                    @endforeach
-                                </tbody>
-                            </table>
-                        </div>
-                    @endif
-                </div>
-
-                <!-- SQ3R Tab -->
-                <div data-tab-content="sq3r" class="space-y-4">
-                    <div class="flex justify-between items-center">
-                        <h3 class="text-lg font-medium text-gray-900">SQ3R Sessions</h3>
-                        <a href="{{ route('sq3r.create') }}?course_id={{ $course->id }}"
-                            class="btn-primary text-sm">
-                            New Session
-                        </a>
-                    </div>
-
-                    @if ($course->sq3rSessions->isEmpty())
-                        <div class="text-center py-8">
-                            <p class="text-gray-500">No SQ3R sessions yet.</p>
-                        </div>
-                    @else
-                        <div class="grid grid-cols-1 gap-4">
-                            @foreach ($course->sq3rSessions as $session)
-                                <div class="card">
-                                    <div class="p-4 border-b border-gray-100">
-                                        <div class="flex justify-between items-center">
-                                            <h4 class="font-medium">{{ $session->module_title }}</h4>
-                                            <span
-                                                class="text-sm text-gray-500">{{ $session->created_at->format('M d, Y') }}</span>
-                                        </div>
-                                    </div>
-                                    <div class="p-4">
-                                        <p class="text-sm text-gray-600 line-clamp-2">
-                                            {{ Str::limit($session->review_notes ?: $session->read_notes, 100) }}
-                                        </p>
-                                        @php
-                                            $questions = is_array($session->questions)
-                                                ? $session->questions
-                                                : json_decode($session->questions, true) ?? [];
-                                        @endphp
-                                        <div class="mt-3 flex justify-between items-center">
-                                            <span class="text-xs text-gray-500">
-                                                {{ count($questions) }} questions
-                                            </span>
-                                            <a href="{{ route('sq3r.show', $session) }}"
-                                                class="text-indigo-600 hover:text-indigo-900 text-sm">
-                                                View Details
-                                            </a>
-                                        </div>
-                                    </div>
-                                </div>
-                            @endforeach
-                        </div>
-                    @endif
-                </div>
-
-                <!-- Concept Maps Tab -->
-                <div data-tab-content="concepts" class="space-y-4">
-                    <div class="flex justify-between items-center">
-                        <h3 class="text-lg font-medium text-gray-900">Concept Maps</h3>
-                        <a href="{{ route('concept-maps.create') }}?course_id={{ $course->id }}"
-                            class="btn-primary text-sm">
-                            New Map
-                        </a>
-                    </div>
-
-                    @if ($course->conceptMaps->isEmpty())
-                        <div class="text-center py-8">
-                            <p class="text-gray-500">No concept maps yet.</p>
-                        </div>
-                    @else
-                        <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
-                            @foreach ($course->conceptMaps as $map)
-                                <div class="card">
-                                    <div class="p-4 border-b border-gray-100">
-                                        <h4 class="font-medium">{{ $map->title }}</h4>
-                                    </div>
-                                    <div class="p-4">
-                                        <div
-                                            class="aspect-video bg-gray-100 rounded-lg mb-3 flex items-center justify-center">
-                                            <canvas id="map-preview-{{ $map->id }}"
-                                                class="w-full h-full"></canvas>
-                                        </div>
-                                        <div class="flex justify-between items-center">
-                                            @php
-                                                $nodes = is_array($map->nodes)
-                                                    ? $map->nodes
-                                                    : json_decode($map->nodes, true) ?? [];
-                                            @endphp
-                                            <span class="text-xs text-gray-500">
-                                                {{ count($nodes) }} nodes
-                                            </span>
-                                            <a href="{{ route('concept-maps.show', $map) }}"
-                                                class="text-indigo-600 hover:text-indigo-900 text-sm">
-                                                View Map
-                                            </a>
-                                        </div>
-                                    </div>
-                                </div>
-                            @endforeach
-                        </div>
-                    @endif
-                </div>
+        <!-- Action Buttons -->
+        <div class="flex justify-between items-center p-6 bg-gradient-to-r from-gray-50 to-blue-50 rounded-2xl border border-gray-200">
+            <div>
+                <p class="text-sm text-gray-600">Terakhir diperbarui: {{ $course->updated_at->diffForHumans() }}</p>
+            </div>
+            <div class="flex space-x-3">
+                <form action="{{ route('courses.destroy', $course) }}" method="POST"
+                    onsubmit="return confirm('Apakah Anda yakin ingin menghapus mata kuliah ini? Semua data terkait akan ikut terhapus.')">
+                    @csrf
+                    @method('DELETE')
+                    <button type="submit" class="btn-secondary bg-red-50 text-red-600 hover:bg-red-100 border-red-200">
+                        <i class="fas fa-trash mr-2"></i>
+                        Hapus
+                    </button>
+                </form>
+                <a href="{{ route('courses.edit', $course) }}" class="btn-primary">
+                    <i class="fas fa-edit mr-2"></i>
+                    Edit Mata Kuliah
+                </a>
             </div>
         </div>
     </div>
 
+    <style>
+        /* Card hover animation */
+        .card-hover {
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .card-hover:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+        }
+
+        /* Progress bar animation */
+        .progress-fill {
+            transition: width 1s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        /* Icon animation */
+        .group:hover .fa-tachometer-alt,
+        .group:hover .fa-calendar-alt,
+        .group:hover .fa-calendar-week,
+        .group:hover .fa-chart-line,
+        .group:hover .fa-book-open,
+        .group:hover .fa-project-diagram {
+            animation: pulse 1s infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.1); }
+        }
+
+        /* Button animation */
+        .btn-animate {
+            position: relative;
+            overflow: hidden;
+        }
+
+        .btn-animate::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+            transition: left 0.6s;
+        }
+
+        .btn-animate:hover::before {
+            left: 100%;
+        }
+    </style>
+
     <script>
+        // Add smooth animations to cards
         document.addEventListener('DOMContentLoaded', function() {
-            const tabButtons = document.querySelectorAll('[data-tab-button]');
-            const tabContents = document.querySelectorAll('[data-tab-content]');
-
-            tabButtons.forEach(button => {
-                button.addEventListener('click', function() {
-                    const tabName = this.getAttribute('data-tab-button');
-
-                    tabContents.forEach(content => {
-                        content.classList.add('hidden');
-                    });
-
-                    const selectedContent = document.querySelector(
-                        `[data-tab-content="${tabName}"]`);
-                    if (selectedContent) {
-                        selectedContent.classList.remove('hidden');
-                    }
-
-                    tabButtons.forEach(btn => {
-                        btn.classList.remove('border-indigo-300', 'text-indigo-500',
-                            'bg-indigo-50');
-                        btn.classList.add('border-transparent', 'text-gray-500',
-                            'bg-gray-100');
-                    });
-
-                    this.classList.add('border-indigo-300', 'text-indigo-500', 'bg-indigo-50');
-                    this.classList.remove('border-transparent', 'text-gray-500', 'bg-gray-100');
-                });
+            const cards = document.querySelectorAll('.card');
+            cards.forEach((card, index) => {
+                card.style.animation = `fadeInUp 0.6s ease-out ${index * 0.1}s both`;
             });
 
-            const firstTab = document.querySelector('[data-tab-button]');
-            if (firstTab) {
-                firstTab.click();
-            }
-        });
+            // Add hover effects to stat cards
+            const statCards = document.querySelectorAll('.group');
+            statCards.forEach(card => {
+                card.addEventListener('mouseenter', function() {
+                    this.querySelector('.text-2xl').style.transform = 'scale(1.05)';
+                });
 
-        document.addEventListener("DOMContentLoaded", () => {
-            const maps = @json($course->conceptMaps);
-
-            maps.forEach(map => {
-                const nodes = typeof map.nodes === "string" ? JSON.parse(map.nodes) : map.nodes;
-                const canvas = document.getElementById("map-preview-" + map.id);
-                if (!canvas || !nodes.length) return;
-
-                const ctx = canvas.getContext("2d");
-                const scale = window.devicePixelRatio || 1;
-                canvas.width = 300 * scale;
-                canvas.height = 150 * scale;
-                ctx.scale(scale, scale);
-
-                const nodeWidth = 30;
-                const nodeHeight = 20;
-                const spacing = 10;
-
-                nodes.slice(0, 15).forEach((node, i) => {
-                    const x = (i % 5) * (nodeWidth + spacing) + 10;
-                    const y = Math.floor(i / 5) * (nodeHeight + spacing) + 10;
-
-                    ctx.fillStyle = node.color || "#6366f1";
-                    ctx.fillRect(x, y, nodeWidth, nodeHeight);
-
-                    ctx.fillStyle = "#fff";
-                    ctx.font = "8px sans-serif";
-                    ctx.fillText(node.id || "N", x + 3, y + 12);
+                card.addEventListener('mouseleave', function() {
+                    this.querySelector('.text-2xl').style.transform = 'scale(1)';
                 });
             });
         });

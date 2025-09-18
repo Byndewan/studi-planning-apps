@@ -1,40 +1,40 @@
 <x-app-layout>
     <x-slot name="header">
-        <div>
-            <h1 class="text-2xl font-bold text-gray-900">SQ3R Sessions</h1>
-            <p class="text-gray-600 mt-1">Active reading sessions using the SQ3R method</p>
+        <div class="flex items-center justify-between">
+            <div>
+                <h1 class="text-3xl font-bold text-gray-900 tracking-tight">SQ3R Sessions</h1>
+                <p class="text-gray-600 mt-1">Sesi membaca aktif menggunakan metode SQ3R</p>
+            </div>
+            <x-slot name="headerActions">
+                <a href="{{ route('sq3r.create') }}" class="btn-primary">
+                    <i class="fas fa-plus mr-2"></i>
+                    Sesi Baru
+                </a>
+            </x-slot>
         </div>
-        <x-slot name="headerActions">
-            <a href="{{ route('sq3r.create') }}" class="btn-primary">
-                <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"></path>
-                </svg>
-                New Session
-            </a>
-        </x-slot>
     </x-slot>
 
-    <div class="space-y-6">
+    <div class="space-y-8">
         <!-- Filters -->
-        <div class="card">
+        <div class="card card-hover">
             <div class="p-6">
-                <form class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                <form class="grid grid-cols-1 md:grid-cols-3 gap-4" id="sq3r-filter">
                     <div>
-                        <label class="form-label">Course</label>
+                        <label class="form-label">Mata Kuliah</label>
                         <select class="form-input">
-                            <option value="">All Courses</option>
+                            <option value="">Semua Mata Kuliah</option>
                             @foreach (auth()->user()->courses as $course)
                                 <option value="{{ $course->id }}">{{ $course->name }}</option>
                             @endforeach
                         </select>
                     </div>
                     <div>
-                        <label class="form-label">Module</label>
-                        <input type="text" class="form-input" placeholder="Search by module title">
+                        <label class="form-label">Modul</label>
+                        <input type="text" class="form-input" placeholder="Cari berdasarkan judul modul">
                     </div>
                     <div>
-                        <label class="form-label">Date Range</label>
-                        <input type="text" class="form-input" placeholder="Select date range">
+                        <label class="form-label">Rentang Tanggal</label>
+                        <input type="text" class="form-input" placeholder="Pilih rentang tanggal">
                     </div>
                 </form>
             </div>
@@ -42,39 +42,55 @@
 
         <!-- SQ3R Sessions -->
         @if ($sessions->isEmpty())
-            <div class="card">
-                <div class="empty-state">
-                    <div class="w-20 h-20 bg-gray-100 rounded-xl flex items-center justify-center mx-auto mb-4">
-                        <x-icons.book class="w-8 h-8 text-gray-400" />
+            <div class="card card-hover">
+                <div class="empty-state py-16">
+                    <div class="w-20 h-20 bg-gradient-to-br from-purple-100 to-blue-100 rounded-2xl flex items-center justify-center mx-auto mb-6 shadow-sm">
+                        <i class="fas fa-book-open text-purple-400 text-3xl"></i>
                     </div>
-                    <h3 class="text-lg font-medium text-gray-900">No SQ3R sessions yet</h3>
-                    <p class="text-gray-600 mt-2">Start your active reading journey by creating your first SQ3R session.
-                    </p>
+                    <h3 class="text-xl font-semibold text-gray-900 mb-3">Belum ada sesi SQ3R</h3>
+                    <p class="text-gray-600 mb-6">Mulai perjalanan membaca aktif Anda dengan membuat sesi SQ3R pertama</p>
                     <a href="{{ route('sq3r.create') }}" class="btn-primary">
-                        New Session
+                        <i class="fas fa-plus mr-2"></i>
+                        Sesi Baru
                     </a>
                 </div>
             </div>
         @else
-            <div class="space-y-4">
+            <div class="space-y-6">
                 @foreach ($sessions as $session)
-                    <div class="card hover:shadow-lg transition-shadow">
+                    <div class="card card-hover sq3r-item"
+                         data-course="{{ $session->course_id }}"
+                         data-module="{{ strtolower($session->module_title) }}">
                         <div class="p-6">
-                            <div class="flex justify-between items-start mb-4">
-                                <div>
-                                    <h3 class="text-lg font-semibold text-gray-900">{{ $session->module_title }}</h3>
-                                    <p class="text-sm text-gray-600 mt-1">
-                                        {{ $session->course->name }} • {{ $session->created_at->format('M d, Y') }}
-                                    </p>
+                            <div class="flex items-start justify-between mb-6">
+                                <div class="flex items-start space-x-4">
+                                    <div class="w-12 h-12 bg-gradient-to-br from-purple-50 to-blue-50 rounded-xl flex items-center justify-center flex-shrink-0 shadow-sm">
+                                        <i class="fas fa-book-open text-purple-600 text-lg"></i>
+                                    </div>
+                                    <div class="flex-1">
+                                        <h3 class="text-lg font-semibold text-gray-900 mb-1">{{ $session->module_title }}</h3>
+                                        <div class="flex items-center space-x-4 text-sm text-gray-500">
+                                            <span class="flex items-center">
+                                                <i class="fas fa-book mr-1"></i>
+                                                {{ $session->course->name }}
+                                            </span>
+                                            <span class="flex items-center">
+                                                <i class="far fa-calendar mr-1"></i>
+                                                {{ $session->created_at->format('d M Y') }}
+                                            </span>
+                                        </div>
+                                    </div>
                                 </div>
                                 <div class="flex items-center space-x-2">
                                     @if ($session->review_notes)
                                         <span class="status-badge status-completed">
-                                            Completed
+                                            <i class="fas fa-check mr-1"></i>
+                                            Selesai
                                         </span>
                                     @else
                                         <span class="status-badge status-in-progress">
-                                            In Progress
+                                            <i class="fas fa-clock mr-1"></i>
+                                            Dalam Proses
                                         </span>
                                     @endif
                                 </div>
@@ -82,34 +98,27 @@
 
                             <!-- Progress Steps -->
                             <div class="mb-6">
-                                <div class="flex items-center justify-between text-xs text-gray-500 mb-2">
-                                    <span>Survey</span>
-                                    <span>Questions</span>
-                                    <span>Read</span>
-                                    <span>Recite</span>
-                                    <span>Review</span>
+                                <div class="flex items-center justify-between text-xs text-gray-500 mb-3">
+                                    <span class="flex items-center {{ $session->survey_notes ? 'text-green-600' : 'text-gray-400' }}">
+                                        <i class="fas fa-search mr-1"></i> Survey
+                                    </span>
+                                    <span class="flex items-center {{ $session->questions ? 'text-green-600' : 'text-gray-400' }}">
+                                        <i class="fas fa-question mr-1"></i> Question
+                                    </span>
+                                    <span class="flex items-center {{ $session->read_notes ? 'text-green-600' : 'text-gray-400' }}">
+                                        <i class="fas fa-book-reader mr-1"></i> Read
+                                    </span>
+                                    <span class="flex items-center {{ $session->recite_notes ? 'text-green-600' : 'text-gray-400' }}">
+                                        <i class="fas fa-comment-alt mr-1"></i> Recite
+                                    </span>
+                                    <span class="flex items-center {{ $session->review_notes ? 'text-green-600' : 'text-gray-400' }}">
+                                        <i class="fas fa-sync-alt mr-1"></i> Review
+                                    </span>
                                 </div>
                                 <div class="progress-bar">
                                     <div class="progress-fill"
-                                        style="width: {{ $session->review_notes ? '100%' : ($session->recite_notes ? '80%' : ($session->read_notes ? '60%' : ($session->questions ? '40%' : ($session->survey_notes ? '20%' : '0%')))) }}">
-                                    </div>
+                                         style="width: {{ $session->review_notes ? '100%' : ($session->recite_notes ? '80%' : ($session->read_notes ? '60%' : ($session->questions ? '40%' : ($session->survey_notes ? '20%' : '0%')))) }}"></div>
                                 </div>
-                            </div>
-
-                            <!-- Preview -->
-                            <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-4">
-                                @if ($session->survey_notes)
-                                    <div>
-                                        <p class="text-sm font-medium text-gray-600 mb-2">Survey Notes</p>
-                                        <p class="text-gray-900 text-sm line-clamp-3">{{ $session->survey_notes }}</p>
-                                    </div>
-                                @endif
-                                @if ($session->review_notes)
-                                    <div>
-                                        <p class="text-sm font-medium text-gray-600 mb-2">Review Notes</p>
-                                        <p class="text-gray-900 text-sm line-clamp-3">{{ $session->review_notes }}</p>
-                                    </div>
-                                @endif
                             </div>
 
                             <!-- Questions Preview -->
@@ -121,15 +130,15 @@
 
                             @if (count($questions) > 0)
                                 <div class="mb-4">
-                                    <p class="text-sm font-medium text-gray-600 mb-2">Questions</p>
+                                    <p class="text-sm font-medium text-gray-600 mb-2">Pertanyaan:</p>
                                     <div class="space-y-1">
                                         @foreach (array_slice($questions, 0, 3) as $question)
-                                            <p class="text-sm text-gray-900">• {{ $question }}</p>
+                                            <p class="text-sm text-gray-700">• {{ $question }}</p>
                                         @endforeach
 
                                         @if (count($questions) > 3)
                                             <p class="text-sm text-gray-500">
-                                                +{{ count($questions) - 3 }} more questions
+                                                +{{ count($questions) - 3 }} pertanyaan lainnya
                                             </p>
                                         @endif
                                     </div>
@@ -138,7 +147,8 @@
 
                             <div class="flex justify-end">
                                 <a href="{{ route('sq3r.show', $session) }}" class="btn-secondary">
-                                    Continue Session
+                                    <i class="fas fa-play mr-2"></i>
+                                    Lanjutkan Sesi
                                 </a>
                             </div>
                         </div>
@@ -146,10 +156,150 @@
                 @endforeach
 
                 <!-- Pagination -->
-                <div class="mt-6">
-                    {{ $sessions->links() }}
-                </div>
+                @if ($sessions->hasPages())
+                    <div class="mt-8">
+                        {{ $sessions->links() }}
+                    </div>
+                @endif
             </div>
         @endif
     </div>
+
+    <style>
+        /* Progress bar animation */
+        .progress-bar {
+            width: 100%;
+            height: 6px;
+            background: #f3f4f6;
+            border-radius: 3px;
+            overflow: hidden;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #8b5cf6 0%, #3b82f6 100%);
+            transition: width 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .progress-fill::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            bottom: 0;
+            right: 0;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.4), transparent);
+            animation: progressShine 2s infinite;
+        }
+
+        @keyframes progressShine {
+            0% { transform: translateX(-100%); }
+            100% { transform: translateX(100%); }
+        }
+
+        /* Card hover animation */
+        .card-hover {
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .card-hover:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+        }
+
+        /* Status badge animation */
+        .status-badge {
+            transition: all 0.2s ease;
+        }
+
+        .status-badge:hover {
+            transform: scale(1.05);
+        }
+
+        /* Icon color transition */
+        .text-green-600, .text-gray-400 {
+            transition: color 0.3s ease;
+        }
+    </style>
+
+    <script>
+        // Add smooth animations to cards
+        document.addEventListener('DOMContentLoaded', function() {
+            const cards = document.querySelectorAll('.card');
+            cards.forEach((card, index) => {
+                card.style.animation = `fadeInUp 0.6s ease-out ${index * 0.1}s both`;
+            });
+
+            // Add hover effects to progress bars
+            const progressBars = document.querySelectorAll('.progress-fill');
+            progressBars.forEach(bar => {
+                bar.addEventListener('mouseenter', function() {
+                    this.style.transform = 'scaleY(1.2)';
+                });
+
+                bar.addEventListener('mouseleave', function() {
+                    this.style.transform = 'scaleY(1)';
+                });
+            });
+        });
+
+        // Filter functionality
+        document.addEventListener('DOMContentLoaded', function() {
+            const form = document.getElementById('sq3r-filter');
+            const items = document.querySelectorAll('.sq3r-item');
+
+            if (!form || items.length === 0) return;
+
+            const inputs = form.querySelectorAll('select, input[type="text"]');
+
+            inputs.forEach(input => {
+                input.addEventListener('change', filterItems);
+                input.addEventListener('keyup', debounce(filterItems, 300));
+            });
+
+            function filterItems() {
+                const formData = new FormData(form);
+                const filters = {};
+
+                for (let [key, value] of formData.entries()) {
+                    filters[key] = value.toLowerCase();
+                }
+
+                items.forEach((item, index) => {
+                    let show = true;
+
+                    for (let [key, value] of Object.entries(filters)) {
+                        if (value && !item.matches(`[data-${key}*="${value}"], [data-${key}="${value}"]`)) {
+                            show = false;
+                            break;
+                        }
+                    }
+
+                    if (show) {
+                        item.style.display = '';
+                        item.style.animation = `fadeInUp 0.4s ease-out ${index * 0.05}s both`;
+                    } else {
+                        item.style.animation = 'fadeOut 0.3s ease-out';
+                        setTimeout(() => {
+                            item.style.display = 'none';
+                        }, 300);
+                    }
+                });
+            }
+
+            function debounce(func, wait) {
+                let timeout;
+                return function executedFunction(...args) {
+                    const later = () => {
+                        clearTimeout(timeout);
+                        func(...args);
+                    };
+                    clearTimeout(timeout);
+                    timeout = setTimeout(later, wait);
+                };
+            }
+        });
+    </script>
 </x-app-layout>

@@ -1,136 +1,268 @@
 <x-app-layout>
     <x-slot name="header">
         <div>
-            <h1 class="text-2xl font-bold text-gray-900">Study Monitoring</h1>
-            <p class="text-gray-600 mt-1">Track your study progress and performance</p>
+            <h1 class="text-2xl font-bold text-gray-900">Monitoring Belajar</h1>
+            <p class="text-gray-600 mt-1">Pantau kemajuan dan evaluasi belajar Anda</p>
         </div>
         <x-slot name="headerActions">
             <a href="{{ route('monitorings.create') }}" class="btn-primary">
-                <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"></path>
-                </svg>
-                Log Session
+                <i class="fas fa-plus mr-2"></i>
+                Catat Sesi Baru
             </a>
         </x-slot>
     </x-slot>
 
-    <div class="space-y-6">
-        <!-- Filters -->
-        <div class="card">
+    <div class="space-y-8">
+        <!-- Filter -->
+        <div class="card card-hover">
             <div class="p-6">
                 <form class="grid grid-cols-1 md:grid-cols-4 gap-4">
-                    <div>
-                        <label class="form-label">Course</label>
-                        <select class="form-input">
-                            <option value="">All Courses</option>
-                            @foreach(auth()->user()->courses as $course)
-                                <option value="{{ $course->id }}">{{ $course->name }}</option>
-                            @endforeach
-                        </select>
+                    <div class="group">
+                        <label class="form-label">Mata Kuliah</label>
+                        <div class="relative">
+                            <i class="fas fa-book absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 group-focus-within:text-blue-600 transition-colors"></i>
+                            <select class="w-full pl-10 pr-4 py-3 border border-gray-200 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all duration-200 appearance-none bg-white">
+                                <option value="">Semua Mata Kuliah</option>
+                                @foreach (auth()->user()->courses as $course)
+                                    <option value="{{ $course->id }}">{{ $course->name }}</option>
+                                @endforeach
+                            </select>
+                        </div>
                     </div>
-                    <div>
-                        <label class="form-label">Week</label>
-                        <select class="form-input">
-                            <option value="">All Weeks</option>
-                            @for($i = 1; $i <= 14; $i++)
-                                <option value="{{ $i }}">Week {{ $i }}</option>
-                            @endfor
-                        </select>
+                    <div class="group">
+                        <label class="form-label">Status Pencapaian</label>
+                        <div class="relative">
+                            <i class="fas fa-trophy absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 group-focus-within:text-blue-600 transition-colors"></i>
+                            <select class="w-full pl-10 pr-4 py-3 border border-gray-200 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all duration-200 appearance-none bg-white">
+                                <option value="">Semua Status</option>
+                                <option value="1">Tercapai</option>
+                                <option value="0">Tidak Tercapai</option>
+                            </select>
+                        </div>
                     </div>
-                    <div>
-                        <label class="form-label">Status</label>
-                        <select class="form-input">
-                            <option value="">All Status</option>
-                            <option value="achieved">Achieved</option>
-                            <option value="not_achieved">Not Achieved</option>
-                        </select>
+                    <div class="group">
+                        <label class="form-label">Dari Tanggal</label>
+                        <div class="relative">
+                            <i class="fas fa-calendar absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 group-focus-within:text-blue-600 transition-colors"></i>
+                            <input type="date" class="w-full pl-10 pr-4 py-3 border border-gray-200 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all duration-200">
+                        </div>
                     </div>
-                    <div>
-                        <label class="form-label">Date Range</label>
-                        <input type="text" class="form-input" placeholder="Select date range">
+                    <div class="group">
+                        <label class="form-label">Sampai Tanggal</label>
+                        <div class="relative">
+                            <i class="fas fa-calendar absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 group-focus-within:text-blue-600 transition-colors"></i>
+                            <input type="date" class="w-full pl-10 pr-4 py-3 border border-gray-200 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all duration-200">
+                        </div>
                     </div>
                 </form>
             </div>
         </div>
 
-        <!-- Monitoring Entries -->
-        @if($monitorings->isEmpty())
-            <div class="card">
-                <div class="empty-state">
-                    <div class="w-20 h-20 bg-gray-100 rounded-xl flex items-center justify-center mx-auto mb-4">
-                        <x-icons.monitor class="w-8 h-8 text-gray-400" />
+        <!-- Ringkasan Statistik -->
+        <div class="grid grid-cols-1 md:grid-cols-4 gap-6">
+            <div class="card card-hover group">
+                <div class="p-6">
+                    <div class="flex items-center justify-between">
+                        <div>
+                            <p class="text-sm font-medium text-gray-600">Total Sesi</p>
+                            <p class="text-2xl font-bold text-gray-900 mt-1 group-hover:text-blue-600 transition-colors">{{ $monitorings->total() }}</p>
+                        </div>
+                        <div class="w-12 h-12 bg-gradient-to-br from-blue-50 to-blue-100 rounded-xl flex items-center justify-center shadow-sm group-hover:shadow-md transition-all duration-300">
+                            <i class="fas fa-chart-line text-blue-600 text-xl"></i>
+                        </div>
                     </div>
-                    <h3 class="text-lg font-medium text-gray-900">No monitoring entries yet</h3>
-                    <p class="text-gray-600 mt-2">Start tracking your study progress by adding your first monitoring entry.</p>
-                    <a href="{{ route('monitorings.create') }}" class="btn-primary mt-6">
-                        <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"></path>
-                        </svg>
-                        Log Session
+                </div>
+            </div>
+
+            <div class="card card-hover group">
+                <div class="p-6">
+                    <div class="flex items-center justify-between">
+                        <div>
+                            <p class="text-sm font-medium text-gray-600">Tercapai</p>
+                            <p class="text-2xl font-bold text-gray-900 mt-1 group-hover:text-green-600 transition-colors">{{ $monitorings->where('achieved', true)->count() }}</p>
+                        </div>
+                        <div class="w-12 h-12 bg-gradient-to-br from-green-50 to-green-100 rounded-xl flex items-center justify-center shadow-sm group-hover:shadow-md transition-all duration-300">
+                            <i class="fas fa-check-circle text-green-600 text-xl"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card card-hover group">
+                <div class="p-6">
+                    <div class="flex items-center justify-between">
+                        <div>
+                            <p class="text-sm font-medium text-gray-600">Tidak Tercapai</p>
+                            <p class="text-2xl font-bold text-gray-900 mt-1 group-hover:text-red-600 transition-colors">{{ $monitorings->where('achieved', false)->count() }}</p>
+                        </div>
+                        <div class="w-12 h-12 bg-gradient-to-br from-red-50 to-red-100 rounded-xl flex items-center justify-center shadow-sm group-hover:shadow-md transition-all duration-300">
+                            <i class="fas fa-times-circle text-red-600 text-xl"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card card-hover group">
+                <div class="p-6">
+                    <div class="flex items-center justify-between">
+                        <div>
+                            <p class="text-sm font-medium text-gray-600">Persentase Sukses</p>
+                            <p class="text-2xl font-bold text-gray-900 mt-1 group-hover:text-purple-600 transition-colors">
+                                {{ $monitorings->count() > 0 ? round(($monitorings->where('achieved', true)->count() / $monitorings->count()) * 100) : 0 }}%
+                            </p>
+                        </div>
+                        <div class="w-12 h-12 bg-gradient-to-br from-purple-50 to-purple-100 rounded-xl flex items-center justify-center shadow-sm group-hover:shadow-md transition-all duration-300">
+                            <i class="fas fa-percentage text-purple-600 text-xl"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Daftar Monitoring -->
+        @if ($monitorings->isEmpty())
+            <div class="card card-hover">
+                <div class="empty-state py-16">
+                    <div class="w-20 h-20 bg-gradient-to-br from-gray-100 to-gray-200 rounded-2xl flex items-center justify-center mx-auto mb-6 shadow-sm">
+                        <i class="fas fa-chart-bar text-gray-400 text-3xl"></i>
+                    </div>
+                    <h3 class="text-xl font-semibold text-gray-900 mb-3">Belum ada data monitoring</h3>
+                    <p class="text-gray-600 mb-6">Mulai pantau kemajuan belajar Anda dengan mencatat sesi pertama</p>
+                    <a href="{{ route('monitorings.create') }}" class="btn-primary">
+                        <i class="fas fa-plus mr-2"></i>
+                        Catat Sesi Baru
                     </a>
                 </div>
             </div>
         @else
-            <div class="space-y-4">
-                @foreach($monitorings as $monitoring)
-                    <div class="card hover:shadow-lg transition-shadow">
-                        <div class="p-6">
-                            <div class="flex justify-between items-start mb-4">
-                                <div>
-                                    <h3 class="text-lg font-semibold text-gray-900">{{ $monitoring->course->name }}</h3>
-                                    <p class="text-sm text-gray-600 mt-1">
-                                        Week {{ $monitoring->week_number }} • {{ $monitoring->date->format('M d, Y') }}
-                                    </p>
-                                </div>
-                                <span class="status-badge {{ $monitoring->achieved ? 'status-completed' : 'status-missed' }}">
-                                    {{ $monitoring->achieved ? 'Achieved' : 'Not Achieved' }}
-                                </span>
-                            </div>
+            <div class="card card-hover overflow-hidden">
+                <div class="overflow-x-auto">
+                    <table class="min-w-full divide-y divide-gray-200">
+                        <thead class="bg-gray-50">
+                            <tr>
+                                <th scope="col" class="px-6 py-4 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                    Tanggal
+                                </th>
+                                <th scope="col" class="px-6 py-4 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                    Minggu
+                                </th>
+                                <th scope="col" class="px-6 py-4 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                    Mata Kuliah
+                                </th>
+                                <th scope="col" class="px-6 py-4 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                    Target
+                                </th>
+                                <th scope="col" class="px-6 py-4 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                    Status
+                                </th>
+                                <th scope="col" class="relative px-6 py-4">
+                                    <span class="sr-only">Aksi</span>
+                                </th>
+                            </tr>
+                        </thead>
+                        <tbody class="bg-white divide-y divide-gray-200">
+                            @foreach($monitorings as $monitoring)
+                                <tr class="hover:bg-gray-50 transition-all duration-200 group">
+                                    <td class="px-6 py-4 whitespace-nowrap">
+                                        <div class="text-sm font-medium text-gray-900">{{ $monitoring->date->format('d M Y') }}</div>
+                                    </td>
+                                    <td class="px-6 py-4 whitespace-nowrap">
+                                        <span class="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium bg-blue-100 text-blue-800">
+                                            Minggu {{ $monitoring->week_number }}
+                                        </span>
+                                    </td>
+                                    <td class="px-6 py-4">
+                                        <div class="text-sm font-medium text-gray-900">{{ $monitoring->course->name }}</div>
+                                        <div class="text-xs text-gray-500">{{ $monitoring->course->semester->name }}</div>
+                                    </td>
+                                    <td class="px-6 py-4">
+                                        <div class="text-sm text-gray-900">{{ Str::limit($monitoring->planned, 50) }}</div>
+                                    </td>
+                                    <td class="px-6 py-4 whitespace-nowrap">
+                                        <span class="status-badge {{ $monitoring->achieved ? 'bg-green-100 text-green-800' : 'bg-red-100 text-red-800' }}">
+                                            {{ $monitoring->achieved ? 'Tercapai' : 'Tidak Tercapai' }}
+                                        </span>
+                                    </td>
+                                    <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
+                                        <div class="flex items-center justify-end space-x-2">
+                                            <a href="{{ route('monitorings.show', $monitoring) }}"
+                                                class="inline-flex items-center px-3 py-1.5 text-sm font-medium text-blue-600 hover:text-blue-800 hover:bg-blue-50 rounded-lg transition-all duration-200">
+                                                <i class="fas fa-eye mr-1"></i>
+                                                Detail
+                                            </a>
+                                            <a href="{{ route('monitorings.edit', $monitoring) }}"
+                                                class="inline-flex items-center px-3 py-1.5 text-sm font-medium text-gray-600 hover:text-gray-800 hover:bg-gray-50 rounded-lg transition-all duration-200">
+                                                <i class="fas fa-edit mr-1"></i>
+                                                Edit
+                                            </a>
+                                        </div>
+                                    </td>
+                                </tr>
+                            @endforeach
+                        </tbody>
+                    </table>
+                </div>
+            </div>
 
-                            <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-4">
-                                <div>
-                                    <p class="text-sm font-medium text-gray-600 mb-2">Planned</p>
-                                    <p class="text-gray-900">{{ $monitoring->planned }}</p>
-                                </div>
-                                <div>
-                                    <p class="text-sm font-medium text-gray-600 mb-2">Actual</p>
-                                    <p class="text-gray-900">{{ $monitoring->actual }}</p>
-                                </div>
-                            </div>
-
-                            @if($monitoring->cause || $monitoring->solution)
-                                <div class="border-t border-gray-100 pt-4 mt-4">
-                                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                                        @if($monitoring->cause)
-                                            <div>
-                                                <p class="text-sm font-medium text-gray-600 mb-2">Cause of Variance</p>
-                                                <p class="text-gray-900 text-sm">{{ $monitoring->cause }}</p>
-                                            </div>
-                                        @endif
-                                        @if($monitoring->solution)
-                                            <div>
-                                                <p class="text-sm font-medium text-gray-600 mb-2">Solution</p>
-                                                <p class="text-gray-900 text-sm">{{ $monitoring->solution }}</p>
-                                            </div>
-                                        @endif
-                                    </div>
-                                </div>
-                            @endif
-
-                            <div class="mt-6 flex justify-end">
-                                <a href="{{ route('monitorings.show', $monitoring) }}" class="btn-secondary">
-                                    View Details
-                                </a>
-                            </div>
-                        </div>
-                    </div>
-                @endforeach
-
-                <!-- Pagination -->
+            <!-- Pagination -->
+            @if ($monitorings->hasPages())
                 <div class="mt-6">
                     {{ $monitorings->links() }}
                 </div>
-            </div>
+            @endif
         @endif
     </div>
+
+    <style>
+        /* Table row animation */
+        tr {
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        tr:hover {
+            transform: translateY(-1px);
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+        }
+
+        /* Status badge animation */
+        .status-badge {
+            transition: all 0.2s ease;
+        }
+
+        .status-badge:hover {
+            transform: scale(1.05);
+        }
+
+        /* Action buttons animation */
+        .text-blue-600, .text-gray-600 {
+            transition: all 0.2s ease;
+        }
+
+        .text-blue-600:hover, .text-gray-600:hover {
+            transform: translateY(-1px);
+        }
+
+        /* Card hover animation */
+        .card-hover {
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .card-hover:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+        }
+
+        /* Icon animation */
+        .group:hover .fa-chart-line,
+        .group:hover .fa-check-circle,
+        .group:hover .fa-times-circle,
+        .group:hover .fa-percentage {
+            animation: pulse 1s infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.1); }
+        }
+    </style>
 </x-app-layout>
