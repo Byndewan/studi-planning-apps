@@ -256,7 +256,7 @@
                                     </div>
                                     <span class="text-sm font-medium text-gray-700">Rencana Selesai</span>
                                 </div>
-                                {{-- <span class="text-sm font-semibold text-gray-900">{{ $completedPlans }} / {{ $totalPlans }}</span> --}}
+                                <span class="text-sm font-semibold text-gray-900">{{ $completedPlans }} / {{ $totalPlans }}</span>
                             </div>
 
                             <div class="flex justify-between items-center p-3 bg-gray-50 rounded-lg hover:bg-gray-100 transition-colors">
@@ -266,7 +266,7 @@
                                     </div>
                                     <span class="text-sm font-medium text-gray-700">Sesi Belajar</span>
                                 </div>
-                                {{-- <span class="text-sm font-semibold text-gray-900">{{ $studySessionsCount }}</span> --}}
+                                <span class="text-sm font-semibold text-gray-900">{{ $studySessionsCount }}</span>
                             </div>
 
                             <div class="flex justify-between items-center p-3 bg-gray-50 rounded-lg hover:bg-gray-100 transition-colors">
@@ -276,11 +276,12 @@
                                     </div>
                                     <span class="text-sm font-medium text-gray-700">Peta Konsep</span>
                                 </div>
-                                {{-- <span class="text-sm font-semibold text-gray-900">{{ $conceptMapsCount }}</span> --}}
+                                <span class="text-sm font-semibold text-gray-900">{{ $conceptMapsCount }}</span>
                             </div>
                         </div>
                     </div>
                 </div>
+
             </div>
         </div>
     </div>
@@ -385,5 +386,5 @@
             });
         });
     </script>
-    
+
 </x-app-layout>

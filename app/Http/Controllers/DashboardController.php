@@ -5,6 +5,10 @@ namespace App\Http\Controllers;
 use App\Models\Semester;
 use App\Models\Course;
 use App\Models\WeeklyPlan;
+// Tambahkan model untuk StudySession dan ConceptMap
+use App\Models\StudySession;
+use App\Models\ConceptMap;
+use App\Models\SQ3RSession;
 
 class DashboardController extends Controller
 {
@@ -23,8 +27,8 @@ class DashboardController extends Controller
             $query->where('user_id', $user->id);
         })->count();
 
-        // Calculate completion rate
-        $completionRate = WeeklyPlan::whereHas('course.semester', function($query) use ($user) {
+        // HITUNG RENCANA SELESAI (COMPLETED PLANS) & TOTAL RENCANA (TOTAL PLANS)
+        $completedPlans = WeeklyPlan::whereHas('course.semester', function($query) use ($user) {
             $query->where('user_id', $user->id);
         })->where('status', 'completed')
         ->count();
@@ -33,7 +37,18 @@ class DashboardController extends Controller
             $query->where('user_id', $user->id);
         })->count();
 
-        $completionRate = $totalPlans > 0 ? round(($completionRate / $totalPlans) * 100) : 0;
+        // Calculate completion rate (persentase)
+        $completionRate = $totalPlans > 0 ? round(($completedPlans / $totalPlans) * 100) : 0;
+
+        // HITUNG SESI BELAJAR (STUDY SESSIONS)
+        $studySessionsCount = SQ3RSession::whereHas('course.semester', function($query) use ($user) {
+            $query->where('user_id', $user->id);
+        })->count();
+
+        // HITUNG PETA KONSEP (CONCEPT MAPS)
+        $conceptMapsCount = ConceptMap::whereHas('course.semester', function($query) use ($user) {
+            $query->where('user_id', $user->id);
+        })->count();
 
         // Get upcoming tasks
         $upcomingTasks = WeeklyPlan::whereHas('course.semester', function($query) use ($user) {
@@ -80,7 +95,11 @@ class DashboardController extends Controller
             'completionRate',
             'upcomingTasks',
             'recentActivities',
-            'upcomingDeadlines'
+            'upcomingDeadlines',
+            'completedPlans',
+            'totalPlans',
+            'studySessionsCount',
+            'conceptMapsCount'
         ));
     }
 }
