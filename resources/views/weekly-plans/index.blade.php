@@ -3,7 +3,7 @@
         <div class="flex items-center justify-between">
             <div>
                 <h1 class="text-3xl font-bold text-gray-900 tracking-tight">Rencana Mingguan</h1>
-                <p class="text-gray-600 mt-1">Kelola jadwal dan target belajar mingguan Anda</p>
+                <p class="text-gray-600 mt-1 text-base">Kelola jadwal dan target belajar mingguan Anda</p>
             </div>
             <x-slot name="headerActions">
                 <a href="{{ route('weekly-plans.create') }}" class="btn-primary">

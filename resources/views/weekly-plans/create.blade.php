@@ -2,7 +2,7 @@
     <x-slot name="header">
         <div>
             <h1 class="text-2xl font-bold text-gray-900">Buat Rencana Mingguan</h1>
-            <p class="text-gray-600 mt-1">Rencanakan jadwal belajar Anda untuk minggu ini</p>
+            <p class="text-gray-600 mt-1 text-base">Rencanakan jadwal belajar Anda untuk minggu ini</p>
         </div>
         <x-slot name="headerActions">
             <a href="{{ route('weekly-plans.index') }}" class="btn-secondary">

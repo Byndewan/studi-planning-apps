@@ -2,7 +2,7 @@
     <x-slot name="header">
         <div>
             <h1 class="text-2xl font-bold text-gray-900">Sesi SQ3R Baru</h1>
-            <p class="text-gray-600 mt-1">Mulai sesi membaca aktif menggunakan metode SQ3R</p>
+            <p class="text-gray-600 mt-1 text-base">Mulai sesi membaca aktif menggunakan metode SQ3R</p>
         </div>
         <x-slot name="headerActions">
             <a href="{{ route('sq3r.index') }}" class="btn-secondary">

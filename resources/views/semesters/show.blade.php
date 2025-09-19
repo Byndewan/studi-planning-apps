@@ -2,7 +2,7 @@
     <x-slot name="header">
         <div>
             <h1 class="text-2xl font-bold text-gray-900">{{ $semester->name }}</h1>
-            <p class="text-gray-600 mt-1">{{ $semester->start_date->format('d M Y') }} - {{ $semester->end_date->format('d M Y') }}</p>
+            <p class="text-gray-600 mt-1 text-base">{{ $semester->start_date->format('d M Y') }} - {{ $semester->end_date->format('d M Y') }}</p>
         </div>
         <x-slot name="headerActions">
             <a href="{{ route('semesters.edit', $semester) }}" class="btn-secondary">

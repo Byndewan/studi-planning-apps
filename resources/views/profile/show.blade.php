@@ -2,7 +2,7 @@
     <x-slot name="header">
         <div>
             <h1 class="text-2xl font-bold text-gray-900">Profil Saya</h1>
-            <p class="text-gray-600 mt-1">Informasi akun dan aktivitas terbaru</p>
+            <p class="text-gray-600 mt-1 text-base">Informasi akun dan aktivitas terbaru</p>
         </div>
         <x-slot name="headerActions">
             <a href="{{ route('profile.edit') }}" class="btn-primary">

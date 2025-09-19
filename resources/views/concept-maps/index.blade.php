@@ -2,7 +2,7 @@
     <x-slot name="header">
         <div>
             <h1 class="text-2xl font-bold text-gray-900">Peta Konsep</h1>
-            <p class="text-gray-600 mt-1">Visualisasikan dan organisasikan pengetahuan Anda</p>
+            <p class="text-gray-600 mt-1 text-base">Visualisasikan dan organisasikan pengetahuan Anda</p>
         </div>
         <x-slot name="headerActions">
             <a href="{{ route('concept-maps.create') }}" class="btn-primary">

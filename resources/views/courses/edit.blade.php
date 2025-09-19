@@ -3,7 +3,7 @@
         <div class="flex items-center justify-between">
             <div>
                 <h1 class="text-3xl font-bold text-gray-900 tracking-tight">Edit Mata Kuliah</h1>
-                <p class="text-gray-600 mt-1">{{ $course->code }} - {{ $course->name }}</p>
+                <p class="text-gray-600 mt-1 text-base">{{ $course->code }} - {{ $course->name }}</p>
             </div>
             <x-slot name="headerActions">
                 <a href="{{ route('courses.show', $course) }}" class="btn-secondary">

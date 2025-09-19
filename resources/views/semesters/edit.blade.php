@@ -2,7 +2,7 @@
     <x-slot name="header">
         <div>
             <h1 class="text-2xl font-bold text-gray-900">Edit Semester</h1>
-            <p class="text-gray-600 mt-1">{{ $semester->name }}</p>
+            <p class="text-gray-600 mt-1 text-base">{{ $semester->name }}</p>
         </div>
         <x-slot name="headerActions">
             <a href="{{ route('semesters.show', $semester) }}" class="btn-secondary">

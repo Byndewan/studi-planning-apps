@@ -3,7 +3,7 @@
         <div class="flex items-center justify-between">
             <div>
                 <h1 class="text-2xl font-bold text-gray-900">Detail Monitoring Belajar</h1>
-                <p class="text-gray-600 mt-1">{{ $monitoring->date->format('d M Y') }} - {{ $monitoring->course->name }}
+                <p class="text-gray-600 mt-1 text-base">{{ $monitoring->date->format('d M Y') }} - {{ $monitoring->course->name }}
                 </p>
             </div>
             <x-slot name="headerActions">
@@ -19,14 +19,14 @@
         </div>
     </x-slot>
 
-    <div class="max-w-4xl mx-auto space-y-8">
+    <div class="max-w-full mx-auto space-y-8">
         <!-- Info Utama -->
-        <div class="card card-hover">
+        <div class="card">
             <div class="p-8">
                 <div class="flex justify-between items-start mb-6">
                     <div>
                         <h2 class="text-xl font-semibold text-gray-900">{{ $monitoring->course->name }}</h2>
-                        <p class="text-gray-600 mt-1">
+                        <p class="text-gray-600 mt-1 text-base">
                             Minggu {{ $monitoring->week_number }} • {{ $monitoring->date->format('d M Y') }}
                         </p>
                     </div>
@@ -131,7 +131,7 @@
         </div>
 
         <!-- Informasi Tambahan -->
-        <div class="card card-hover">
+        <div class="card">
             <div class="p-6">
                 <h3 class="text-lg font-semibold text-gray-900 mb-4 flex items-center">
                     <i class="fas fa-info-circle mr-2 text-blue-600"></i>
@@ -154,43 +154,6 @@
     </div>
 
     <style>
-        /* Card hover animation */
-        .card-hover {
-            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-        }
-
-        .card-hover:hover {
-            transform: translateY(-2px);
-            box-shadow: var(--shadow-lg);
-        }
-
-        /* Gradient background animation */
-        .bg-gradient-to-br {
-            transition: all 0.3s ease;
-        }
-
-        .bg-gradient-to-br:hover {
-            transform: scale(1.02);
-        }
-
-        /* Status badge animation */
-        .status-badge {
-            transition: all 0.3s ease;
-        }
-
-        .status-badge:hover {
-            transform: scale(1.05);
-        }
-
-        /* Icon animation */
-        .group:hover .fa-bullseye,
-        .group:hover .fa-check-double,
-        .group:hover .fa-search,
-        .group:hover .fa-lightbulb,
-        .group:hover .fa-info-circle {
-            animation: pulse 1s infinite;
-        }
-
         @keyframes pulse {
 
             0%,

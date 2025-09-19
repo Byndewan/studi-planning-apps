@@ -2,7 +2,7 @@
     <x-slot name="header">
         <div>
             <h1 class="text-2xl font-bold text-gray-900">Buat Peta Konsep Baru</h1>
-            <p class="text-gray-600 mt-1">Visualisasikan pengetahuan Anda</p>
+            <p class="text-gray-600 mt-1 text-base">Visualisasikan pengetahuan Anda</p>
         </div>
         <x-slot name="headerActions">
             <a href="{{ route('concept-maps.index') }}" class="btn-secondary">
@@ -58,7 +58,6 @@
                                 <i class="fas fa-sync-alt absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 group-focus-within:text-blue-600 transition-colors"></i>
                                 <select id="sq3r_session_id" name="sq3r_session_id"
                                     class="w-full pl-10 pr-4 py-3 border border-gray-200 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all duration-200 appearance-none bg-white">
-                                    <option value="">Buat peta konsep kosong</option>
                                     @foreach($sq3rSessions as $session)
                                         <option value="{{ $session->id }}">
                                             {{ $session->module_title }} - {{ $session->course->name }}

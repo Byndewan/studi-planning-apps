@@ -3,7 +3,7 @@
         <div class="flex items-center justify-between">
             <div>
                 <h1 class="text-3xl font-bold text-gray-900 tracking-tight">SQ3R Sessions</h1>
-                <p class="text-gray-600 mt-1">Sesi membaca aktif menggunakan metode SQ3R</p>
+                <p class="text-gray-600 mt-1 text-base">Sesi membaca aktif menggunakan metode SQ3R</p>
             </div>
             <x-slot name="headerActions">
                 <a href="{{ route('sq3r.create') }}" class="btn-primary">

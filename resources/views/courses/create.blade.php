@@ -3,7 +3,7 @@
         <div class="flex items-center justify-between">
             <div>
                 <h1 class="text-3xl font-bold text-gray-900 tracking-tight">Tambah Mata Kuliah Baru</h1>
-                <p class="text-gray-600 mt-1">Tambahkan mata kuliah ke semester Anda</p>
+                <p class="text-gray-600 mt-1 text-base">Tambahkan mata kuliah ke semester Anda</p>
             </div>
             <x-slot name="headerActions">
                 <a href="{{ route('courses.index') }}" class="btn-secondary">

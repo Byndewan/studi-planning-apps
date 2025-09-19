@@ -2,7 +2,7 @@
     <x-slot name="header">
         <div>
             <h1 class="text-2xl font-bold text-gray-900">Peta Konsep - {{ $conceptMap->title }}</h1>
-            <p class="text-gray-600 mt-1">{{ $conceptMap->course->name }}</p>
+            <p class="text-gray-600 mt-1 text-base">{{ $conceptMap->course->name }}</p>
         </div>
         <x-slot name="headerActions">
             <a href="{{ route('concept-maps.edit', $conceptMap) }}" class="btn-secondary">

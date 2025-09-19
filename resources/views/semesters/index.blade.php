@@ -3,7 +3,7 @@
         <div class="flex items-center justify-between">
             <div>
                 <h1 class="text-3xl font-bold text-gray-900 tracking-tight">Semester</h1>
-                <p class="text-gray-600 mt-1">Kelola semester akademik Anda</p>
+                <p class="text-gray-600 mt-1 text-base">Kelola semester akademik Anda</p>
             </div>
             <x-slot name="headerActions">
                 <a href="{{ route('semesters.create') }}" class="btn-primary">

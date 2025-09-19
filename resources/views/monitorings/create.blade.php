@@ -2,7 +2,7 @@
     <x-slot name="header">
         <div>
             <h1 class="text-2xl font-bold text-gray-900">Catat Sesi Belajar</h1>
-            <p class="text-gray-600 mt-1">Lacak kemajuan belajar Anda dan identifikasi area untuk perbaikan</p>
+            <p class="text-gray-600 mt-1 text-base">Lacak kemajuan belajar Anda dan identifikasi area untuk perbaikan</p>
         </div>
         <x-slot name="headerActions">
             <a href="{{ route('monitorings.index') }}" class="btn-secondary">
