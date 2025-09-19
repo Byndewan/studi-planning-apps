@@ -129,23 +129,19 @@
     </div>
 
     <script>
-        // Form validation dengan animasi
         document.querySelector('form').addEventListener('submit', function(e) {
             const submitButton = this.querySelector('button[type="submit"]');
             const originalText = submitButton.innerHTML;
 
-            // Add loading state
             submitButton.innerHTML = '<i class="fas fa-spinner fa-spin mr-2"></i>Membuat...';
             submitButton.disabled = true;
 
-            // Re-enable button after 3 seconds (in case of error)
             setTimeout(() => {
                 submitButton.innerHTML = originalText;
                 submitButton.disabled = false;
             }, 3000);
         });
 
-        // Real-time validation feedback
         const inputs = document.querySelectorAll('input, select, textarea');
         inputs.forEach(input => {
             input.addEventListener('blur', function() {

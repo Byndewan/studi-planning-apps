@@ -9,6 +9,7 @@ use App\Http\Controllers\MonitoringController;
 use App\Http\Controllers\SQ3RController;
 use App\Http\Controllers\ConceptMapController;
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\TaskController;
 
 Route::get('/', function () {
     return view('welcome');
@@ -51,6 +52,11 @@ Route::middleware(['auth'])->group(function () {
     Route::resource('concept-maps', ConceptMapController::class);
     Route::post('concept-maps/{conceptMap}/autosave', [ConceptMapController::class, 'autosave'])->name('concept-maps.autosave');
     Route::get('sq3r-sessions/{sq3rSession}/generate-concept-map', [ConceptMapController::class, 'generateFromSQ3R'])->name('concept-maps.generate-from-sq3r');
+
+    Route::get('/tasks/filter/weekly', [TaskController::class, 'filterWeekly'])->name('tasks.filter.weekly');
+    Route::get('/tasks/filter/monitoring', [TaskController::class, 'filterMonitoring'])->name('tasks.filter.monitoring');
+    Route::get('/tasks/filter/sq3r', [TaskController::class, 'filterSQ3R'])->name('tasks.filter.sq3r');
+    Route::get('/tasks/filter/map', [TaskController::class, 'filterMap'])->name('tasks.filter.map');
 });
 
 require __DIR__ . '/auth.php';

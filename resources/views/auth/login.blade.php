@@ -6,10 +6,13 @@
         @csrf
 
         <!-- Email Address dengan animasi -->
-        <div class="group">
+        <div>
             <x-input-label for="email" :value="__('Alamat Email')" class="text-sm font-medium text-gray-700 mb-2" />
-            <div class="relative">
-                <i class="fas fa-envelope absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 group-focus-within:text-blue-600 transition-colors"></i>
+            <div class="relative group">
+                <i
+                    class="fas fa-envelope absolute left-3 top-1/2 transform -translate-y-1/2
+   text-gray-400 group-focus-within:text-blue-600 transition-colors
+   pointer-events-none z-10"></i>
                 <x-text-input id="email" type="email" name="email" :value="old('email')" required autofocus
                     class="w-full pl-10 pr-4 py-3 border border-gray-200 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all duration-200"
                     placeholder="nama@email.com" />
@@ -18,14 +21,19 @@
         </div>
 
         <!-- Password dengan animasi -->
-        <div class="group">
+        <div>
             <x-input-label for="password" :value="__('Kata Sandi')" class="text-sm font-medium text-gray-700 mb-2" />
-            <div class="relative">
-                <i class="fas fa-lock absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 group-focus-within:text-blue-600 transition-colors"></i>
+            <div class="relative group">
+                <i
+                    class="fas fa-lock absolute left-3 top-1/2 transform -translate-y-1/2
+   text-gray-400 group-focus-within:text-blue-600 transition-colors
+   pointer-events-none z-10wd"></i>
                 <x-text-input id="password" type="password" name="password" required autocomplete="current-password"
                     class="w-full pl-10 pr-12 py-3 border border-gray-200 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all duration-200"
                     placeholder="••••••••" />
-                <button type="button" class="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-400 hover:text-gray-600 transition-colors" onclick="togglePassword()">
+                <button type="button"
+                    class="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-400 hover:text-gray-600 transition-colors"
+                    onclick="togglePassword()">
                     <i class="fas fa-eye" id="toggleIcon"></i>
                 </button>
             </div>
@@ -34,7 +42,8 @@
 
         <!-- Submit Button dengan animasi -->
         <div class="pt-4">
-            <button type="submit" class="w-full bg-gradient-to-r from-blue-500 to-blue-600 text-white py-2 px-4 rounded-full font-medium hover:from-blue-600 hover:to-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 transform hover:-translate-y-0.5 transition-all duration-200 shadow-lg hover:shadow-xl btn-animate">
+            <button type="submit"
+                class="w-full bg-gradient-to-r from-blue-500 to-blue-600 text-white py-2 px-4 rounded-full font-medium hover:from-blue-600 hover:to-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 transform hover:-translate-y-0.5 transition-all duration-200 shadow-lg hover:shadow-xl btn-animate">
                 <span class="flex items-center justify-center">
                     <i class="fas fa-sign-in-alt mr-2"></i>
                     {{ __('Masuk') }}

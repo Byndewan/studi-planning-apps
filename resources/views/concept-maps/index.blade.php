@@ -18,12 +18,14 @@
         <!-- Filter -->
         <div class="card card-hover">
             <div class="p-6">
-                <form class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                <form class="grid grid-cols-1 md:grid-cols-4 gap-4" id="concept-map-filter">
                     <div class="group">
                         <label class="form-label">Mata Kuliah</label>
                         <div class="relative">
-                            <i class="fas fa-book absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 group-focus-within:text-blue-600 transition-colors"></i>
-                            <select class="w-full pl-10 pr-4 py-3 border border-gray-200 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all duration-200 appearance-none bg-white">
+                            <i
+                                class="fas fa-book absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 group-focus-within:text-blue-600 transition-colors"></i>
+                            <select name="course_id" id="course_id"
+                                class="w-full pl-10 pr-4 py-3 border border-gray-200 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all duration-200 appearance-none bg-white">
                                 <option value="">Semua Mata Kuliah</option>
                                 @foreach (auth()->user()->courses as $course)
                                     <option value="{{ $course->id }}">{{ $course->name }}</option>
@@ -34,15 +36,29 @@
                     <div class="group">
                         <label class="form-label">Judul</label>
                         <div class="relative">
-                            <i class="fas fa-search absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 group-focus-within:text-blue-600 transition-colors"></i>
-                            <input type="text" class="w-full pl-10 pr-4 py-3 border border-gray-200 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all duration-200" placeholder="Cari berdasarkan judul">
+                            <i
+                                class="fas fa-search absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 group-focus-within:text-blue-600 transition-colors"></i>
+                            <input type="text" name="title" id="title"
+                                class="w-full pl-10 pr-4 py-3 border border-gray-200 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all duration-200"
+                                placeholder="Cari berdasarkan judul">
                         </div>
                     </div>
                     <div class="group">
-                        <label class="form-label">Rentang Tanggal</label>
+                        <label class="form-label">Dari Tanggal</label>
                         <div class="relative">
-                            <i class="fas fa-calendar absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 group-focus-within:text-blue-600 transition-colors"></i>
-                            <input type="text" class="w-full pl-10 pr-4 py-3 border border-gray-200 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all duration-200" placeholder="Pilih rentang tanggal">
+                            <i
+                                class="fas fa-calendar absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 group-focus-within:text-blue-600 transition-colors"></i>
+                            <input id="start_date" name="start_date" type="date"
+                                class="w-full pl-10 pr-4 py-3 border border-gray-200 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all duration-200">
+                        </div>
+                    </div>
+                    <div class="group">
+                        <label class="form-label">Sampai Tanggal</label>
+                        <div class="relative">
+                            <i
+                                class="fas fa-calendar absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 group-focus-within:text-blue-600 transition-colors"></i>
+                            <input id="end_date" name="end_date" type="date"
+                                class="w-full pl-10 pr-4 py-3 border border-gray-200 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all duration-200">
                         </div>
                     </div>
                 </form>
@@ -50,15 +66,17 @@
         </div>
 
         <!-- Grid Peta Konsep -->
-        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        <div id="concept-map-list" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
             @if ($conceptMaps->isEmpty())
                 <div class="md:col-span-3 card card-hover">
                     <div class="empty-state py-16">
-                        <div class="w-20 h-20 bg-gradient-to-br from-gray-100 to-gray-200 rounded-2xl flex items-center justify-center mx-auto mb-6 shadow-sm">
+                        <div
+                            class="w-20 h-20 bg-gradient-to-br from-gray-100 to-gray-200 rounded-2xl flex items-center justify-center mx-auto mb-6 shadow-sm">
                             <i class="fas fa-project-diagram text-gray-400 text-3xl"></i>
                         </div>
                         <h3 class="text-xl font-semibold text-gray-900 mb-3">Belum ada peta konsep</h3>
-                        <p class="text-gray-600 mb-6">Visualisasikan pengetahuan Anda dengan membuat peta konsep pertama</p>
+                        <p class="text-gray-600 mb-6">Visualisasikan pengetahuan Anda dengan membuat peta konsep pertama
+                        </p>
                         <a href="{{ route('concept-maps.create') }}" class="btn-primary">
                             <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
@@ -78,7 +96,8 @@
 
                         <div class="p-6">
                             <!-- Pratinjau Peta -->
-                            <div class="aspect-video bg-gradient-to-br from-gray-50 to-gray-100 rounded-lg mb-4 flex items-center justify-center border border-gray-200">
+                            <div
+                                class="aspect-video bg-gradient-to-br from-gray-50 to-gray-100 rounded-lg mb-4 flex items-center justify-center border border-gray-200">
                                 <i class="fas fa-project-diagram text-gray-400 text-4xl"></i>
                             </div>
 
@@ -127,7 +146,7 @@
 
         <!-- Pagination -->
         @if ($conceptMaps->isNotEmpty())
-            <div class="mt-6">
+            <div class="mt-6" id="concept-map-pagination">
                 {{ $conceptMaps->links() }}
             </div>
         @endif
@@ -175,4 +194,54 @@
             left: 100%;
         }
     </style>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const form = document.getElementById('concept-map-filter');
+            const list = document.getElementById('concept-map-list');
+            const pagination = document.getElementById('concept-map-pagination');
+
+            async function fetchData(page = 1) {
+                const formData = new FormData(form);
+                const params = new URLSearchParams(formData);
+                params.append('page', page);
+
+                const response = await fetch(`{{ route('tasks.filter.map') }}?${params.toString()}`, {
+                    headers: {
+                        'X-Requested-With': 'XMLHttpRequest'
+                    }
+                });
+                const data = await response.json();
+
+                list.innerHTML = data.html;
+                pagination.innerHTML = data.pagination ?? '';
+            }
+
+            form.querySelectorAll('select, input').forEach(el => {
+                el.addEventListener('change', () => fetchData());
+                if (el.type === 'text') {
+                    el.addEventListener('keyup', debounce(() => fetchData(), 300));
+                }
+            });
+
+            document.addEventListener('click', function(e) {
+                if (e.target.closest('#concept-map-pagination a')) {
+                    e.preventDefault();
+                    const url = new URL(e.target.closest('a').href);
+                    const page = url.searchParams.get('page') || 1;
+                    fetchData(page);
+                }
+            });
+
+            function debounce(func, wait) {
+                let timeout;
+                return (...args) => {
+                    clearTimeout(timeout);
+                    timeout = setTimeout(() => func.apply(this, args), wait);
+                };
+            }
+        });
+    </script>
+
+
 </x-app-layout>
