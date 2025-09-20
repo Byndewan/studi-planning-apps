@@ -81,7 +81,7 @@ class WeeklyPlanController extends Controller
         $validated = $request->validate([
             'target_text' => 'required|string',
             'num_pages' => 'nullable|integer|min:0',
-            'media' => 'nullable|array',
+            'media' => 'nullable',
             'planned_hours' => 'required|numeric|min:0',
             'status' => 'required|in:planned,in_progress,completed,missed',
         ]);

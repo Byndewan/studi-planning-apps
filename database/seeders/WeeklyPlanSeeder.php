@@ -53,19 +53,6 @@ class WeeklyPlanSeeder extends Seeder
                 'created_at' => '2025-09-16 06:55:03',
                 'updated_at' => '2025-09-16 06:55:03',
             ],
-            [
-                'id' => 4,
-                'user_id' => 2,
-                'course_id' => 4,
-                'week_number' => 1,
-                'target_text' => 'Intro to programming: Variables & Loops',
-                'num_pages' => 15,
-                'media' => '{"book":"CS Fundamentals"}',
-                'planned_hours' => 4.0,
-                'status' => 'planned',
-                'created_at' => '2025-09-16 06:55:03',
-                'updated_at' => '2025-09-16 06:55:03',
-            ],
         ]);
     }
 }
