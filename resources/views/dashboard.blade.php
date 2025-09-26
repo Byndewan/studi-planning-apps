@@ -23,7 +23,8 @@
                                 {{ $currentSemester->name ?? 'Belum Ada' }}
                             </p>
                         </div>
-                        <div class="w-12 h-12 bg-gradient-to-br from-blue-50 to-blue-100 rounded-xl flex items-center justify-center shadow-sm group-hover:shadow-md transition-all duration-300 group-hover:scale-110">
+                        <div
+                            class="w-12 h-12 bg-gradient-to-br from-blue-50 to-blue-100 rounded-xl flex items-center justify-center shadow-sm group-hover:shadow-md transition-all duration-300 group-hover:scale-110">
                             <i class="fas fa-calendar-alt text-blue-600 text-xl"></i>
                         </div>
                     </div>
@@ -44,7 +45,8 @@
                                 {{ $coursesCount }}
                             </p>
                         </div>
-                        <div class="w-12 h-12 bg-gradient-to-br from-green-50 to-green-100 rounded-xl flex items-center justify-center shadow-sm group-hover:shadow-md transition-all duration-300 group-hover:scale-110">
+                        <div
+                            class="w-12 h-12 bg-gradient-to-br from-green-50 to-green-100 rounded-xl flex items-center justify-center shadow-sm group-hover:shadow-md transition-all duration-300 group-hover:scale-110">
                             <i class="fas fa-book text-green-600 text-xl"></i>
                         </div>
                     </div>
@@ -65,14 +67,15 @@
                                 {{ $completionRate }}%
                             </p>
                         </div>
-                        <div class="w-12 h-12 bg-gradient-to-br from-yellow-50 to-yellow-100 rounded-xl flex items-center justify-center shadow-sm group-hover:shadow-md transition-all duration-300 group-hover:scale-110">
+                        <div
+                            class="w-12 h-12 bg-gradient-to-br from-yellow-50 to-yellow-100 rounded-xl flex items-center justify-center shadow-sm group-hover:shadow-md transition-all duration-300 group-hover:scale-110">
                             <i class="fas fa-chart-line text-yellow-600 text-xl"></i>
                         </div>
                     </div>
                     <div class="mt-4">
                         <div class="w-full bg-gray-100 rounded-full h-2 overflow-hidden">
                             <div class="bg-gradient-to-r from-yellow-400 to-yellow-500 h-2 rounded-full transition-all duration-1000 ease-out"
-                                 style="width: {{ $completionRate }}%"></div>
+                                style="width: {{ $completionRate }}%"></div>
                         </div>
                     </div>
                 </div>
@@ -88,7 +91,8 @@
                                 {{ $upcomingTasks }}
                             </p>
                         </div>
-                        <div class="w-12 h-12 bg-gradient-to-br from-red-50 to-red-100 rounded-xl flex items-center justify-center shadow-sm group-hover:shadow-md transition-all duration-300 group-hover:scale-110">
+                        <div
+                            class="w-12 h-12 bg-gradient-to-br from-red-50 to-red-100 rounded-xl flex items-center justify-center shadow-sm group-hover:shadow-md transition-all duration-300 group-hover:scale-110">
                             <i class="fas fa-tasks text-red-600 text-xl"></i>
                         </div>
                     </div>
@@ -104,7 +108,7 @@
         <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
             <!-- Recent Activity -->
             <div class="lg:col-span-2">
-                <div class="card card-hover">
+                {{-- <div class="card card-hover">
                     <div class="card-header">
                         <div class="flex items-center justify-between">
                             <h2 class="text-xl font-semibold text-gray-900 flex items-center">
@@ -117,11 +121,13 @@
                         @forelse($recentActivities as $activity)
                             <div class="p-6 hover:bg-gray-50/50 transition-all duration-200 group">
                                 <div class="flex items-start space-x-4">
-                                    <div class="w-10 h-10 bg-gradient-to-br from-blue-50 to-blue-100 rounded-xl flex items-center justify-center flex-shrink-0 shadow-sm group-hover:shadow-md transition-all duration-300">
+                                    <div
+                                        class="w-10 h-10 bg-gradient-to-br from-blue-50 to-blue-100 rounded-xl flex items-center justify-center flex-shrink-0 shadow-sm group-hover:shadow-md transition-all duration-300">
                                         <i class="fas fa-bolt text-blue-600 group-hover:animate-bounce"></i>
                                     </div>
                                     <div class="flex-1 min-w-0">
-                                        <p class="text-sm font-semibold text-gray-900 group-hover:text-blue-700 transition-colors">
+                                        <p
+                                            class="text-sm font-semibold text-gray-900 group-hover:text-blue-700 transition-colors">
                                             {{ $activity['title'] }}
                                         </p>
                                         <p class="text-sm text-gray-600 mt-1">{{ $activity['description'] }}</p>
@@ -134,7 +140,8 @@
                             </div>
                         @empty
                             <div class="empty-state">
-                                <div class="w-16 h-16 bg-gray-100 rounded-xl flex items-center justify-center mx-auto mb-4">
+                                <div
+                                    class="w-16 h-16 bg-gray-100 rounded-xl flex items-center justify-center mx-auto mb-4">
                                     <i class="fas fa-bell-slash text-gray-400 text-2xl"></i>
                                 </div>
                                 <h3 class="text-lg font-medium text-gray-900 mb-2">Belum ada aktivitas</h3>
@@ -146,49 +153,52 @@
                             </div>
                         @endforelse
                     </div>
-                </div>
+                </div> --}}
 
-                <!-- Upcoming Deadlines -->
-                <div class="card mt-6 card-hover">
+                <!-- Progress Overview -->
+                <div class="card card-hover">
                     <div class="card-header">
-                        <div class="flex items-center justify-between">
-                            <h2 class="text-xl font-semibold text-gray-900 flex items-center">
-                                <i class="fas fa-calendar-check mr-3 text-green-600"></i>
-                                Jadwal Mendatang
-                            </h2>
-                            <span class="text-sm text-gray-500">{{ now()->format('F Y') }}</span>
-                        </div>
+                        <h3 class="text-lg font-semibold text-gray-900 flex items-center">
+                            <i class="fas fa-trophy mr-3 text-yellow-600"></i>
+                            Ringkasan
+                        </h3>
                     </div>
-                    <div class="divide-y divide-gray-100">
-                        @forelse($upcomingDeadlines as $deadline)
-                            <div class="p-4 hover:bg-gray-50/50 transition-all duration-200  group">
-                                <div class="flex items-center justify-between">
-                                    <div class="flex items-center space-x-3">
-                                        <div class="w-8 h-8 bg-gradient-to-br from-red-50 to-red-100 rounded-lg flex items-center justify-center flex-shrink-0">
-                                            <i class="fas fa-flag text-red-600 text-sm"></i>
-                                        </div>
-                                        <div>
-                                            <p class="text-sm font-semibold text-gray-900 group-hover:text-red-700 transition-colors">
-                                                {{ $deadline['title'] }}
-                                            </p>
-                                            <p class="text-xs text-gray-600">{{ $deadline['course'] }}</p>
-                                        </div>
+                    <div class="p-6">
+                        <div class="space-y-4">
+                            <div
+                                class="flex justify-between items-center p-3 bg-gray-50 rounded-lg hover:bg-gray-100 transition-colors">
+                                <div class="flex items-center space-x-3">
+                                    <div class="w-8 h-8 bg-green-100 rounded-lg flex items-center justify-center">
+                                        <i class="fas fa-check-circle text-green-600 text-sm"></i>
                                     </div>
-                                    <div class="flex items-center space-x-2">
-                                        <span class="text-xs font-medium px-3 py-1 rounded-full {{ $deadline['urgent'] ? 'bg-red-100 text-red-800 border border-red-200' : 'bg-blue-100 text-blue-800 border border-blue-200' }}">
-                                            <i class="far fa-calendar mr-1"></i>
-                                            {{ $deadline['date'] }}
-                                        </span>
-                                    </div>
+                                    <span class="text-sm font-medium text-gray-700">Rencana Selesai</span>
                                 </div>
+                                <span class="text-sm font-semibold text-gray-900">{{ $completedPlans }} /
+                                    {{ $totalPlans }}</span>
                             </div>
-                        @empty
-                            <div class="empty-state">
-                                <i class="fas fa-calendar-times text-gray-400 text-4xl mb-4"></i>
-                                <h3 class="text-lg font-medium text-gray-900 mb-2">Tidak ada jadwal</h3>
-                                <p class="text-gray-600 text-sm">Nikmati waktu luang Anda</p>
+
+                            <div
+                                class="flex justify-between items-center p-3 bg-gray-50 rounded-lg hover:bg-gray-100 transition-colors">
+                                <div class="flex items-center space-x-3">
+                                    <div class="w-8 h-8 bg-blue-100 rounded-lg flex items-center justify-center">
+                                        <i class="fas fa-book text-blue-600 text-sm"></i>
+                                    </div>
+                                    <span class="text-sm font-medium text-gray-700">Sesi Belajar</span>
+                                </div>
+                                <span class="text-sm font-semibold text-gray-900">{{ $studySessionsCount }}</span>
                             </div>
-                        @endforelse
+
+                            <div
+                                class="flex justify-between items-center p-3 bg-gray-50 rounded-lg hover:bg-gray-100 transition-colors">
+                                <div class="flex items-center space-x-3">
+                                    <div class="w-8 h-8 bg-purple-100 rounded-lg flex items-center justify-center">
+                                        <i class="fas fa-lightbulb text-purple-600 text-sm"></i>
+                                    </div>
+                                    <span class="text-sm font-medium text-gray-700">Peta Konsep</span>
+                                </div>
+                                <span class="text-sm font-semibold text-gray-900">{{ $conceptMapsCount }}</span>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -204,84 +214,51 @@
                         </h2>
                     </div>
                     <div class="p-6 space-y-3">
-                        <a href="{{ route('sq3r.create') }}" class="group flex items-center p-4 rounded-xl border border-gray-200 hover:bg-gradient-to-r hover:from-blue-50 hover:to-indigo-50 transition-all duration-300 hover:border-blue-300">
-                            <div class="w-12 h-12 bg-gradient-to-br from-blue-500 to-blue-600 rounded-xl flex items-center justify-center shadow-sm group-hover:shadow-md transition-all duration-300">
+                        <a href="{{ route('sq3r.create') }}"
+                            class="group flex items-center p-4 rounded-xl border border-gray-200 hover:bg-gradient-to-r hover:from-blue-50 hover:to-indigo-50 transition-all duration-300 hover:border-blue-300">
+                            <div
+                                class="w-12 h-12 bg-gradient-to-br from-blue-500 to-blue-600 rounded-xl flex items-center justify-center shadow-sm group-hover:shadow-md transition-all duration-300">
                                 <i class="fas fa-book-open text-white text-lg"></i>
                             </div>
                             <div class="ml-4 flex-1">
                                 <p class="text-sm font-semibold text-gray-900 group-hover:text-blue-700">Mulai SQ3R</p>
                                 <p class="text-xs text-gray-600 mt-1">Metode membaca aktif</p>
                             </div>
-                            <i class="fas fa-chevron-right text-gray-400 group-hover:text-blue-600 transition-colors"></i>
+                            <i
+                                class="fas fa-chevron-right text-gray-400 group-hover:text-blue-600 transition-colors"></i>
                         </a>
 
-                        <a href="{{ route('concept-maps.create') }}" class="group flex items-center p-4 rounded-xl border border-gray-200 hover:bg-gradient-to-r hover:from-green-50 hover:to-emerald-50 transition-all duration-300 hover:border-green-300">
-                            <div class="w-12 h-12 bg-gradient-to-br from-green-500 to-green-600 rounded-xl flex items-center justify-center shadow-sm group-hover:shadow-md transition-all duration-300">
+                        <a href="{{ route('concept-maps.create') }}"
+                            class="group flex items-center p-4 rounded-xl border border-gray-200 hover:bg-gradient-to-r hover:from-green-50 hover:to-emerald-50 transition-all duration-300 hover:border-green-300">
+                            <div
+                                class="w-12 h-12 bg-gradient-to-br from-green-500 to-green-600 rounded-xl flex items-center justify-center shadow-sm group-hover:shadow-md transition-all duration-300">
                                 <i class="fas fa-project-diagram text-white text-lg"></i>
                             </div>
                             <div class="ml-4 flex-1">
-                                <p class="text-sm font-semibold text-gray-900 group-hover:text-green-700">Buat Peta Konsep</p>
+                                <p class="text-sm font-semibold text-gray-900 group-hover:text-green-700">Buat Peta
+                                    Konsep</p>
                                 <p class="text-xs text-gray-600 mt-1">Visualisasikan pengetahuan</p>
                             </div>
-                            <i class="fas fa-chevron-right text-gray-400 group-hover:text-green-600 transition-colors"></i>
+                            <i
+                                class="fas fa-chevron-right text-gray-400 group-hover:text-green-600 transition-colors"></i>
                         </a>
 
-                        <a href="{{ route('monitorings.create') }}" class="group flex items-center p-4 rounded-xl border border-gray-200 hover:bg-gradient-to-r hover:from-yellow-50 hover:to-orange-50 transition-all duration-300 hover:border-yellow-300">
-                            <div class="w-12 h-12 bg-gradient-to-br from-yellow-500 to-yellow-600 rounded-xl flex items-center justify-center shadow-sm group-hover:shadow-md transition-all duration-300">
+                        <a href="{{ route('monitorings.create') }}"
+                            class="group flex items-center p-4 rounded-xl border border-gray-200 hover:bg-gradient-to-r hover:from-yellow-50 hover:to-orange-50 transition-all duration-300 hover:border-yellow-300">
+                            <div
+                                class="w-12 h-12 bg-gradient-to-br from-yellow-500 to-yellow-600 rounded-xl flex items-center justify-center shadow-sm group-hover:shadow-md transition-all duration-300">
                                 <i class="fas fa-chart-line text-white text-lg"></i>
                             </div>
                             <div class="ml-4 flex-1">
-                                <p class="text-sm font-semibold text-gray-900 group-hover:text-yellow-700">Catat Progress</p>
+                                <p class="text-sm font-semibold text-gray-900 group-hover:text-yellow-700">Catat
+                                    Progress</p>
                                 <p class="text-xs text-gray-600 mt-1">Monitoring belajar</p>
                             </div>
-                            <i class="fas fa-chevron-right text-gray-400 group-hover:text-yellow-600 transition-colors"></i>
+                            <i
+                                class="fas fa-chevron-right text-gray-400 group-hover:text-yellow-600 transition-colors"></i>
                         </a>
                     </div>
                 </div>
-
-                <!-- Progress Overview -->
-                <div class="card card-hover">
-                    <div class="card-header">
-                        <h3 class="text-lg font-semibold text-gray-900 flex items-center">
-                            <i class="fas fa-trophy mr-3 text-yellow-600"></i>
-                            Ringkasan
-                        </h3>
-                    </div>
-                    <div class="p-6">
-                        <div class="space-y-4">
-                            <div class="flex justify-between items-center p-3 bg-gray-50 rounded-lg hover:bg-gray-100 transition-colors">
-                                <div class="flex items-center space-x-3">
-                                    <div class="w-8 h-8 bg-green-100 rounded-lg flex items-center justify-center">
-                                        <i class="fas fa-check-circle text-green-600 text-sm"></i>
-                                    </div>
-                                    <span class="text-sm font-medium text-gray-700">Rencana Selesai</span>
-                                </div>
-                                <span class="text-sm font-semibold text-gray-900">{{ $completedPlans }} / {{ $totalPlans }}</span>
-                            </div>
-
-                            <div class="flex justify-between items-center p-3 bg-gray-50 rounded-lg hover:bg-gray-100 transition-colors">
-                                <div class="flex items-center space-x-3">
-                                    <div class="w-8 h-8 bg-blue-100 rounded-lg flex items-center justify-center">
-                                        <i class="fas fa-book text-blue-600 text-sm"></i>
-                                    </div>
-                                    <span class="text-sm font-medium text-gray-700">Sesi Belajar</span>
-                                </div>
-                                <span class="text-sm font-semibold text-gray-900">{{ $studySessionsCount }}</span>
-                            </div>
-
-                            <div class="flex justify-between items-center p-3 bg-gray-50 rounded-lg hover:bg-gray-100 transition-colors">
-                                <div class="flex items-center space-x-3">
-                                    <div class="w-8 h-8 bg-purple-100 rounded-lg flex items-center justify-center">
-                                        <i class="fas fa-lightbulb text-purple-600 text-sm"></i>
-                                    </div>
-                                    <span class="text-sm font-medium text-gray-700">Peta Konsep</span>
-                                </div>
-                                <span class="text-sm font-semibold text-gray-900">{{ $conceptMapsCount }}</span>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
             </div>
         </div>
     </div>
@@ -313,8 +290,15 @@
         }
 
         @keyframes pulse {
-            0%, 100% { transform: scale(1); }
-            50% { transform: scale(1.1); }
+
+            0%,
+            100% {
+                transform: scale(1);
+            }
+
+            50% {
+                transform: scale(1.1);
+            }
         }
 
         /* Smooth entrance animation */
@@ -322,15 +306,24 @@
             animation: fadeInUp 0.8s ease-out;
         }
 
-        .delay-100 { animation-delay: 0.1s; }
-        .delay-200 { animation-delay: 0.2s; }
-        .delay-300 { animation-delay: 0.3s; }
+        .delay-100 {
+            animation-delay: 0.1s;
+        }
+
+        .delay-200 {
+            animation-delay: 0.2s;
+        }
+
+        .delay-300 {
+            animation-delay: 0.3s;
+        }
 
         @keyframes fadeInUp {
             from {
                 opacity: 0;
                 transform: translateY(30px);
             }
+
             to {
                 opacity: 1;
                 transform: translateY(0);
